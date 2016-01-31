@@ -15,7 +15,7 @@ public class Simulation implements ISimulationInputListener {
 
     @Override
     public void SimulationParameterChanged(String parameterName, String value) {
-
+        // set new value for the parameter in the simulation
     }
 
     public void NextSimulationStep(float timeStep){
