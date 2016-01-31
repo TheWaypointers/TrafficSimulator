@@ -1,8 +1,8 @@
 package thewaypointers.trafficsimulator;
 
-public class Main {
-
+public class TrafficSimulatorManager {
     public static void main(String[] args) {
-	// write your code here
+        // write your code here
     }
+
 }
