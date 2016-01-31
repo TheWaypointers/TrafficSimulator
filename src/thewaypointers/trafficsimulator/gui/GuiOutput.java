@@ -7,6 +7,6 @@ public class GuiOutput implements IStateChangeListener {
 
     @Override
     public void NewStateReceived(WorldStateDTO state) {
-
+        // display new state of the world
     }
 }

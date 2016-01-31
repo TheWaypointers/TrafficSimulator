@@ -10,6 +10,7 @@ public class GuiController {
         this.simulationInputListener = simulationInputListener;
     }
 
+    // example of passing changed simulation parameters to the listener
     private void numberOfVehiclesChanged(int newValue){
         simulationInputListener.SimulationParameterChanged("numberOfVehicles", String.valueOf(newValue));
     }
