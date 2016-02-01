@@ -11,7 +11,7 @@ public class GuiController {
     }
 
     // example of passing changed simulation parameters to the listener
-    private void numberOfVehiclesChanged(int newValue){
+    public void numberOfVehiclesChanged(int newValue){
         simulationInputListener.SimulationParameterChanged("numberOfVehicles", String.valueOf(newValue));
     }
 }
