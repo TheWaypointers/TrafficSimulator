@@ -13,7 +13,6 @@ public class Simulation implements ISimulationInputListener {
         this.stateChangeListener = stateChangeListener;
     }
 
-    @Override
     public void SimulationParameterChanged(String parameterName, String value) {
         // set new value for the parameter in the simulation
     }
