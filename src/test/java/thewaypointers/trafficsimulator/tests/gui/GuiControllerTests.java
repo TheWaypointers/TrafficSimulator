@@ -35,6 +35,6 @@ public class GuiControllerTests {
         guiController.numberOfVehiclesChanged(15);
 
         // assert
-        Assert.assertTrue(listener.parameterChangeEvents.contains("numberOfVehicles"));
+        Assert.assertTrue(false);
     }
 }
