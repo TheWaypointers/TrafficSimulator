@@ -1,6 +1,4 @@
 package thewaypointers.trafficsimulator.common;
 
-public enum TrafficLightLane {
-    Left,
-    Right
+public class Junction {
 }

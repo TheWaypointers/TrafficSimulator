@@ -1,8 +1,8 @@
 package thewaypointers.trafficsimulator.common;
 
-public enum TrafficLightLocation {
+public enum Direction {
     Up,
     Down,
     Left,
-    Rights
+    Right
 }
