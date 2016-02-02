@@ -8,7 +8,10 @@ import thewaypointers.trafficsimulator.gui.GuiController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiControllerTests {
+/* Sample test class.
+   Name has to end with Test so Maven finds it.
+ */
+public class GuiControllerTest {
 
     public class MockSimulationInputListener implements ISimulationInputListener{
 
@@ -23,9 +26,10 @@ public class GuiControllerTests {
     /*  Sample test.
         It's best to use very descriptive names for the tests,
         so that when we run them, we can instantly know what exactly
-        passes and what fails. */
+        passes and what fails.
+     */
     @Test
-    public void GuiController_notifies_listener_about_number_of_vehicles_change_Test(){
+    public void GuiController_notifies_listener_about_number_of_vehicles_change(){
 
         // arrange
         MockSimulationInputListener listener = new MockSimulationInputListener();
@@ -35,6 +39,6 @@ public class GuiControllerTests {
         guiController.numberOfVehiclesChanged(15);
 
         // assert
-        Assert.assertTrue(false);
+        Assert.assertTrue(listener.parameterChangeEvents.contains("numberOfVehicles"));
     }
 }
