@@ -25,7 +25,7 @@ public class GuiControllerTests {
         so that when we run them, we can instantly know what exactly
         passes and what fails. */
     @Test
-    public void GuiController_notifies_listener_about_number_of_vehicles_change(){
+    public void GuiController_notifies_listener_about_number_of_vehicles_change_Test(){
 
         // arrange
         MockSimulationInputListener listener = new MockSimulationInputListener();
