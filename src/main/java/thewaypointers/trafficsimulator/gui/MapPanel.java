@@ -28,13 +28,13 @@ public class MapPanel extends JPanel{
         //draw road
         g.setColor(Color.gray);
 
-        g.fillRect(210,600,80,200);
+        g.fillRect(250,0,50,600);
         Graphics2D  g2=(Graphics2D)g;
         g2.setColor(Color.white);
         float [] arr={15.0f,10.0f};
         BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
         g2.setStroke(stroke);
-        Line2D.Float line = new Line2D.Float(250,50,250,200);
+        Line2D.Float line = new Line2D.Float(275,0,275,600);
         g2.draw(line);
         BasicStroke stroke2=new BasicStroke();
         g2.setStroke(stroke2);
