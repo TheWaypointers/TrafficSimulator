@@ -1,6 +1,6 @@
 package thewaypointers.trafficsimulator.tests.gui;
 
-import org.junit.Assert;
+import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.ISimulationInputListener;
 import thewaypointers.trafficsimulator.gui.GuiController;
@@ -39,6 +39,6 @@ public class GuiControllerTest {
         guiController.numberOfVehiclesChanged(15);
 
         // assert
-        Assert.assertTrue(listener.parameterChangeEvents.contains("numberOfVehicles"));
+        assertThat(listener.parameterChangeEvents).contains("numberOfVehicles");
     }
 }
