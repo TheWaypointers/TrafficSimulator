@@ -1,4 +1,4 @@
-package thewaypointers.trafficsimulator.common;
+package thewaypointers.trafficsimulator.common.enums;
 
 public enum VehicleType {
     CarReckless,
