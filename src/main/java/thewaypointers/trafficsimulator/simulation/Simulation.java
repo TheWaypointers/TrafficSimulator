@@ -19,6 +19,7 @@ public class Simulation implements ISimulationInputListener {
     IStateChangeListener stateChangeListener;
     SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  roadGraph;
     HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap = new HashMap<>();
+    final long PROGRAM_TIME_PAUSE_MULTIPLIER = 2;
 
     public Simulation(IStateChangeListener stateChangeListener) {
         this.stateChangeListener = stateChangeListener;
@@ -33,7 +34,7 @@ public class Simulation implements ISimulationInputListener {
         // set new value for the parameter in the simulation
     }
 
-    public void NextSimulationStep(){
+    public void NextSimulationStep(long timeStep){
 
         // modify simulation state...
 
@@ -47,10 +48,10 @@ public class Simulation implements ISimulationInputListener {
     public void runSimulation(long timeStep){
         while(run){
 
-            NextSimulationStep();
+            NextSimulationStep(timeStep);
 
             try{
-                Thread.sleep(timeStep);
+                Thread.sleep(timeStep / PROGRAM_TIME_PAUSE_MULTIPLIER);
             }catch(Exception ex){
                 System.out.println(ex.getMessage());
             }
@@ -59,7 +60,7 @@ public class Simulation implements ISimulationInputListener {
     }
 
     private void setGraph() {
-        roadGraph = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+        roadGraph = new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class);
 
         roadGraph.addVertex("1");
         roadGraph.addVertex("2");
