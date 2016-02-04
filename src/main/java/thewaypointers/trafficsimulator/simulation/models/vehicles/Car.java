@@ -1,14 +1,12 @@
-package thewaypointers.trafficsimulator.common.simulation.models;
+package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
 import thewaypointers.trafficsimulator.common.Lane;
-import thewaypointers.trafficsimulator.common.enums.VehicleType;
+import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
+import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 
 import java.util.Stack;
 
-/**
- * Created by User on 4.2.2016..
- */
-public class Vehicle {
+public class Car implements IVehicle {
 
     private float topSpeed;
     private float currentSpeed;
@@ -18,12 +16,14 @@ public class Vehicle {
     private String originNode;
     private Lane lane;
 
-    public Vehicle(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane){
+    private final long SPEED_DIFFERENCE = 10;
+
+    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane){
         this.vehicleType = type;
         this.decisionPath = decisionPath;
         this.originNode = originNode;
         this.lane = lane;
-        calculateTopSpeed(roadSpeedLimit);
+        calculateVehicleSpeed(roadSpeedLimit);
     }
 
 
@@ -59,28 +59,6 @@ public class Vehicle {
         this.distanceTravelled = distanceTravelled;
     }
 
-    private void calculateTopSpeed(float roadSpeedLimit){
-
-        if(vehicleType != null){
-            switch (vehicleType){
-                case CarNormal:
-                    setTopSpeed(roadSpeedLimit);
-                    break;
-                case CarReckless:
-                    break;
-                case CarCautious:
-                    break;
-                case Bus:
-                    break;
-                case EmergencyService:
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    }
-
     public Stack<String> getDecisionPath() {
         return decisionPath;
     }
@@ -103,5 +81,33 @@ public class Vehicle {
 
     public void setLane(Lane lane) {
         this.lane = lane;
+    }
+
+    @Override
+    public void calculateVehicleSpeed(float roadSpeedLimit) {
+
+        if(vehicleType != null){
+            switch (vehicleType){
+                case CarNormal:
+                    setTopSpeed(roadSpeedLimit);
+                    break;
+                case CarReckless:
+                    //reckless cars drive 10% faster than the speed limit
+                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    break;
+                case CarCautious:
+                    //cautious drivers drive 10% slower than the speed limit
+                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    @Override
+    public float getVehiclesTopSpeed() {
+        return getTopSpeed();
     }
 }
