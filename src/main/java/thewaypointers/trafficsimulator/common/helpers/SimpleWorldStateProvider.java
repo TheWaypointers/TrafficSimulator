@@ -52,17 +52,23 @@ public class SimpleWorldStateProvider {
     public WorldStateDTO getNextState(float vehicleMovement) {
         RoadDTO downRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
         RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
-        LocationDTO loc = worldState.vehicles.get(0).location;
+        VehicleDTO v = worldState.vehicles.get(0);
+        LocationDTO loc = v.location;
         if(vehicleMovement > ROAD_LENGTH)
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
-        if (loc.distanceTravelled + vehicleMovement < loc.road.length) {
-            loc.distanceTravelled += vehicleMovement;
+        if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().length) {
+             v.location = new LocationDTO(loc.getRoad(),
+                                          loc.getOrigin(),
+                                          loc.getDistanceTravelled() + vehicleMovement,
+                                          loc.getLane());
         }else{
             // jump to next road
-            loc.distanceTravelled = loc.distanceTravelled + vehicleMovement - loc.road.length;
-            loc.road = loc.road.equals(upRoad) ? downRoad : upRoad;
-            loc.origin = loc.road.start;
+            RoadDTO newRoad = loc.getRoad().equals(upRoad) ? downRoad : upRoad;
+            v.location = new LocationDTO(newRoad,
+                                         newRoad.start,
+                                         loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().length,
+                                         loc.getLane());
         }
 
         return worldState;

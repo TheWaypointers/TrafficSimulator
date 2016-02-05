@@ -33,12 +33,66 @@ public class SimpleWorldStateProviderTest {
         assertThat(upRoad.end.label).isEqualTo("E2");
 
         VehicleDTO v = worldState.vehicles.get(0);
-        assertThat(v.type).isEqualsToByComparingFields(VehicleType.CarNormal);
+        assertThat(v.type).isEqualTo(VehicleType.CarNormal);
 
         LocationDTO loc = v.location;
-        assertThat(loc.lane).isEqualsToByComparingFields(Lane.Right);
-        assertThat(loc.road.equals(downRoad));
-        assertThat(loc.origin.label.equals("E1"));
+        assertThat(loc.getLane()).isEqualTo(Lane.Right);
+        assertThat(loc.getRoad().equals(downRoad));
+        assertThat(loc.getOrigin().label.equals("E1"));
     }
 
+    @Test
+    public void Provider_moves_vehicle()
+    {
+        // arrange
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/30;
+
+        // act
+        WorldStateDTO ws1 = provider.getNextState(moveDistance);
+        LocationDTO loc1 = ws1.vehicles.get(0).location;
+        WorldStateDTO ws2 = provider.getNextState(moveDistance);
+        LocationDTO loc2 = ws2.vehicles.get(0).location;
+
+        // assert
+        assertThat(loc1 != loc2).isTrue();
+        assertThat(ws1 == ws2).isTrue();
+        assertThat(loc2.getDistanceTravelled()).isEqualTo(loc1.getDistanceTravelled() + moveDistance);
+    }
+
+    @Test
+    public void Vehicle_jumps_from_down_to_up_road()
+    {
+        // arrange
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+
+        // act
+        provider.getNextState(moveDistance);
+        WorldStateDTO worldState = provider.getNextState(moveDistance);
+
+        // assert
+        LocationDTO loc = worldState.vehicles.get(0).location;
+        RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
+        assertThat(loc.getRoad()).isEqualTo(upRoad);
+    }
+
+    @Test
+    public void Vehicle_loops_back_to_down_road()
+    {
+        // arrange
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+
+        // act
+        provider.getNextState(moveDistance);
+        provider.getNextState(moveDistance);
+        provider.getNextState(moveDistance);
+        WorldStateDTO worldState = provider.getNextState(moveDistance);
+
+        // assert
+        LocationDTO loc = worldState.vehicles.get(0).location;
+        RoadDTO downRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
+        assertThat(loc.getRoad()).isEqualTo(downRoad);
+    }
 }
