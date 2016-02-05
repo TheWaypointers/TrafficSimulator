@@ -1,4 +1,4 @@
-package thewaypointers.trafficsimulator.tests.helpers;
+package thewaypointers.trafficsimulator.common.helpers;
 
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.enums.VehicleType;
@@ -38,7 +38,7 @@ public class SimpleWorldStateProvider {
 
         MapDTO roadMap = new MapDTO(a);
 
-        LocationDTO loc = new LocationDTO(e1_a, e1, 0, Lane.Right);
+        LocationDTO loc = new LocationDTO(e1_a, e1_a.start, 0, Lane.Right);
         VehicleDTO v1 = new VehicleDTO(loc, VehicleType.CarNormal);
         ArrayList<VehicleDTO> vehicles = new ArrayList<>();
         vehicles.add(v1);
@@ -61,7 +61,10 @@ public class SimpleWorldStateProvider {
         if (loc.distanceTravelled + vehicleMovement < loc.road.length) {
             loc.distanceTravelled += vehicleMovement;
         }else{
-            //TODO
+            // jump to next road
+            loc.distanceTravelled = loc.distanceTravelled + vehicleMovement - loc.road.length;
+            loc.road = loc.road.equals(upRoad) ? downRoad : upRoad;
+            loc.origin = loc.road.start;
         }
     }
 }
