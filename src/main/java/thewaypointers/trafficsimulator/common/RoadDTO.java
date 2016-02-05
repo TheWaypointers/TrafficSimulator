@@ -12,4 +12,9 @@ public class RoadDTO {
         this.start = start;
         this.end = end;
     }
+
+    public boolean equals(RoadDTO other) {
+        return (start.label.equals(other.start.label) && end.label.equals(other.end.label)) ||
+                (start.label.equals(other.end.label) && end.label.equals(other.start.label));
+    }
 }

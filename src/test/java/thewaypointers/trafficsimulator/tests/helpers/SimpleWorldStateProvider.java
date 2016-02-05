@@ -9,23 +9,25 @@ import java.util.List;
 import java.util.Map;
 
 public class SimpleWorldStateProvider {
+    public static final float ROAD_LENGTH = 300;
+
     IStateChangeListener stateChangeListener;
     WorldStateDTO worldState;
 
     public SimpleWorldStateProvider(IStateChangeListener stateChangeListener){
         this.stateChangeListener = stateChangeListener;
+        worldState = initializeWorldState();
     }
 
-    public WorldStateDTO initializeWorldState()
-    {
+    private WorldStateDTO initializeWorldState() {
         RoadDTO e1_a = new RoadDTO();
         RoadDTO a_e2 = new RoadDTO();
-        e1_a.length = 300;
-        a_e2.length = 300;
+        e1_a.length = ROAD_LENGTH;
+        a_e2.length = ROAD_LENGTH;
 
         ExitNodeDTO e1 = new ExitNodeDTO("E1");
         ExitNodeDTO e2 = new ExitNodeDTO("E2");
-        JunctionDTO a = new JunctionDTO("A", e1_a, a_e2, null, null);
+        JunctionDTO a = new JunctionDTO("A", a_e2, e1_a, null, null);
 
         // connect the roads
         // TODO make this more straightforward
@@ -47,5 +49,19 @@ public class SimpleWorldStateProvider {
         ws.vehicles = vehicles;
 
         return ws;
+    }
+
+    public void getNextState(float vehicleMovement) {
+        RoadDTO downRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
+        RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
+        LocationDTO loc = worldState.vehicles.get(0).location;
+        if(vehicleMovement > ROAD_LENGTH)
+            throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
+
+        if (loc.distanceTravelled + vehicleMovement < loc.road.length) {
+            loc.distanceTravelled += vehicleMovement;
+        }else{
+            //TODO
+        }
     }
 }
