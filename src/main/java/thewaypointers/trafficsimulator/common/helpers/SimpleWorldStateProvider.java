@@ -11,11 +11,9 @@ import java.util.Map;
 public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
 
-    IStateChangeListener stateChangeListener;
     WorldStateDTO worldState;
 
-    public SimpleWorldStateProvider(IStateChangeListener stateChangeListener){
-        this.stateChangeListener = stateChangeListener;
+    public SimpleWorldStateProvider(){
         worldState = initializeWorldState();
     }
 
@@ -51,7 +49,7 @@ public class SimpleWorldStateProvider {
         return ws;
     }
 
-    public void getNextState(float vehicleMovement) {
+    public WorldStateDTO getNextState(float vehicleMovement) {
         RoadDTO downRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
         RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
         LocationDTO loc = worldState.vehicles.get(0).location;
@@ -66,5 +64,7 @@ public class SimpleWorldStateProvider {
             loc.road = loc.road.equals(upRoad) ? downRoad : upRoad;
             loc.origin = loc.road.start;
         }
+
+        return worldState;
     }
 }
