@@ -1,8 +1,8 @@
 package thewaypointers.trafficsimulator.common;
 
 public class LocationDTO {
-    RoadDTO road;
-    float distanceTravelled;
-    NodeDTO origin;
-    Lane lane;
+    public RoadDTO road;
+    public float distanceTravelled;
+    public NodeDTO origin;
+    public Lane lane;
 }

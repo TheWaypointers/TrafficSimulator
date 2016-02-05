@@ -1,7 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
 public class TrafficLightDTO {
-    TrafficLightColor color;
-    Direction location;
-    Lane lane;
+    public TrafficLightColor color;
+    public Direction location;
+    public Lane lane;
 }

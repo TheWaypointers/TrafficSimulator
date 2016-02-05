@@ -1,7 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
 public class RoadDTO {
-    float length;
-    NodeDTO start;
-    NodeDTO end;
+    public float length;
+    public NodeDTO start;
+    public NodeDTO end;
 }
