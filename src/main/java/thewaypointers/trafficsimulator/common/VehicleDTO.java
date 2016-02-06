@@ -3,6 +3,12 @@ package thewaypointers.trafficsimulator.common;
 import thewaypointers.trafficsimulator.common.enums.VehicleType;
 
 public class VehicleDTO {
-    LocationDTO location;
-    VehicleType type;
+    public LocationDTO location;
+
+    public VehicleDTO(LocationDTO location, VehicleType type) {
+        this.location = location;
+        this.type = type;
+    }
+
+    public VehicleType type;
 }
