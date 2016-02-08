@@ -82,7 +82,7 @@ public class MapPanel extends JPanel{
         if (car1.type==VehicleType.CarNormal) {
             int x=0;
             int y=0;
-            g.setColor(Color.black);
+            g.setColor(Color.white);
             if (car1.location.getOrigin()==worldState.roadMap.junctions.get(0).connections.get(Direction.Up).start) {
 
                 y=(int)car1.location.getDistanceTravelled();
