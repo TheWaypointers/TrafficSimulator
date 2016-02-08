@@ -1,10 +1,12 @@
 \documentclass[a4paper,12pt]{article}
+\usepackage{float}
+
 \begin{document}
 
 \section{Project description}
 
 \subsection{Introduction}
-The Traffic Simulation System can simulate various kinds of vehicles that are running on a complicated road network. The road network contains multi-lane roads, intersections and roundabouts. The user can manage the simulation by adding vehicles, setting traffic lights on chosen intersections, changing time step, and so on. The real-time situation of the traffic will help user to compare and find out which traffic plan works better.
+The Traffic Simulation System can simulate various kinds of vehicles that are travelling on a complicated road network. The road network contains multi-lane roads, intersections and roundabouts. The user can manage the simulation by changing the quantity of vehicles, setting traffic lights on chosen intersections, changing time step, and so on. The real-time situation of the traffic helps the user to compare and find out which traffic plan works better.
 
 \subsection{Features of the system}
 FE-1: The Traffic Simulation System should simulate different kinds of vehicles, including cars, buses and ambulances.\\
@@ -17,41 +19,53 @@ FE-7: The Traffic Simulation System should present real time situation of the tr
 FE-8: The Traffic Simulation System should allow the user to control the simulation.
 
 
-\subsection{Use case}
-UC-1: Add vehicles: car, bus, ambulance\\
-UC-2: Set traffic lights\\
-UC-3: Define entry/exit point\\
-UC-4: Define driver's behavior\\
-UC-5: Check real-time traffic situation\\
-UC-6: Control simulation
+\subsection{Use cases}
+UC-1: Define quantities of different vehicles: car, bus, ambulance\\
+UC-2: Set traffic lights on chosen intersections\\
+UC-3: Define entry/exit points for vehicles\\
+UC-4: Choose drivers' behaviours\\
+UC-5: See real-time traffic situation and statistics\\
+UC-6: Stop, start and change simulation playback speed and timestep
 
 \subsection{Extent of version}
+
+We have defined 3 stages of the program's completion:
+\begin{itemize}
+	\item{First version - version for initial report and presetation}
+	\item{Second version - the minimum viable product}
+	\item{Third version - optional features we want to implement if we have time}
+\end{itemize}
+They are described in detail in the table on page \pageref{versiontable}.
+
 \begin{table}[!htbp]
 \centering
+\label{versiontable}
+\caption{Extent of versions}
 \begin{tabular}{|p{1.2cm}|p{3.8cm}|p{4.5cm}|p{3cm}|}
 \hline
 Feature & Version1 & Version2  & Version3\\
 \hline
-FE-1& One type of vehicle, car which only stops when the traffic light turns red. & Tow types of vehicle, car and bus. Bus can break shortly at the bus stop. & Three types of vehicles, car, bus and ambulance.\\
+FE-1& One type of vehicle, car which only stops when the traffic light turns red. & Tow types of vehicle, car and bus. Bus can stop shortly at bus stops. & Three types of vehicles: car, bus and ambulance.\\
 \hline
 FE-2& One road which has no passing lane, and one intersection. & Multi-lane roads with intersections. & Roundabouts.\\
 \hline
-FE-3& One traffic light and the simple policy. & Many traffic lights and it allows the,user to set traffic light in junction. & User can choose the main road.\\
+FE-3& One traffic light. & Many traffic lights, allow the user to set traffic lights in an intersection. & User can choose the main road.\\
 \hline
-FE-4& Single entry point and exit point. & Random entry points and exit points. & Entry points and exit points are defined by user.\\
+FE-4& Single entry and exit point. & Random entry and exit points. & Entry and exit points are defined by user.\\
 \hline
-FE-5& The system has specific number of cars. & User can add arbitrary quantity of cars,and buses. & User can add ambulances into the system.\\
+FE-5& The system has a specific number of cars. & User can add arbitrary quantity of cars and buses. & User can add ambulances into the system.\\
 \hline
-FE-6& Default all behaviors as normal. & User can choose drivers' behaviors from three types: reckless behavior, cautious behavior and normal behavior. & Done.\\
+FE-6& Default behaviour is normal. & User can choose drivers' behaviors from three types: reckless behavior, cautious behavior and normal behavior. & Done.\\
 \hline
 FE-7& Present the color of traffic lights. & Display the average speed of all vehicles in the simulation, number of different vehicles, different behaviors of the drivers. & Done.\\
 \hline
-FE-8& The system is controlled by itself. & User can control the simulation by changing time step and changing time for switching lights. & User can control the system by changing the speed.\\
+FE-8& No control over the simulation. & User can control the simulation by changing time step and changing time for switching lights. & User can control the system by changing the speed.\\
 \hline
 \end{tabular}
 \end{table}
 
-
+\subsection{Progress}
+Our target was to complete the first version for the initial presentation and we have achieved it. The code already uses roughly the architecture created for the final version, so it can be easily extended with new features.
 
 \section{Project organisation}
 \subsection{Tools}
@@ -70,7 +84,7 @@ For testing, we use the JUnit library.
 For distributing tasks and controlling progress, we use GitHub Issues.
 
 \subsection{Process}
-We use a Scrum-like method to manage out project. There are week-long iterations, which start with a meeting every Thursday. During the meeting, we establish the goals to achieve in the iteration and every team member is assigned tasks to complete within the timeframe of the iteration. If any tasks are leftover from the previous iteration, they are also reassigned.
+We use an Agile method to manage out project. Every team member is expected to work on the project around 10 hours per week. There are week-long iterations, which start with a meeting every Thursday. During the meeting, we establish the goals to achieve in the iteration and every team member is assigned tasks to complete within the timeframe of the iteration. If any tasks are leftover from the previous iteration, they are also reassigned.
 
 We maintain three levels of branches in the Git repository:
 \begin{itemize}
@@ -81,27 +95,9 @@ We maintain three levels of branches in the Git repository:
 
 When a team member starts working on task, they create a new feature branch with the name specified in the task. The names are all prefixed with \emph{feat-}. 
 
-When the work is done, they submit a pull request closing the task. At this point, another team member reviews the code, checking the Travis build and tests status and potentially making suggestions about improvements. This is to ensure consistency in the code and that each piece of the codebase is known by at least two members.
+When the work is done, they submit a pull request closing the task. At this point, another team member reviews the code, checking the Travis build and tests status and potentially making suggestions about improvements.
 
 If the reviewer and the submitter are both satisfied with the state of the pull request, the reviewer closes the pull request and the task by merging the changes into \emph{dev}. If the reviewer and the submitter cannot reach an agreement on some issue, they ask for help from a third person, a mediator. In extreme cases, the issue is resulted by team-wide vote.
-
-\subsection{Schedule}
-\begin{table}[!htbp]
-    \centering
-    \caption{Schedule}
-    \label{schedule}
-    \begin{tabular}{|l|l|}
-        \hline
-        04.02 - 10.02 & Something \\ \hline
-        11.02 - 17.02 & Something \\ \hline
-        18.02 - 24.02 & Something \\ \hline
-        25.02 - 03.03 & Something \\ \hline
-        04.03 - 10.03 & Something \\ \hline
-        11.03 - 17.03 & Something \\ \hline
-        18.03 - 24.03 & Something \\ \hline
-        25.03 - 31.03 & Something \\ \hline
-    \end{tabular}
-\end{table}
 
 \subsection{Peer assessment}
 There are two peer assessment rounds, one for the first half of the project (3rd March) and one for the second (31st March).
