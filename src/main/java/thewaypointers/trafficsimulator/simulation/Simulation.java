@@ -51,7 +51,6 @@ public class Simulation implements ISimulationInputListener {
             try{
                 moveVehicles(timeStep);
                 checkForLeavingVehicles();
-                changeTrafficLightState();
             }
             catch (Exception ex){
                 System.out.println(ex.getMessage());
@@ -60,6 +59,7 @@ public class Simulation implements ISimulationInputListener {
 
         //temp
         writeConsoleOutput();
+        changeTrafficLightState();
 
         //WorldStateDTO state = new WorldStateDTO();
 
