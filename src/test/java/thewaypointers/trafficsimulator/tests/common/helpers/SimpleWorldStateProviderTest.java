@@ -27,10 +27,10 @@ public class SimpleWorldStateProviderTest {
 
         RoadDTO downRoad = junction.connections.get(Direction.Down);
         RoadDTO upRoad = junction.connections.get(Direction.Up);
-        assertThat(downRoad.start.label).isEqualTo("E1");
-        assertThat(downRoad.end.label).isEqualTo("A");
-        assertThat(upRoad.start.label).isEqualTo("A");
-        assertThat(upRoad.end.label).isEqualTo("E2");
+        assertThat(upRoad.start.label).isEqualTo("E1");
+        assertThat(upRoad.end.label).isEqualTo("A");
+        assertThat(downRoad.start.label).isEqualTo("A");
+        assertThat(downRoad.end.label).isEqualTo("E2");
 
         VehicleDTO v = worldState.vehicles.get(0);
         assertThat(v.type).isEqualTo(VehicleType.CarNormal);
@@ -39,6 +39,8 @@ public class SimpleWorldStateProviderTest {
         assertThat(loc.getLane()).isEqualTo(Lane.Right);
         assertThat(loc.getRoad().equals(downRoad));
         assertThat(loc.getOrigin().label.equals("E1"));
+        NodeDTO[] roadEndpoints = {loc.getRoad().start, loc.getRoad().end};
+        assertThat(roadEndpoints).contains(loc.getOrigin());
     }
 
     @Test
@@ -61,32 +63,13 @@ public class SimpleWorldStateProviderTest {
     }
 
     @Test
-    public void Vehicle_jumps_from_down_to_up_road()
+    public void Vehicle_jumps_from_up_to_down_road()
     {
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
 
         // act
-        provider.getNextState(moveDistance);
-        WorldStateDTO worldState = provider.getNextState(moveDistance);
-
-        // assert
-        LocationDTO loc = worldState.vehicles.get(0).location;
-        RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
-        assertThat(loc.getRoad()).isEqualTo(upRoad);
-    }
-
-    @Test
-    public void Vehicle_loops_back_to_down_road()
-    {
-        // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
-        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
-
-        // act
-        provider.getNextState(moveDistance);
-        provider.getNextState(moveDistance);
         provider.getNextState(moveDistance);
         WorldStateDTO worldState = provider.getNextState(moveDistance);
 
@@ -94,5 +77,24 @@ public class SimpleWorldStateProviderTest {
         LocationDTO loc = worldState.vehicles.get(0).location;
         RoadDTO downRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
         assertThat(loc.getRoad()).isEqualTo(downRoad);
+    }
+
+    @Test
+    public void Vehicle_loops_back_to_up_road()
+    {
+        // arrange
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+
+        // act
+        provider.getNextState(moveDistance);
+        provider.getNextState(moveDistance);
+        provider.getNextState(moveDistance);
+        WorldStateDTO worldState = provider.getNextState(moveDistance);
+
+        // assert
+        LocationDTO loc = worldState.vehicles.get(0).location;
+        RoadDTO upRoad = worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
+        assertThat(loc.getRoad()).isEqualTo(upRoad);
     }
 }
