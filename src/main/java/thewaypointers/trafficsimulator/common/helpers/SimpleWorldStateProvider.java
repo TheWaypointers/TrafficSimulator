@@ -25,7 +25,7 @@ public class SimpleWorldStateProvider {
 
         ExitNodeDTO e1 = new ExitNodeDTO("E1");
         ExitNodeDTO e2 = new ExitNodeDTO("E2");
-        JunctionDTO a = new JunctionDTO("A", a_e2, e1_a, null, null);
+        JunctionDTO a = new JunctionDTO("A", e1_a, a_e2, null, null);
 
         // connect the roads
         // TODO make this more straightforward
