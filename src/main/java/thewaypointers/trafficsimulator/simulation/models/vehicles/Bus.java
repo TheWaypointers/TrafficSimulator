@@ -1,9 +1,14 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
+import org.jgrapht.graph.DefaultWeightedEdge;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
+import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
+import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -18,6 +23,7 @@ public class Bus implements IVehicle {
     private Stack<String> decisionPath;
     private String originNode;
     private Lane lane;
+    private boolean onExit;
 
     private final long SPEED_DIFFERENCE = 10;
 
@@ -105,7 +111,30 @@ public class Bus implements IVehicle {
     }
 
     @Override
-    public float getVehiclesTopSpeed() {
-        return getTopSpeed();
+    public float getVehiclesCurrentSpeed() {
+        return getCurrentSpeed();
+    }
+
+    @Override
+    public float getVehiclesDistanceTravelled() {
+        return getDistanceTravelled();
+    }
+
+    @Override
+    public HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap) {
+        return null;
+    }
+
+    @Override
+    public boolean isVehicleLeavingRoad() {
+        return isOnExit();
+    }
+
+    public boolean isOnExit() {
+        return onExit;
+    }
+
+    public void setOnExit(boolean onExit) {
+        this.onExit = onExit;
     }
 }
