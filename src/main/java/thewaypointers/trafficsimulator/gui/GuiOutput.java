@@ -7,5 +7,7 @@ public class GuiOutput implements IStateChangeListener {
 
     public void NewStateReceived(WorldStateDTO state) {
         // display new state of the world
+        MainFrame.mapPanel.getWorldState(state);
+        MainFrame.mapPanel.repaint();
     }
 }

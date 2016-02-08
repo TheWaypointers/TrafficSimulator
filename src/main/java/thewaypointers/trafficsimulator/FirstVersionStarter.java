@@ -4,6 +4,8 @@ import thewaypointers.trafficsimulator.common.IStateChangeListener;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.SimpleStateChangeListener;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
+import thewaypointers.trafficsimulator.gui.GuiOutput;
+import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class FirstVersionStarter {
 
@@ -12,12 +14,16 @@ public class FirstVersionStarter {
 
     public static void main(String[] args){
 
-        IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
         SimpleWorldStateProvider simulation = new SimpleWorldStateProvider();   // this will be simulation
+        //IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
+        MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
+        GuiOutput guiOutput=new GuiOutput();
+
 
         while(true){
             WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            gui.NewStateReceived(newWorldState);   // in this method the GUI draws the new world state
+            //gui.NewStateReceived(newWorldState);   // in this method the GUI draws the new world state
+            guiOutput.NewStateReceived(newWorldState);
             try {
                 Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
             } catch (InterruptedException e) {
@@ -26,3 +32,4 @@ public class FirstVersionStarter {
         }
     }
 }
+
