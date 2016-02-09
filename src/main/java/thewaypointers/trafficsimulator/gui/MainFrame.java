@@ -9,11 +9,9 @@ public class MainFrame extends JFrame{
     public static MapPanel mapPanel=null;
     //ControlPanel controlPanel = new ControlPanel();
 
-
-
     public MainFrame(WorldStateDTO worldStateDTO){
         mapPanel  =  new MapPanel();
-        mapPanel.getWorldState(worldStateDTO);
+        mapPanel.NewStateReceived(worldStateDTO);
         this.setSize(800,600);
         this.setVisible(true);
         this.add(mapPanel);
@@ -26,7 +24,7 @@ public class MainFrame extends JFrame{
     }
 
     public void  repaintpanel(WorldStateDTO worldStateDTO) {
-        mapPanel.getWorldState(worldStateDTO);
+        mapPanel.NewStateReceived(worldStateDTO);
         mapPanel.repaint();
 
     }

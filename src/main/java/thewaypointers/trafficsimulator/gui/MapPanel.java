@@ -6,7 +6,7 @@ import thewaypointers.trafficsimulator.common.*;
 import java.awt.*;
 import java.awt.geom.Line2D;
 
-public class MapPanel extends JPanel{
+public class MapPanel extends JPanel implements IStateChangeListener{
 
     // configurable parameters
     public static final int MAP_PANEL_WIDTH = 600;
@@ -24,7 +24,7 @@ public class MapPanel extends JPanel{
     public static final Color VEHICLE_COLOR = Color.white;
 
     // computable parameters
-    public static final int ROAD_LEFT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*1/4);
+    public static final int ROAD_LEFT_LANE_X = ROAD_Y1 + (ROAD_WIDTH/4);
     public static final int ROAD_MIDDLE_LINE = ROAD_Y1 + (ROAD_WIDTH/2);
     public static final int ROAD_RIGHT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*3/4);
     public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
@@ -38,10 +38,9 @@ public class MapPanel extends JPanel{
 
     }
 
-    public void getWorldState(WorldStateDTO worldStateDTO){
-
+    public void NewStateReceived(WorldStateDTO worldStateDTO){
         this.worldState = worldStateDTO;
-
+        this.repaint();
     }
 
     private void drawVehicle(Graphics g, VehicleDTO vehicle, MapDTO map){
