@@ -3,7 +3,7 @@ package thewaypointers.trafficsimulator.tests.common.helpers;
 import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
-import thewaypointers.trafficsimulator.common.enums.VehicleType;
+import thewaypointers.trafficsimulator.common.VehicleType;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 
 public class SimpleWorldStateProviderTest {
