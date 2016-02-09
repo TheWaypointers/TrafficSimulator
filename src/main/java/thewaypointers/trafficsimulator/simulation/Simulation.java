@@ -2,6 +2,7 @@ package thewaypointers.trafficsimulator.simulation;
 
 import thewaypointers.trafficsimulator.common.*;
 import org.jgrapht.graph.*;
+import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.DirectionFromNode;
@@ -13,6 +14,7 @@ import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 
@@ -23,6 +25,8 @@ public class Simulation implements ISimulationInputListener {
     SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  roadGraph;
     HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap = new HashMap<>();
     HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap = new HashMap<>();
+    WorldStateDTO worldState;
+    List<RoadDTO> dtoRoads;
 
     final long PROGRAM_TIME_PAUSE_MULTIPLIER = 2;
     final int MAX_VEHICLE_NUMBER = 2;
@@ -40,6 +44,8 @@ public class Simulation implements ISimulationInputListener {
     public Simulation(){
         setGraph();
         CreateVehicles();
+        createWorldState();
+        MainFrame mainFrame=new MainFrame(worldState);
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
@@ -58,6 +64,8 @@ public class Simulation implements ISimulationInputListener {
 
 
         //temp
+        changeWorldState();
+        MainFrame.mapPanel.NewStateReceived(worldState);
         writeConsoleOutput();
         changeTrafficLightState();
 
@@ -70,16 +78,54 @@ public class Simulation implements ISimulationInputListener {
         //stateChangeListener.NewStateReceived(state);
     }
 
+    private synchronized void changeWorldState() {
+
+        VehicleDTO v = worldState.vehicles.get(0);
+        LocationDTO loc = v.location;
+
+        IVehicle vehicle = null;
+
+        for(DefaultWeightedEdge road : vehicleMap.keySet()){
+            if(vehicleMap.get(road).size() > 0){
+                vehicle = vehicleMap.get(road).get(0);
+            }
+        }
+
+        Car car = ((Car) vehicle);
+        RoadDTO newRoad = new RoadDTO();
+
+        if(car.getOriginNode() == "1") {
+            newRoad = dtoRoads.get(0);
+        }else{
+            newRoad = dtoRoads.get(1);
+        }
+
+
+        loc = new LocationDTO(newRoad,newRoad.start, vehicle.getVehiclesDistanceTravelled(), loc.getLane());
+        worldState.vehicles.get(0).location = loc;
+
+    }
+
     private synchronized void changeTrafficLightState() {
+
+        JunctionDTO junction = worldState.roadMap.junctions.get(0);
+        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
+        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+
+
         for(Node node : nodeGraphMap.keySet()){
             if(node.getNodeType() == NodeType.JunctionTrafficLights){
                 TrafficLightNode tlNode = ((TrafficLightNode) node);
 
                 if(tlNode.getColor() == TrafficLightColor.Green){
                     tlNode.setColor(TrafficLightColor.Red);
+                    upTrafficLight.color = TrafficLightColor.Red;
+                    downTrafficLight.color = TrafficLightColor.Red;
                 }
                 else{
                     tlNode.setColor(TrafficLightColor.Green);
+                    upTrafficLight.color = TrafficLightColor.Green;
+                    downTrafficLight.color = TrafficLightColor.Green;
                 }
             }
         }
@@ -190,11 +236,11 @@ public class Simulation implements ISimulationInputListener {
         roadGraph.addVertex("3");
 
         DefaultWeightedEdge e1 = roadGraph.addEdge("1", "2");
-        roadGraph.setEdgeWeight(e1, 50);
+        roadGraph.setEdgeWeight(e1, 300);
         vehicleMap.put(e1, new ArrayList<>());
 
         DefaultWeightedEdge e2 = roadGraph.addEdge("2", "3");
-        roadGraph.setEdgeWeight(e2, 100);
+        roadGraph.setEdgeWeight(e2, 300);
         vehicleMap.put(e2, new ArrayList<>());
 
         Node node1 = new Node("1", NodeType.ExitNode);
@@ -217,6 +263,51 @@ public class Simulation implements ISimulationInputListener {
         nodeGraphMap.put(node3, new ArrayList<>());
         nodeGraphMap.get(node3).add(re3);
 
+    }
+
+    private void createWorldState() {
+
+        dtoRoads = new ArrayList<>();
+
+        RoadDTO e1_a = new RoadDTO();
+        RoadDTO a_e2 = new RoadDTO();
+        e1_a.length = 300;
+        a_e2.length = 300;
+        dtoRoads.add(e1_a);
+        dtoRoads.add(a_e2);
+
+
+        ExitNodeDTO e1 = new ExitNodeDTO("E1");
+        ExitNodeDTO e2 = new ExitNodeDTO("E2");
+        JunctionDTO a = new JunctionDTO("A", e1_a, a_e2, null, null);
+
+        // connect the roads
+        // TODO make this more straightforward
+        e1_a.start = e1;
+        e1_a.end = a;
+        a_e2.start = a;
+        a_e2.end = e2;
+
+        // add traffic lights
+        TrafficLightDTO downTrafficLight = new TrafficLightDTO();
+        TrafficLightDTO upTrafficLight = new TrafficLightDTO();
+        downTrafficLight.color = TrafficLightColor.Red;
+        upTrafficLight.color = TrafficLightColor.Red;
+        a.trafficLights = new HashMap<>();
+        a.trafficLights.put(Direction.Down, downTrafficLight);
+        a.trafficLights.put(Direction.Up, upTrafficLight);
+
+        MapDTO roadMap = new MapDTO(a);
+
+        LocationDTO loc = new LocationDTO(e1_a, e1_a.start, 0, Lane.Right);
+        VehicleDTO v1 = new VehicleDTO(loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
+        ArrayList<VehicleDTO> vehicles = new ArrayList<>();
+        vehicles.add(v1);
+
+        worldState = new WorldStateDTO();
+
+        worldState.roadMap = roadMap;
+        worldState.vehicles = vehicles;
     }
 
 }

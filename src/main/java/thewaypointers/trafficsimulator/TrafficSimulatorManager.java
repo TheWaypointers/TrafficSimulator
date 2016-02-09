@@ -5,7 +5,7 @@ import thewaypointers.trafficsimulator.simulation.Simulation;
 public class TrafficSimulatorManager {
     public static void main(String[] args) {
 
-        SimulatorRunnable simulatorRunnable = new SimulatorRunnable(4000);
+        SimulatorRunnable simulatorRunnable = new SimulatorRunnable(6000);
         Thread t = new Thread(simulatorRunnable);
         t.start();
 

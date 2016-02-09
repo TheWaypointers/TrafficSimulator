@@ -82,7 +82,7 @@ public class Car implements IVehicle {
 
                     return vehicleMap;
                 } else {
-                    setDistanceTravelled(roadLength);
+                    setDistanceTravelled(roadLength - 20);
                     currentSpeed = 0;
                     return vehicleMap;
                 }
@@ -101,6 +101,8 @@ public class Car implements IVehicle {
     private RoadEdge calculateNextRoad(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
         String currentNodeName = decisionPath.pop();
         String nextNodeName = decisionPath.peek();
+
+        this.setOriginNode(currentNodeName);
 
         Node currentNode = null;
         Node nextNode = null;
