@@ -39,11 +39,6 @@ public class SimpleWorldStateProviderTest {
         assertThat(junction.trafficLights.get(Direction.Left)).isNull();
         assertThat(junction.trafficLights.get(Direction.Right)).isNull();
 
-        TrafficLightDTO upLight = junction.trafficLights.get(Direction.Up);
-        TrafficLightDTO downLight = junction.trafficLights.get(Direction.Down);
-        assertThat(upLight.color).isEqualTo(TrafficLightColor.Red);
-        assertThat(downLight.color).isEqualTo(TrafficLightColor.Red);
-
         VehicleDTO v = worldState.vehicles.get(0);
         assertThat(v.type).isEqualTo(VehicleType.CarNormal);
 
