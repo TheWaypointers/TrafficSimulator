@@ -1,8 +1,6 @@
 package thewaypointers.trafficsimulator.common.helpers;
 
 import thewaypointers.trafficsimulator.common.*;
-import thewaypointers.trafficsimulator.common.enums.VehicleType;
-import thewaypointers.trafficsimulator.common.simulation.models.Vehicle;
 
 import java.util.ArrayList;
 import java.util.List;
