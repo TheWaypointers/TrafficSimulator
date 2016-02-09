@@ -2,25 +2,41 @@ package thewaypointers.trafficsimulator.gui;
 import javax.swing.*;
 
 import thewaypointers.trafficsimulator.common.*;
-import thewaypointers.trafficsimulator.common.enums.VehicleType;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
 
 public class MapPanel extends JPanel{
 
-    public static final int RIGHT_LANE_X = 283;
-    public static final int LEFT_LANE_X = 267;
+    // configurable parameters
+    public static final int MAP_PANEL_WIDTH = 600;
+    public static final int MAP_PANEL_HEIGHT = 600;
+
+    public static final int ROAD_Y1 = 250;
+    public static final int ROAD_WIDTH = 50;
+
+    public static final int VEHICLE_WIDTH = 8;
+    public static final int VEHICLE_HEIGHT = 15;
+
+    public static final Color BACKGROUND_COLOR = Color.white;
+    public static final Color ROAD_COLOR = Color.gray;
+    public static final Color LANE_SEPARATOR_LINE_COLOR = Color.white;
+    public static final Color VEHICLE_COLOR = Color.white;
+
+    // computable parameters
+    public static final int ROAD_LEFT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*1/4);
+    public static final int ROAD_MIDDLE_LINE = ROAD_Y1 + (ROAD_WIDTH/2);
+    public static final int ROAD_RIGHT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*3/4);
+    public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
 
     WorldStateDTO worldState = new WorldStateDTO();
 
     public MapPanel(){
         this.setVisible(true);
-        this.setSize(600,600);
-        this.setBackground(Color.white);
+        this.setSize(MAP_PANEL_WIDTH,MAP_PANEL_HEIGHT);
+        this.setBackground(BACKGROUND_COLOR);
 
     }
-
 
     public void getWorldState(WorldStateDTO worldStateDTO){
 
@@ -33,64 +49,61 @@ public class MapPanel extends JPanel{
         RoadDTO upRoad = junction.connections.get(Direction.Up);
         RoadDTO downRoad = junction.connections.get(Direction.Down);
 
-        if (vehicle.type==VehicleType.CarNormal) {
-            int x = vehicle.location.getLane() == Lane.Right? RIGHT_LANE_X : LEFT_LANE_X;
-            int y;
-            g.setColor(Color.white);
-            if (vehicle.location.getOrigin() == upRoad.start) {
-                y = (int)vehicle.location.getDistanceTravelled();
-                g.fillRect(x, y, 8, 15);
-            }
-            if (vehicle.location.getOrigin() == upRoad.end) {
-                // car is at junction
-                if (vehicle.location.getRoad() == upRoad) {
-                    y=(int)(upRoad.length - vehicle.location.getDistanceTravelled());
-                    g.fillRect(x, y-15, 8, 15);
-                }
-                if (vehicle.location.getRoad() == downRoad) {
-                    y = (int)(vehicle.location.getDistanceTravelled()+upRoad.length);
-                    g.fillRect(x, y, 8, 15);
-                }
-            }
+        g.setColor(VEHICLE_COLOR);
+        int x = vehicle.location.getLane() == Lane.Right? ROAD_RIGHT_LANE_X : ROAD_LEFT_LANE_X;
+        int y = 0;
 
-            if (vehicle.location.getOrigin() == downRoad.end) {
-
-                y = (int)(downRoad.length + upRoad.length - vehicle.location.getDistanceTravelled());
-                g.fillRect(x, y-15, 8, 15);
+        if (vehicle.location.getOrigin() == upRoad.start) {
+            y = (int)vehicle.location.getDistanceTravelled();
+        }
+        if (vehicle.location.getOrigin() == upRoad.end) {
+            // car is coming from junction
+            if (vehicle.location.getRoad() == upRoad) {
+                y=(int)(upRoad.length - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+            }
+            if (vehicle.location.getRoad() == downRoad) {
+                y = (int)(vehicle.location.getDistanceTravelled()+upRoad.length);
             }
         }
+        if (vehicle.location.getOrigin() == downRoad.end) {
+            y = (int)(downRoad.length + upRoad.length - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+        }
+
+        g.fillRect(x, y, VEHICLE_WIDTH, VEHICLE_HEIGHT);
     }
 
     //draw worldState
     public void paint(Graphics g){
         super.paint(g);
-
-        //draw road
-        // road is from up to down
-        g.setColor(Color.gray);
         JunctionDTO junction = worldState.roadMap.junctions.get(0);
         RoadDTO upRoad = junction.connections.get(Direction.Up);
         RoadDTO downRoad = junction.connections.get(Direction.Down);
         float totalLength = upRoad.length+downRoad.length;
 
         // draw road
-        g.fillRect(250,0,50,(int)totalLength);
+        g.setColor(ROAD_COLOR);
+        g.fillRect(ROAD_Y1,0,ROAD_WIDTH,(int)totalLength);
+
+        // draw lane separator line
         Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(Color.white);
+        g2.setColor(LANE_SEPARATOR_LINE_COLOR);
         float [] arr={15.0f,10.0f};
         BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
         g2.setStroke(stroke);
-        Line2D.Float line = new Line2D.Float(275,10,275,10+(int)totalLength);
+        Line2D.Float line = new Line2D.Float(ROAD_MIDDLE_LINE,10,ROAD_MIDDLE_LINE,10+(int)totalLength);
         g2.draw(line);
         BasicStroke stroke2=new BasicStroke();
         g2.setStroke(stroke2);
+
+        int junction_y = (int)upRoad.length;
+
         //draw junction
         g.setColor(Color.black);
-        g.drawLine(250,(int)upRoad.length,300,(int)upRoad.length);
+        g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
 
         //draw lights
         g.setColor(Color.black);
-        g.drawLine(250, 300, 300, 300);
+        g.drawLine(ROAD_Y1, junction_y, ROAD_Y2, junction_y);
         g.drawRect(255, 297, 12, 6);
         g.drawRect(283, 297, 12, 6);
 
