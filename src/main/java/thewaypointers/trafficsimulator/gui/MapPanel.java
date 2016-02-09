@@ -18,6 +18,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int VEHICLE_WIDTH = 8;
     public static final int VEHICLE_HEIGHT = 15;
 
+    public static final int TRAFFIC_LIGHT_SIZE = 6;
+
     public static final Color BACKGROUND_COLOR = Color.white;
     public static final Color ROAD_COLOR = Color.gray;
     public static final Color LANE_SEPARATOR_LINE_COLOR = Color.white;
@@ -71,6 +73,25 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g.fillRect(x, y, VEHICLE_WIDTH, VEHICLE_HEIGHT);
     }
 
+    private void drawTrafficLight(Graphics g, int x, int y, int size, TrafficLightColor color)
+    {
+        g.setColor(Color.black);
+        g.drawRect(x, y, size*2, size);
+
+        g.setColor(Color.red);
+        if (color.equals(TrafficLightColor.Red)){
+            g.fillOval(x, y, size, size);
+        } else {
+            g.drawOval(x, y, size, size);
+        }
+        g.setColor(Color.green);
+        if (color.equals(TrafficLightColor.Green)){
+            g.fillOval(x+size, y, size, size);
+        } else {
+            g.drawOval(x+size, y, size, size);
+        }
+    }
+
     //draw worldState
     public void paint(Graphics g){
         super.paint(g);
@@ -101,21 +122,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
 
         //draw lights
-        g.setColor(Color.black);
-        g.drawLine(ROAD_Y1, junction_y, ROAD_Y2, junction_y);
-        g.drawRect(255, 297, 12, 6);
-        g.drawRect(283, 297, 12, 6);
-
-        g.setColor(Color.red);
-        g.drawOval(255,297,6,6);
-        g.setColor(Color.green);
-        g.fillOval(261, 297, 6, 6);
-
-        g.setColor(Color.green);
-        g.fillOval(283,297,6,6);
-        g.setColor(Color.red);
-        g.drawOval(289, 297, 6, 6);
-
+        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
+        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+        drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.color);
+        drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.color);
 
         //draw cars
         for(VehicleDTO vehicle : worldState.vehicles)
