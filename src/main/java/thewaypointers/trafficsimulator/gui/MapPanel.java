@@ -1,17 +1,16 @@
 package thewaypointers.trafficsimulator.gui;
 import javax.swing.*;
 
-import thewaypointers.trafficsimulator.common.Direction;
-import thewaypointers.trafficsimulator.common.Lane;
-import thewaypointers.trafficsimulator.common.RoadDTO;
-import thewaypointers.trafficsimulator.common.VehicleDTO;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
+import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.enums.VehicleType;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
 
 public class MapPanel extends JPanel{
+
+    public static final int RIGHT_LANE_X = 283;
+    public static final int LEFT_LANE_X = 267;
 
     WorldStateDTO worldState = new WorldStateDTO();
 
@@ -25,8 +24,41 @@ public class MapPanel extends JPanel{
 
     public void getWorldState(WorldStateDTO worldStateDTO){
 
-        this.worldState =worldStateDTO;
+        this.worldState = worldStateDTO;
 
+    }
+
+    private void drawVehicle(Graphics g, VehicleDTO vehicle, MapDTO map){
+        JunctionDTO junction = map.junctions.get(0);
+        RoadDTO upRoad = junction.connections.get(Direction.Up);
+        RoadDTO downRoad = junction.connections.get(Direction.Down);
+
+        if (vehicle.type==VehicleType.CarNormal) {
+            int x = vehicle.location.getLane() == Lane.Right? RIGHT_LANE_X : LEFT_LANE_X;
+            int y;
+            g.setColor(Color.white);
+            if (vehicle.location.getOrigin() == upRoad.start) {
+                y = (int)vehicle.location.getDistanceTravelled();
+                g.fillRect(x, y, 8, 15);
+            }
+            if (vehicle.location.getOrigin() == upRoad.end) {
+                // car is at junction
+                if (vehicle.location.getRoad() == upRoad) {
+                    y=(int)(upRoad.length - vehicle.location.getDistanceTravelled());
+                    g.fillRect(x, y-15, 8, 15);
+                }
+                if (vehicle.location.getRoad() == downRoad) {
+                    y = (int)(vehicle.location.getDistanceTravelled()+upRoad.length);
+                    g.fillRect(x, y, 8, 15);
+                }
+            }
+
+            if (vehicle.location.getOrigin() == downRoad.end) {
+
+                y = (int)(downRoad.length + upRoad.length - vehicle.location.getDistanceTravelled());
+                g.fillRect(x, y-15, 8, 15);
+            }
+        }
     }
 
     //draw worldState
@@ -34,106 +66,48 @@ public class MapPanel extends JPanel{
         super.paint(g);
 
         //draw road
-        if (worldState.roadMap.junctions.get(0).connections.get(Direction.Up)==null) {
-            //road is from left to right
+        // road is from up to down
+        g.setColor(Color.gray);
+        JunctionDTO junction = worldState.roadMap.junctions.get(0);
+        RoadDTO upRoad = junction.connections.get(Direction.Up);
+        RoadDTO downRoad = junction.connections.get(Direction.Down);
+        float totalLength = upRoad.length+downRoad.length;
 
-        }
-        if (worldState.roadMap.junctions.get(0).connections.get(Direction.Left)==null) {
-            //road is from up to down
-            g.setColor(Color.gray);
-            RoadDTO up=worldState.roadMap.junctions.get(0).connections.get(Direction.Up);
-            RoadDTO down=worldState.roadMap.junctions.get(0).connections.get(Direction.Down);
-            float length=up.length+down.length;
-            g.fillRect(250,0,50,(int)length);
-            Graphics2D  g2=(Graphics2D)g;
-            g2.setColor(Color.white);
-            float [] arr={15.0f,10.0f};
-            BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
-            g2.setStroke(stroke);
-            Line2D.Float line = new Line2D.Float(275,10,275,10+(int)length);
-            g2.draw(line);
-            BasicStroke stroke2=new BasicStroke();
-            g2.setStroke(stroke2);
-            //draw junction
-            g.setColor(Color.black);
-            g.drawLine(250,(int)up.length,300,(int)up.length);
+        // draw road
+        g.fillRect(250,0,50,(int)totalLength);
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(Color.white);
+        float [] arr={15.0f,10.0f};
+        BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
+        g2.setStroke(stroke);
+        Line2D.Float line = new Line2D.Float(275,10,275,10+(int)totalLength);
+        g2.draw(line);
+        BasicStroke stroke2=new BasicStroke();
+        g2.setStroke(stroke2);
+        //draw junction
+        g.setColor(Color.black);
+        g.drawLine(250,(int)upRoad.length,300,(int)upRoad.length);
 
-            //draw lights
-            g.setColor(Color.black);
-            g.drawLine(250, 300, 300, 300);
-            g.drawRect(255, 297, 12, 6);
-            g.drawRect(283, 297, 12, 6);
+        //draw lights
+        g.setColor(Color.black);
+        g.drawLine(250, 300, 300, 300);
+        g.drawRect(255, 297, 12, 6);
+        g.drawRect(283, 297, 12, 6);
 
-            g.setColor(Color.red);
-            g.drawOval(255,297,6,6);
-            g.setColor(Color.green);
-            g.fillOval(261, 297, 6, 6);
+        g.setColor(Color.red);
+        g.drawOval(255,297,6,6);
+        g.setColor(Color.green);
+        g.fillOval(261, 297, 6, 6);
 
-            g.setColor(Color.green);
-            g.fillOval(283,297,6,6);
-            g.setColor(Color.red);
-            g.drawOval(289, 297, 6, 6);
-
-        }
+        g.setColor(Color.green);
+        g.fillOval(283,297,6,6);
+        g.setColor(Color.red);
+        g.drawOval(289, 297, 6, 6);
 
 
         //draw cars
-        VehicleDTO car1 = worldState.vehicles.get(0);
-        if (car1.type==VehicleType.CarNormal) {
-            int x=0;
-            int y=0;
-            g.setColor(Color.white);
-            if (car1.location.getOrigin()==worldState.roadMap.junctions.get(0).connections.get(Direction.Up).start) {
-
-                y=(int)car1.location.getDistanceTravelled();
-
-                if (car1.location.getLane()==Lane.Right) {
-                    x=283;
-                }
-                if (car1.location.getLane()==Lane.Left) {
-                    x=267;
-                }
-                g.fillRect(x, y, 8, 15);
-            }
-            if (car1.location.getOrigin()==worldState.roadMap.junctions.get(0).connections.get(Direction.Up).end) {
-                if (car1.location.getRoad()==worldState.roadMap.junctions.get(0).connections.get(Direction.Up)) {
-                    y=(int)(worldState.roadMap.junctions.get(0).connections.get(Direction.Up).length-car1.location.getDistanceTravelled());
-
-                    if (car1.location.getLane()==Lane.Right) {
-                        x=283;
-                    }
-                    if (car1.location.getLane()==Lane.Left) {
-                        x=267;
-                    }
-                    g.fillRect(x, y-15, 8, 15);
-                }
-                if (car1.location.getRoad()==worldState.roadMap.junctions.get(0).connections.get(Direction.Down)) {
-                    y=(int)(car1.location.getDistanceTravelled()+worldState.roadMap.junctions.get(0).connections.get(Direction.Up).length);
-
-                    if (car1.location.getLane()==Lane.Right) {
-                        x=283;
-                    }
-                    if (car1.location.getLane()==Lane.Left) {
-                        x=267;
-                    }
-                    g.fillRect(x, y, 8, 15);
-                }
-            }
-
-            if (car1.location.getOrigin()==worldState.roadMap.junctions.get(0).connections.get(Direction.Down).end) {
-
-                y=(int)(worldState.roadMap.junctions.get(0).connections.get(Direction.Down).length+worldState.roadMap.junctions.get(0).connections.get(Direction.Up).length-car1.location.getDistanceTravelled());
-
-                if (car1.location.getLane()==Lane.Right) {
-                    x=283;
-                }
-                if (car1.location.getLane()==Lane.Left) {
-                    x=267;
-                }
-
-                g.fillRect(x, y-15, 8, 15);
-            }
-        }
+        for(VehicleDTO vehicle : worldState.vehicles)
+            drawVehicle(g, vehicle, worldState.roadMap);
     }
 
 }
