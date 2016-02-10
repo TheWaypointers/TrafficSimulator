@@ -82,7 +82,9 @@ public class Car implements IVehicle {
 
                     return vehicleMap;
                 } else {
-                    setDistanceTravelled(roadLength - 20);
+                    if(getDistanceTravelled() < roadLength - 20) {
+                        setDistanceTravelled(roadLength - 20);
+                    }
                     currentSpeed = 0;
                     return vehicleMap;
                 }
