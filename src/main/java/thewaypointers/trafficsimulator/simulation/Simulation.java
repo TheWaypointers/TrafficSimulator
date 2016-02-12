@@ -109,8 +109,8 @@ public class Simulation implements ISimulationInputListener {
     private synchronized void changeTrafficLightState() {
 
         JunctionDTO junction = worldState.roadMap.junctions.get(0);
-        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+        TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
+        TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
 
 
         for(Node node : nodeGraphMap.keySet()){
@@ -293,9 +293,11 @@ public class Simulation implements ISimulationInputListener {
         TrafficLightDTO upTrafficLight = new TrafficLightDTO();
         downTrafficLight.color = TrafficLightColor.Red;
         upTrafficLight.color = TrafficLightColor.Red;
-        a.trafficLights = new HashMap<>();
-        a.trafficLights.put(Direction.Down, downTrafficLight);
-        a.trafficLights.put(Direction.Up, upTrafficLight);
+        HashMap<Direction, TrafficLightDTO> trafficLights = new HashMap<>();
+        trafficLights.put(Direction.Down, downTrafficLight);
+        trafficLights.put(Direction.Up, upTrafficLight);
+        worldState.trafficLights = new HashMap<>();
+        worldState.trafficLights.put(a, trafficLights);
 
         MapDTO roadMap = new MapDTO(a);
 

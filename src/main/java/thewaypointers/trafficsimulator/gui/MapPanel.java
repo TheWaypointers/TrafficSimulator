@@ -122,8 +122,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
 
         //draw lights
-        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+        TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
+        TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
         drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.color);
         drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.color);
 

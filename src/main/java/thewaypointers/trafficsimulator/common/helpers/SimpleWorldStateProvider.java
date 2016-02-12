@@ -40,9 +40,9 @@ public class SimpleWorldStateProvider {
         TrafficLightDTO upTrafficLight = new TrafficLightDTO();
         downTrafficLight.color = TrafficLightColor.Red;
         upTrafficLight.color = TrafficLightColor.Red;
-        a.trafficLights = new HashMap<>();
-        a.trafficLights.put(Direction.Down, downTrafficLight);
-        a.trafficLights.put(Direction.Up, upTrafficLight);
+        HashMap<Direction, TrafficLightDTO> trafficLights = new HashMap<>();
+        trafficLights.put(Direction.Down, downTrafficLight);
+        trafficLights.put(Direction.Up, upTrafficLight);
 
         MapDTO roadMap = new MapDTO(a);
 
@@ -55,7 +55,8 @@ public class SimpleWorldStateProvider {
 
         ws.roadMap = roadMap;
         ws.vehicles = vehicles;
-
+        ws.trafficLights = new HashMap<>();
+        ws.trafficLights.put(a, trafficLights);
         return ws;
     }
 
@@ -86,8 +87,8 @@ public class SimpleWorldStateProvider {
 
         //change traffic lights
         if(stateNo % CHANGE_LIGHTS_EVERY_N_STATES == 0){
-            TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-            TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+            TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
+            TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
             changeTrafficLightColor(upTrafficLight);
             changeTrafficLightColor(downTrafficLight);
         }

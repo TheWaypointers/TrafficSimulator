@@ -7,6 +7,7 @@ import thewaypointers.trafficsimulator.common.VehicleType;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleWorldStateProviderTest {
     @Test
@@ -34,10 +35,11 @@ public class SimpleWorldStateProviderTest {
         assertThat(downRoad.start.label).isEqualTo("A");
         assertThat(downRoad.end.label).isEqualTo("E2");
 
-        assertThat(junction.trafficLights.get(Direction.Down)).isNotNull();
-        assertThat(junction.trafficLights.get(Direction.Up)).isNotNull();
-        assertThat(junction.trafficLights.get(Direction.Left)).isNull();
-        assertThat(junction.trafficLights.get(Direction.Right)).isNull();
+        Map<Direction, TrafficLightDTO> trafficLights = worldState.trafficLights.get(junction);
+        assertThat(trafficLights.get(Direction.Down)).isNotNull();
+        assertThat(trafficLights.get(Direction.Up)).isNotNull();
+        assertThat(trafficLights.get(Direction.Left)).isNull();
+        assertThat(trafficLights.get(Direction.Right)).isNull();
 
         VehicleDTO v = worldState.vehicles.get(0);
         assertThat(v.type).isEqualTo(VehicleType.CarNormal);
@@ -111,10 +113,10 @@ public class SimpleWorldStateProviderTest {
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
 
         // act
-        JunctionDTO junction = provider.getNextState(15).roadMap.junctions.get(0);
-        TrafficLightColor upStartColor = junction.trafficLights.get(Direction.Up).color;
-        TrafficLightColor downStartColor = junction.trafficLights.get(Direction.Down).color;
-        WorldStateDTO worldState = null;
+        WorldStateDTO worldState = provider.getNextState(15);
+        JunctionDTO junction = worldState.roadMap.junctions.get(0);
+        TrafficLightColor upStartColor = worldState.trafficLights.get(junction).get(Direction.Up).color;
+        TrafficLightColor downStartColor = worldState.trafficLights.get(junction).get(Direction.Down).color;
         for(int i=0; i<SimpleWorldStateProvider.CHANGE_LIGHTS_EVERY_N_STATES; i++){
             worldState = provider.getNextState(15);
         }
@@ -124,8 +126,8 @@ public class SimpleWorldStateProviderTest {
 
         assertThat(worldState).isNotNull();
         junction = worldState.roadMap.junctions.get(0);
-        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+        TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
+        TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
         assertThat(upTrafficLight.color).isEqualTo(downTrafficLight.color);
         assertThat(upTrafficLight.color).isNotEqualTo(upStartColor);
         assertThat(downTrafficLight.color).isNotEqualTo(downStartColor);
