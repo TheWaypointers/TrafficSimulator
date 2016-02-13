@@ -1,20 +1,19 @@
 package thewaypointers.trafficsimulator.gui;
-import java.awt.*;
 import javax.swing.*;
 
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 
 public class MainFrame extends JFrame{
 
-    public static MapPanel mapPanel=null;
+    public static MapContainerPanel mapContainerPanel =null;
     //ControlPanel controlPanel = new ControlPanel();
 
     public MainFrame(WorldStateDTO worldStateDTO){
-        mapPanel  =  new MapPanel();
-        mapPanel.NewStateReceived(worldStateDTO);
+        mapContainerPanel =  new MapContainerPanel();
+        mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
         this.setSize(800,600);
         this.setVisible(true);
-        this.add(mapPanel);
+        this.add(mapContainerPanel);
         this.setTitle("traffic");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(200, 200);
@@ -23,11 +22,14 @@ public class MainFrame extends JFrame{
 
     }
 
+
     public void  repaintpanel(WorldStateDTO worldStateDTO) {
-        mapPanel.NewStateReceived(worldStateDTO);
-        mapPanel.repaint();
+        mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
+        mapContainerPanel.mapPanel.repaint();
 
     }
+
+
 
 }
 
