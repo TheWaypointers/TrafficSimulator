@@ -4,8 +4,6 @@ import thewaypointers.trafficsimulator.common.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
@@ -19,21 +17,10 @@ public class SimpleWorldStateProvider {
     }
 
     private WorldStateDTO initializeWorldState() {
-        RoadDTO e1_a = new RoadDTO();
-        RoadDTO a_e2 = new RoadDTO();
-        e1_a.length = ROAD_LENGTH;
-        a_e2.length = ROAD_LENGTH;
 
-        ExitNodeDTO e1 = new ExitNodeDTO("E1");
-        ExitNodeDTO e2 = new ExitNodeDTO("E2");
-        JunctionDTO a = new JunctionDTO("A", e1_a, a_e2, null, null);
-
-        // connect the roads
-        // TODO make this more straightforward
-        e1_a.start = e1;
-        e1_a.end = a;
-        a_e2.start = a;
-        a_e2.end = e2;
+        MapDTO roadMap = new MapDTO();
+        roadMap.addRoad("A", "E1", Direction.Up, ROAD_LENGTH);
+        roadMap.addRoad("A", "E2", Direction.Down, ROAD_LENGTH);
 
         // add traffic lights
         TrafficLightDTO downTrafficLight = new TrafficLightDTO();
@@ -44,9 +31,8 @@ public class SimpleWorldStateProvider {
         trafficLights.put(Direction.Down, downTrafficLight);
         trafficLights.put(Direction.Up, upTrafficLight);
 
-        MapDTO roadMap = new MapDTO(a);
-
-        LocationDTO loc = new LocationDTO(e1_a, e1_a.start, 0, Lane.Right);
+        RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
+        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         VehicleDTO v1 = new VehicleDTO(loc, VehicleType.CarNormal);
         ArrayList<VehicleDTO> vehicles = new ArrayList<>();
         vehicles.add(v1);
@@ -56,14 +42,14 @@ public class SimpleWorldStateProvider {
         ws.roadMap = roadMap;
         ws.vehicles = vehicles;
         ws.trafficLights = new HashMap<>();
-        ws.trafficLights.put(a, trafficLights);
+        ws.trafficLights.put(roadMap.getJunction("A"), trafficLights);
         return ws;
     }
 
     public WorldStateDTO getNextState(float vehicleMovement) {
-        JunctionDTO junction = worldState.roadMap.junctions.get(0);
-        RoadDTO downRoad = junction.connections.get(Direction.Down);
-        RoadDTO upRoad = junction.connections.get(Direction.Up);
+        JunctionDTO junction = worldState.roadMap.getJunctions().get(0);
+        RoadDTO downRoad = junction.getRoad(Direction.Down);
+        RoadDTO upRoad = junction.getRoad(Direction.Up);
         VehicleDTO v = worldState.vehicles.get(0);
         LocationDTO loc = v.location;
         if(vehicleMovement > ROAD_LENGTH)
@@ -71,7 +57,7 @@ public class SimpleWorldStateProvider {
 
         stateNo++;
 
-        if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().length) {
+        if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
              v.location = new LocationDTO(loc.getRoad(),
                                           loc.getOrigin(),
                                           loc.getDistanceTravelled() + vehicleMovement,
@@ -80,8 +66,8 @@ public class SimpleWorldStateProvider {
             // jump to next road
             RoadDTO newRoad = loc.getRoad().equals(upRoad) ? downRoad : upRoad;
             v.location = new LocationDTO(newRoad,
-                                         newRoad.start,
-                                         loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().length,
+                                         newRoad.getFrom(),
+                                         loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().getLength(),
                                          loc.getLane());
         }
 

@@ -46,28 +46,28 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     }
 
     private void drawVehicle(Graphics g, VehicleDTO vehicle, MapDTO map){
-        JunctionDTO junction = map.junctions.get(0);
-        RoadDTO upRoad = junction.connections.get(Direction.Up);
-        RoadDTO downRoad = junction.connections.get(Direction.Down);
+        JunctionDTO junction = map.getJunctions().get(0);
+        RoadDTO upRoad = junction.getRoad(Direction.Up);
+        RoadDTO downRoad = junction.getRoad(Direction.Down);
 
         g.setColor(VEHICLE_COLOR);
         int x = vehicle.location.getLane() == Lane.Right? ROAD_RIGHT_LANE_X : ROAD_LEFT_LANE_X;
         int y = 0;
 
-        if (vehicle.location.getOrigin() == upRoad.start) {
+        if (vehicle.location.getOrigin() == upRoad.getFrom()) {
             y = (int)vehicle.location.getDistanceTravelled();
         }
-        if (vehicle.location.getOrigin() == upRoad.end) {
+        if (vehicle.location.getOrigin() == upRoad.getTo()) {
             // car is coming from junction
             if (vehicle.location.getRoad() == upRoad) {
-                y=(int)(upRoad.length - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+                y=(int)(upRoad.getLength() - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
             }
             if (vehicle.location.getRoad() == downRoad) {
-                y = (int)(vehicle.location.getDistanceTravelled()+upRoad.length);
+                y = (int)(vehicle.location.getDistanceTravelled()+upRoad.getLength());
             }
         }
-        if (vehicle.location.getOrigin() == downRoad.end) {
-            y = (int)(downRoad.length + upRoad.length - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+        if (vehicle.location.getOrigin() == downRoad.getTo()) {
+            y = (int)(downRoad.getLength() + upRoad.getLength() - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
         }
 
         g.fillRect(x, y, VEHICLE_WIDTH, VEHICLE_HEIGHT);
@@ -95,10 +95,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     //draw worldState
     public void paint(Graphics g){
         super.paint(g);
-        JunctionDTO junction = worldState.roadMap.junctions.get(0);
-        RoadDTO upRoad = junction.connections.get(Direction.Up);
-        RoadDTO downRoad = junction.connections.get(Direction.Down);
-        float totalLength = upRoad.length+downRoad.length;
+        JunctionDTO junction = worldState.roadMap.getJunctions().get(0);
+        RoadDTO upRoad = junction.getRoad(Direction.Up);
+        RoadDTO downRoad = junction.getRoad(Direction.Down);
+        float totalLength = upRoad.getLength()+downRoad.getLength();
 
         // draw road
         g.setColor(ROAD_COLOR);
@@ -115,7 +115,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         BasicStroke stroke2=new BasicStroke();
         g2.setStroke(stroke2);
 
-        int junction_y = (int)upRoad.length;
+        int junction_y = (int)upRoad.getLength();
 
         //draw junction
         g.setColor(Color.black);

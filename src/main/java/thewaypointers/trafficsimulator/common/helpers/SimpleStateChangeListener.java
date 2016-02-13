@@ -11,8 +11,8 @@ public class SimpleStateChangeListener implements IStateChangeListener{
         LocationDTO loc = state.vehicles.get(0).location;
         System.out.format("Vehicle 0 position: %f en route from %s to %s",
                           loc.getDistanceTravelled(),
-                          loc.getRoad().start.label,
-                          loc.getRoad().end.label);
+                          loc.getRoad().getFrom().getLabel(),
+                          loc.getRoad().getTo().getLabel());
         System.out.println();
     }
 }

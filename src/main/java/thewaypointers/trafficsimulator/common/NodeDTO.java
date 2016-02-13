@@ -1,9 +1,17 @@
 package thewaypointers.trafficsimulator.common;
 
 public abstract class NodeDTO {
-    public String label;
+    private String label;
 
     protected NodeDTO(String label){
         this.label = label;
+    }
+
+    public String getLabel(){
+        return label;
+    }
+
+    public boolean equals(NodeDTO other){
+        return getLabel().equals(other.getLabel());
     }
 }
