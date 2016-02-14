@@ -282,9 +282,9 @@ public class Simulation implements ISimulationInputListener {
     }
 
     private void createWorldState() {
-
+        worldState = new WorldStateDTO();
         MapDTO roadMap = worldState.getRoadMap();
-        roadMap.addRoad("A", "E1", Direction.Up, 300);
+        roadMap.addRoad("E1", "A", Direction.Down, 300);
         roadMap.addRoad("A", "E2", Direction.Down, 300);
 
         // add traffic lights
@@ -295,6 +295,7 @@ public class Simulation implements ISimulationInputListener {
         VehicleDTO v1 = new VehicleDTO("V1", loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
         worldState.getVehicleList().addVehicle(v1);
 
+        dtoRoads = roadMap.getRoads();
     }
 
 }

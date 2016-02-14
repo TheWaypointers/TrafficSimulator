@@ -27,8 +27,8 @@ public class SimpleWorldStateProviderTest {
 
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
-        assertThat(upRoad.getFrom().getLabel()).isEqualTo("A");
-        assertThat(upRoad.getTo().getLabel()).isEqualTo("E1");
+        assertThat(upRoad.getFrom().getLabel()).isEqualTo("E1");
+        assertThat(upRoad.getTo().getLabel()).isEqualTo("A");
         assertThat(downRoad.getFrom().getLabel()).isEqualTo("A");
         assertThat(downRoad.getTo().getLabel()).isEqualTo("E2");
 

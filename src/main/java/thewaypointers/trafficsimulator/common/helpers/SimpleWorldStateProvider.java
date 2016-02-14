@@ -18,7 +18,7 @@ public class SimpleWorldStateProvider {
         WorldStateDTO ws = new WorldStateDTO();
 
         MapDTO roadMap = ws.getRoadMap();
-        roadMap.addRoad("A", "E1", Direction.Up, ROAD_LENGTH);
+        roadMap.addRoad("E1","A", Direction.Down, ROAD_LENGTH);
         roadMap.addRoad("A", "E2", Direction.Down, ROAD_LENGTH);
 
         // add traffic lights

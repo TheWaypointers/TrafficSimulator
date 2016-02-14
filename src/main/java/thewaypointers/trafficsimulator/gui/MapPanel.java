@@ -54,19 +54,19 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int x = vehicle.getLocation().getLane() == Lane.Right? ROAD_RIGHT_LANE_X : ROAD_LEFT_LANE_X;
         int y = 0;
 
-        if (vehicle.getLocation().getOrigin() == upRoad.getFrom()) {
+        if (vehicle.getLocation().getOrigin().equals(upRoad.getFrom())) {
             y = (int)vehicle.getLocation().getDistanceTravelled();
         }
-        if (vehicle.getLocation().getOrigin() == upRoad.getTo()) {
+        if (vehicle.getLocation().getOrigin().equals(upRoad.getTo())) {
             // car is coming from junction
-            if (vehicle.getLocation().getRoad() == upRoad) {
+            if (vehicle.getLocation().getRoad().equals(upRoad)) {
                 y=(int)(upRoad.getLength() - vehicle.getLocation().getDistanceTravelled()) - VEHICLE_HEIGHT;
             }
-            if (vehicle.getLocation().getRoad() == downRoad) {
+            if (vehicle.getLocation().getRoad().equals(downRoad)) {
                 y = (int)(vehicle.getLocation().getDistanceTravelled()+upRoad.getLength());
             }
         }
-        if (vehicle.getLocation().getOrigin() == downRoad.getTo()) {
+        if (vehicle.getLocation().getOrigin().equals(downRoad.getTo())) {
             y = (int)(downRoad.getLength() + upRoad.getLength() - vehicle.getLocation().getDistanceTravelled()) - VEHICLE_HEIGHT;
         }
 
