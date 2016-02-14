@@ -14,4 +14,9 @@ public abstract class NodeDTO {
     public boolean equals(NodeDTO other){
         return getLabel().equals(other.getLabel());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return equals((NodeDTO)o);
+    }
 }

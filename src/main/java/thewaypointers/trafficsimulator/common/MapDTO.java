@@ -62,6 +62,10 @@ public class MapDTO {
     }
 
     public int getJunctionCount(){
+        return getJunctions().size();
+    }
+
+    public int getNodeCount(){
         return junctions.size();
     }
 
@@ -84,6 +88,7 @@ public class MapDTO {
     }
 
     public JunctionDTO getJunction(String label){
-        return junctions.get(label);
+        //TODO rewrite processing so this can use the dictionary again
+        return getJunctions().stream().filter(x->x.getLabel().equals(label)).findFirst().get();
     }
 }

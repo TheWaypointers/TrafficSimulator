@@ -122,4 +122,9 @@ public class RoadDTO {
                 isConnectedTo(other.getTo()) &&
                 getLength() == other.getLength();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return equals((RoadDTO) o);
+    }
 }
