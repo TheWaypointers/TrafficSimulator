@@ -18,39 +18,28 @@ public class SimpleWorldStateProvider {
 
     private WorldStateDTO initializeWorldState() {
 
-        MapDTO roadMap = new MapDTO();
+        WorldStateDTO ws = new WorldStateDTO();
+
+        MapDTO roadMap = ws.getRoadMap();
         roadMap.addRoad("A", "E1", Direction.Up, ROAD_LENGTH);
         roadMap.addRoad("A", "E2", Direction.Down, ROAD_LENGTH);
 
         // add traffic lights
-        TrafficLightDTO downTrafficLight = new TrafficLightDTO();
-        TrafficLightDTO upTrafficLight = new TrafficLightDTO();
-        downTrafficLight.color = TrafficLightColor.Red;
-        upTrafficLight.color = TrafficLightColor.Red;
-        HashMap<Direction, TrafficLightDTO> trafficLights = new HashMap<>();
-        trafficLights.put(Direction.Down, downTrafficLight);
-        trafficLights.put(Direction.Up, upTrafficLight);
+        ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
 
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
         LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         VehicleDTO v1 = new VehicleDTO(loc, VehicleType.CarNormal);
-        ArrayList<VehicleDTO> vehicles = new ArrayList<>();
-        vehicles.add(v1);
+        ws.getVehicles().add(v1);
 
-        WorldStateDTO ws = new WorldStateDTO();
-
-        ws.roadMap = roadMap;
-        ws.vehicles = vehicles;
-        ws.trafficLights = new HashMap<>();
-        ws.trafficLights.put(roadMap.getJunction("A"), trafficLights);
         return ws;
     }
 
     public WorldStateDTO getNextState(float vehicleMovement) {
-        JunctionDTO junction = worldState.roadMap.getJunctions().get(0);
+        JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
-        VehicleDTO v = worldState.vehicles.get(0);
+        VehicleDTO v = worldState.getVehicles().get(0);
         LocationDTO loc = v.location;
         if(vehicleMovement > ROAD_LENGTH)
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
@@ -73,18 +62,12 @@ public class SimpleWorldStateProvider {
 
         //change traffic lights
         if(stateNo % CHANGE_LIGHTS_EVERY_N_STATES == 0){
-            TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
-            TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
-            changeTrafficLightColor(upTrafficLight);
-            changeTrafficLightColor(downTrafficLight);
+            worldState.getTrafficLightSystem()
+                    .changeTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
+            worldState.getTrafficLightSystem()
+                    .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
         }
 
         return worldState;
-    }
-
-    public void changeTrafficLightColor(TrafficLightDTO trafficLight) {
-        trafficLight.color = trafficLight.color == TrafficLightColor.Red ?
-                                                   TrafficLightColor.Green :
-                                                   TrafficLightColor.Red;
     }
 }

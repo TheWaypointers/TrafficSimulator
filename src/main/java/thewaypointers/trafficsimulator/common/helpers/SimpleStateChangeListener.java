@@ -8,7 +8,7 @@ public class SimpleStateChangeListener implements IStateChangeListener{
 
     @Override
     public void NewStateReceived(WorldStateDTO state) {
-        LocationDTO loc = state.vehicles.get(0).location;
+        LocationDTO loc = state.getVehicles().get(0).location;
         System.out.format("Vehicle 0 position: %f en route from %s to %s",
                           loc.getDistanceTravelled(),
                           loc.getRoad().getFrom().getLabel(),

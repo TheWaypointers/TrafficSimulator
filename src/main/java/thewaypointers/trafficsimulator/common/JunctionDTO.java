@@ -1,5 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
+import thewaypointers.trafficsimulator.utils.Pair;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,8 +75,23 @@ public class JunctionDTO extends NodeDTO {
     }
 
     public List<RoadDTO> getRoads(){
-        List<RoadDTO> ret = new ArrayList<>();
-        ret.addAll(connections.values().stream().filter(x -> x!=null).collect(Collectors.toList()));
+        return getRoadsAndDirections().stream()
+                .map(Pair::getItem1)
+                .collect(Collectors.toList());
+    }
+
+    public List<Direction> getConnectedDirections(){
+        return getRoadsAndDirections().stream()
+                .map(Pair::getItem2)
+                .collect(Collectors.toList());
+    }
+
+    public List<Pair<RoadDTO, Direction>> getRoadsAndDirections(){
+        List<Pair<RoadDTO, Direction>> ret = new ArrayList<>();
+        ret.addAll(connections.entrySet().stream()
+                .filter(x -> x.getValue() != null)
+                .map(x -> new Pair<>(x.getValue(),x.getKey()))
+                .collect(Collectors.toList()));
         return ret;
     }
 }

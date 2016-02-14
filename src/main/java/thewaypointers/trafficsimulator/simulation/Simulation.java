@@ -80,7 +80,7 @@ public class Simulation implements ISimulationInputListener {
 
     private synchronized void changeWorldState() {
 
-        VehicleDTO v = worldState.vehicles.get(0);
+        VehicleDTO v = worldState.getVehicles().get(0);
         LocationDTO loc = v.location;
 
         IVehicle vehicle = null;
@@ -102,30 +102,46 @@ public class Simulation implements ISimulationInputListener {
 
 
         loc = new LocationDTO(newRoad,newRoad.getFrom(), vehicle.getVehiclesDistanceTravelled(), loc.getLane());
-        worldState.vehicles.get(0).location = loc;
+        worldState.getVehicles().get(0).location = loc;
 
     }
 
     private synchronized void changeTrafficLightState() {
 
-        JunctionDTO junction = worldState.roadMap.getJunctions().get(0);
-        TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
-        TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
-
-
+        JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         for(Node node : nodeGraphMap.keySet()){
             if(node.getNodeType() == NodeType.JunctionTrafficLights){
                 TrafficLightNode tlNode = ((TrafficLightNode) node);
 
                 if(tlNode.getColor() == TrafficLightColor.Green){
                     tlNode.setColor(TrafficLightColor.Red);
-                    upTrafficLight.color = TrafficLightColor.Red;
-                    downTrafficLight.color = TrafficLightColor.Red;
+                    worldState.getTrafficLightSystem()
+                        .setTrafficLightColor(
+                                junction.getLabel(),
+                                Direction.Up,
+                                Lane.Right,
+                                TrafficLightColor.Red);
+                    worldState.getTrafficLightSystem()
+                            .setTrafficLightColor(
+                                    junction.getLabel(),
+                                    Direction.Down,
+                                    Lane.Right,
+                                    TrafficLightColor.Red);
                 }
                 else{
                     tlNode.setColor(TrafficLightColor.Green);
-                    upTrafficLight.color = TrafficLightColor.Green;
-                    downTrafficLight.color = TrafficLightColor.Green;
+                    worldState.getTrafficLightSystem()
+                            .setTrafficLightColor(
+                                    junction.getLabel(),
+                                    Direction.Up,
+                                    Lane.Right,
+                                    TrafficLightColor.Green);
+                    worldState.getTrafficLightSystem()
+                            .setTrafficLightColor(
+                                    junction.getLabel(),
+                                    Direction.Down,
+                                    Lane.Right,
+                                    TrafficLightColor.Green);
                 }
             }
         }
@@ -267,31 +283,18 @@ public class Simulation implements ISimulationInputListener {
 
     private void createWorldState() {
 
-        MapDTO roadMap = new MapDTO();
+        MapDTO roadMap = worldState.getRoadMap();
         roadMap.addRoad("A", "E1", Direction.Up, 300);
         roadMap.addRoad("A", "E2", Direction.Down, 300);
 
         // add traffic lights
-        TrafficLightDTO downTrafficLight = new TrafficLightDTO();
-        TrafficLightDTO upTrafficLight = new TrafficLightDTO();
-        downTrafficLight.color = TrafficLightColor.Red;
-        upTrafficLight.color = TrafficLightColor.Red;
-        HashMap<Direction, TrafficLightDTO> trafficLights = new HashMap<>();
-        trafficLights.put(Direction.Down, downTrafficLight);
-        trafficLights.put(Direction.Up, upTrafficLight);
-        JunctionDTO a = roadMap.getJunction("A");
-        worldState.trafficLights = new HashMap<>();
-        worldState.trafficLights.put(a, trafficLights);
+        worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
 
-        LocationDTO loc = new LocationDTO(a.getRoad(Direction.Up), a.getRoad(Direction.Up).getEnd("E1"), 0, Lane.Right);
+        RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
+        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         VehicleDTO v1 = new VehicleDTO(loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
-        ArrayList<VehicleDTO> vehicles = new ArrayList<>();
-        vehicles.add(v1);
+        worldState.getVehicles().add(v1);
 
-        worldState = new WorldStateDTO();
-
-        worldState.roadMap = roadMap;
-        worldState.vehicles = vehicles;
     }
 
 }

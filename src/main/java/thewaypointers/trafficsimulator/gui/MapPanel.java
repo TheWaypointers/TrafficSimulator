@@ -31,7 +31,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int ROAD_RIGHT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*3/4);
     public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
 
-    WorldStateDTO worldState = new WorldStateDTO();
+    WorldStateDTO worldState = new WorldStateDTO(null, null, null);
 
     public MapPanel(){
         this.setVisible(true);
@@ -95,7 +95,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     //draw worldState
     public void paint(Graphics g){
         super.paint(g);
-        JunctionDTO junction = worldState.roadMap.getJunctions().get(0);
+        JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         float totalLength = upRoad.getLength()+downRoad.getLength();
@@ -122,14 +122,16 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
 
         //draw lights
-        TrafficLightDTO upTrafficLight = worldState.trafficLights.get(junction).get(Direction.Up);
-        TrafficLightDTO downTrafficLight = worldState.trafficLights.get(junction).get(Direction.Down);
-        drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.color);
-        drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.color);
+        TrafficLightDTO upTrafficLight = worldState.getTrafficLightSystem()
+                .getTrafficLight(junction.getLabel(), Direction.Up, Lane.Right);
+        TrafficLightDTO downTrafficLight = worldState.getTrafficLightSystem()
+                .getTrafficLight(junction.getLabel(), Direction.Down, Lane.Right);
+        drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.getColor());
+        drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.getColor());
 
         //draw cars
-        for(VehicleDTO vehicle : worldState.vehicles)
-            drawVehicle(g, vehicle, worldState.roadMap);
+        for(VehicleDTO vehicle : worldState.getVehicles())
+            drawVehicle(g, vehicle, worldState.getRoadMap());
     }
 
 }
