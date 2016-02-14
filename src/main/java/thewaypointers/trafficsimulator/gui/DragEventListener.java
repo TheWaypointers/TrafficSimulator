@@ -53,8 +53,8 @@ public class DragEventListener implements MouseInputListener {
 
         //if the size of Map is 1000*1000
         // will be set as global variable later
-        else if((x<-400) || (y<-400)){
-            panel.setLocation(-400,-400);
+        else if((x<-100) || (y<-100)){
+            panel.setLocation(-100,-100);
         }
         else {
             panel.setLocation(

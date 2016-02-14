@@ -19,7 +19,7 @@ public class MapContainerPanel extends JPanel{
         this.setVisible(true);
         this.setSize(MAP_CONTAINER_PANEL_WIDTH, MAP_CONTAINER_PANEL_HEIGHT);
         this.setBackground(BACKGROUND_COLOR);
-        this.setLayout(new CardLayout());
+        this.setLayout(null);
         this.add(mapPanel);
     }
 

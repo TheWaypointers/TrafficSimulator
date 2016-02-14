@@ -9,8 +9,8 @@ import java.awt.geom.Line2D;
 public class MapPanel extends JPanel implements IStateChangeListener{
 
     // configurable parameters
-    public static final int MAP_PANEL_WIDTH = 1000;
-    public static final int MAP_PANEL_HEIGHT = 1000;
+    public static final int MAP_PANEL_WIDTH = 700;
+    public static final int MAP_PANEL_HEIGHT = 700;
 
     public static final int ROAD_Y1 = 250;
     public static final int ROAD_WIDTH = 50;
