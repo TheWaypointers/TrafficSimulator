@@ -6,8 +6,6 @@ import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.VehicleType;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 
-import java.util.Map;
-
 public class SimpleWorldStateProviderTest {
     @Test
     public void Provider_generates_correct_world_state() {
@@ -18,7 +16,7 @@ public class SimpleWorldStateProviderTest {
         WorldStateDTO worldState = provider.getNextState(15);
 
         // assert
-        assertThat(worldState.getVehicles().size()).isEqualTo(1);
+        assertThat(worldState.getVehicleList().getVehicleCount()).isEqualTo(1);
         assertThat(worldState.getRoadMap().getJunctionCount()).isEqualTo(1);
 
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
@@ -40,10 +38,10 @@ public class SimpleWorldStateProviderTest {
         assertThat(trafficLights.getRoad(Direction.Left)).isNull();
         assertThat(trafficLights.getRoad(Direction.Right)).isNull();
 
-        VehicleDTO v = worldState.getVehicles().get(0);
-        assertThat(v.type).isEqualTo(VehicleType.CarNormal);
+        VehicleDTO v = worldState.getVehicleList().getAll().get(0);
+        assertThat(v.getType()).isEqualTo(VehicleType.CarNormal);
 
-        LocationDTO loc = v.location;
+        LocationDTO loc = v.getLocation();
         assertThat(loc.getLane()).isEqualTo(Lane.Right);
         assertThat(loc.getRoad().equals(downRoad));
         assertThat(loc.getOrigin().getLabel().equals("E1"));
@@ -60,9 +58,9 @@ public class SimpleWorldStateProviderTest {
 
         // act
         WorldStateDTO ws1 = provider.getNextState(moveDistance);
-        LocationDTO loc1 = ws1.getVehicles().get(0).location;
+        LocationDTO loc1 = ws1.getVehicleList().getAll().get(0).getLocation();
         WorldStateDTO ws2 = provider.getNextState(moveDistance);
-        LocationDTO loc2 = ws2.getVehicles().get(0).location;
+        LocationDTO loc2 = ws2.getVehicleList().getAll().get(0).getLocation();
 
         // assert
         assertThat(loc1 != loc2).isTrue();
@@ -82,7 +80,7 @@ public class SimpleWorldStateProviderTest {
         WorldStateDTO worldState = provider.getNextState(moveDistance);
 
         // assert
-        LocationDTO loc = worldState.getVehicles().get(0).location;
+        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
         RoadDTO downRoad = worldState.getRoadMap().getJunctions().get(0).getRoad(Direction.Down);
         assertThat(loc.getRoad()).isEqualTo(downRoad);
     }
@@ -101,7 +99,7 @@ public class SimpleWorldStateProviderTest {
         WorldStateDTO worldState = provider.getNextState(moveDistance);
 
         // assert
-        LocationDTO loc = worldState.getVehicles().get(0).location;
+        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
         RoadDTO upRoad = worldState.getRoadMap().getJunctions().get(0).getRoad(Direction.Up);
         assertThat(loc.getRoad()).isEqualTo(upRoad);
     }

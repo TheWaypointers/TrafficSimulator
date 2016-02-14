@@ -1,23 +1,19 @@
 package thewaypointers.trafficsimulator.common;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 public class WorldStateDTO {
     private MapDTO roadMap;
-    private List<VehicleDTO> vehicles;
+    private VehicleListDTO vehicleList;
     private TrafficLightSystemDTO trafficLightSystem;
 
     public WorldStateDTO(){
         this.roadMap = new MapDTO();
-        this.vehicles = new ArrayList<>();
+        this.vehicleList = new VehicleListDTO();
         this.trafficLightSystem = new TrafficLightSystemDTO();
     }
 
-    public WorldStateDTO(MapDTO roadMap, List<VehicleDTO> vehicles, TrafficLightSystemDTO trafficLightSystem) {
+    public WorldStateDTO(MapDTO roadMap, VehicleListDTO vehicles, TrafficLightSystemDTO trafficLightSystem) {
         this.roadMap = roadMap;
-        this.vehicles = vehicles;
+        this.vehicleList = vehicles;
         this.trafficLightSystem = trafficLightSystem;
     }
 
@@ -29,12 +25,12 @@ public class WorldStateDTO {
         this.roadMap = roadMap;
     }
 
-    public List<VehicleDTO> getVehicles() {
-        return vehicles;
+    public VehicleListDTO getVehicleList() {
+        return vehicleList;
     }
 
-    public void setVehicles(List<VehicleDTO> vehicles) {
-        this.vehicles = vehicles;
+    public void setVehicleList(VehicleListDTO vehicleList) {
+        this.vehicleList = vehicleList;
     }
 
     public TrafficLightSystemDTO getTrafficLightSystem() {

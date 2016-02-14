@@ -2,9 +2,6 @@ package thewaypointers.trafficsimulator.common.helpers;
 
 import thewaypointers.trafficsimulator.common.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
@@ -29,8 +26,7 @@ public class SimpleWorldStateProvider {
 
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
         LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
-        VehicleDTO v1 = new VehicleDTO(loc, VehicleType.CarNormal);
-        ws.getVehicles().add(v1);
+        ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
 
         return ws;
     }
@@ -39,26 +35,28 @@ public class SimpleWorldStateProvider {
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
-        VehicleDTO v = worldState.getVehicles().get(0);
-        LocationDTO loc = v.location;
+        VehicleDTO v = worldState.getVehicleList().getAll().get(0);
+        LocationDTO loc = v.getLocation();
         if(vehicleMovement > ROAD_LENGTH)
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
 
+        LocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
-             v.location = new LocationDTO(loc.getRoad(),
-                                          loc.getOrigin(),
-                                          loc.getDistanceTravelled() + vehicleMovement,
-                                          loc.getLane());
+             newLocation = new LocationDTO(loc.getRoad(),
+                                           loc.getOrigin(),
+                                           loc.getDistanceTravelled() + vehicleMovement,
+                                           loc.getLane());
         }else{
             // jump to next road
             RoadDTO newRoad = loc.getRoad().equals(upRoad) ? downRoad : upRoad;
-            v.location = new LocationDTO(newRoad,
-                                         newRoad.getFrom(),
-                                         loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().getLength(),
-                                         loc.getLane());
+            newLocation = new LocationDTO(newRoad,
+                                          newRoad.getFrom(),
+                                          loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().getLength(),
+                                          loc.getLane());
         }
+        worldState.getVehicleList().setVehicleLocation(v.getLabel(), newLocation);
 
         //change traffic lights
         if(stateNo % CHANGE_LIGHTS_EVERY_N_STATES == 0){

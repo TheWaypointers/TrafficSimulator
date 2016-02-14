@@ -80,8 +80,8 @@ public class Simulation implements ISimulationInputListener {
 
     private synchronized void changeWorldState() {
 
-        VehicleDTO v = worldState.getVehicles().get(0);
-        LocationDTO loc = v.location;
+        VehicleDTO v = worldState.getVehicleList().getAll().get(0);
+        LocationDTO loc = v.getLocation();
 
         IVehicle vehicle = null;
 
@@ -102,7 +102,7 @@ public class Simulation implements ISimulationInputListener {
 
 
         loc = new LocationDTO(newRoad,newRoad.getFrom(), vehicle.getVehiclesDistanceTravelled(), loc.getLane());
-        worldState.getVehicles().get(0).location = loc;
+        worldState.getVehicleList().setVehicleLocation(v.getLabel(), loc);
 
     }
 
@@ -292,8 +292,8 @@ public class Simulation implements ISimulationInputListener {
 
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
         LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
-        VehicleDTO v1 = new VehicleDTO(loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
-        worldState.getVehicles().add(v1);
+        VehicleDTO v1 = new VehicleDTO("V1", loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
+        worldState.getVehicleList().addVehicle(v1);
 
     }
 

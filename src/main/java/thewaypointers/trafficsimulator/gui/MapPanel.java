@@ -51,23 +51,23 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         RoadDTO downRoad = junction.getRoad(Direction.Down);
 
         g.setColor(VEHICLE_COLOR);
-        int x = vehicle.location.getLane() == Lane.Right? ROAD_RIGHT_LANE_X : ROAD_LEFT_LANE_X;
+        int x = vehicle.getLocation().getLane() == Lane.Right? ROAD_RIGHT_LANE_X : ROAD_LEFT_LANE_X;
         int y = 0;
 
-        if (vehicle.location.getOrigin() == upRoad.getFrom()) {
-            y = (int)vehicle.location.getDistanceTravelled();
+        if (vehicle.getLocation().getOrigin() == upRoad.getFrom()) {
+            y = (int)vehicle.getLocation().getDistanceTravelled();
         }
-        if (vehicle.location.getOrigin() == upRoad.getTo()) {
+        if (vehicle.getLocation().getOrigin() == upRoad.getTo()) {
             // car is coming from junction
-            if (vehicle.location.getRoad() == upRoad) {
-                y=(int)(upRoad.getLength() - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+            if (vehicle.getLocation().getRoad() == upRoad) {
+                y=(int)(upRoad.getLength() - vehicle.getLocation().getDistanceTravelled()) - VEHICLE_HEIGHT;
             }
-            if (vehicle.location.getRoad() == downRoad) {
-                y = (int)(vehicle.location.getDistanceTravelled()+upRoad.getLength());
+            if (vehicle.getLocation().getRoad() == downRoad) {
+                y = (int)(vehicle.getLocation().getDistanceTravelled()+upRoad.getLength());
             }
         }
-        if (vehicle.location.getOrigin() == downRoad.getTo()) {
-            y = (int)(downRoad.getLength() + upRoad.getLength() - vehicle.location.getDistanceTravelled()) - VEHICLE_HEIGHT;
+        if (vehicle.getLocation().getOrigin() == downRoad.getTo()) {
+            y = (int)(downRoad.getLength() + upRoad.getLength() - vehicle.getLocation().getDistanceTravelled()) - VEHICLE_HEIGHT;
         }
 
         g.fillRect(x, y, VEHICLE_WIDTH, VEHICLE_HEIGHT);
@@ -130,7 +130,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.getColor());
 
         //draw cars
-        for(VehicleDTO vehicle : worldState.getVehicles())
+        for(VehicleDTO vehicle : worldState.getVehicleList().getAll())
             drawVehicle(g, vehicle, worldState.getRoadMap());
     }
 
