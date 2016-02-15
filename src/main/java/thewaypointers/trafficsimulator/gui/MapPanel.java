@@ -39,7 +39,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         this.setBackground(BACKGROUND_COLOR);
 
         //for dragging
-        DragEventListener mouseListener = new DragEventListener(this);
+        PanelMouseDragger mouseListener = new PanelMouseDragger(this);
         this.addMouseListener(mouseListener);
         this.addMouseMotionListener(mouseListener);
 
