@@ -9,8 +9,8 @@ import java.awt.geom.Line2D;
 public class MapPanel extends JPanel implements IStateChangeListener{
 
     // configurable parameters
-    public static final int MAP_PANEL_WIDTH = 600;
-    public static final int MAP_PANEL_HEIGHT = 600;
+    public static final int MAP_PANEL_WIDTH = 700;
+    public static final int MAP_PANEL_HEIGHT = 700;
 
     public static final int ROAD_Y1 = 250;
     public static final int ROAD_WIDTH = 50;
@@ -35,8 +35,13 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     public MapPanel(){
         this.setVisible(true);
-        this.setSize(MAP_PANEL_WIDTH,MAP_PANEL_HEIGHT);
+        this.setSize(MAP_PANEL_WIDTH, MAP_PANEL_HEIGHT);
         this.setBackground(BACKGROUND_COLOR);
+
+        //for dragging
+        PanelMouseDragger mouseListener = new PanelMouseDragger(this);
+        this.addMouseListener(mouseListener);
+        this.addMouseMotionListener(mouseListener);
 
     }
 
