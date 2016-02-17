@@ -64,7 +64,7 @@ public class Simulation implements ISimulationInputListener {
 
         //temp
         changeWorldState();
-        MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
+        MainFrame.mapPanel.NewStateReceived(worldState);
         writeConsoleOutput();
         changeTrafficLightState();
 
