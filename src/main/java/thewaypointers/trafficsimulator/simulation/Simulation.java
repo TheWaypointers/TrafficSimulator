@@ -11,7 +11,6 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,8 +41,8 @@ public class Simulation implements ISimulationInputListener {
 
 
     public Simulation(){
-        setGraph();
-        CreateVehicles();
+        //setGraph();
+        // CreateVehicles();
         createWorldState();
         MainFrame mainFrame=new MainFrame(worldState);
     }
@@ -54,13 +53,13 @@ public class Simulation implements ISimulationInputListener {
 
     public void NextSimulationStep(long timeStep){
 
-            try{
-                moveVehicles(timeStep);
-                checkForLeavingVehicles();
-            }
-            catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }
+        try{
+            moveVehicles(timeStep);
+            checkForLeavingVehicles();
+        }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
 
 
         //temp
@@ -116,11 +115,11 @@ public class Simulation implements ISimulationInputListener {
                 if(tlNode.getColor() == TrafficLightColor.Green){
                     tlNode.setColor(TrafficLightColor.Red);
                     worldState.getTrafficLightSystem()
-                        .setTrafficLightColor(
-                                junction.getLabel(),
-                                Direction.Up,
-                                Lane.Right,
-                                TrafficLightColor.Red);
+                            .setTrafficLightColor(
+                                    junction.getLabel(),
+                                    Direction.Up,
+                                    Lane.Right,
+                                    TrafficLightColor.Red);
                     worldState.getTrafficLightSystem()
                             .setTrafficLightColor(
                                     junction.getLabel(),
@@ -285,7 +284,15 @@ public class Simulation implements ISimulationInputListener {
         worldState = new WorldStateDTO();
         MapDTO roadMap = worldState.getRoadMap();
         roadMap.addRoad("E1", "A", Direction.Down, 300);
-        roadMap.addRoad("A", "E2", Direction.Down, 300);
+        // roadMap.addRoad("A", "E2", Direction.Down, 300);
+        roadMap.addRoad("E3","A",Direction.Right,300);
+        roadMap.addRoad("A","B",Direction.Right,300);
+        roadMap.addRoad("A","C",Direction.Down,300);
+        roadMap.addRoad("E2","B",Direction.Down,300);
+        roadMap.addRoad("B","E4",Direction.Right,300);
+        roadMap.addRoad("B","E7",Direction.Down,300);
+        roadMap.addRoad("E5","C",Direction.Right,300);
+        roadMap.addRoad("C","E6",Direction.Down,300);
 
         // add traffic lights
         worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
