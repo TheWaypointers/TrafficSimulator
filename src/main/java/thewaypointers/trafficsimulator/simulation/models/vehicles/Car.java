@@ -243,6 +243,11 @@ public class Car implements IVehicle {
         return isOnExit();
     }
 
+    @Override
+    public DefaultWeightedEdge getCurrentRoadEdge() {
+        return getCurrentRoad();
+    }
+
     public DefaultWeightedEdge getCurrentRoad() {
         return currentRoad;
     }

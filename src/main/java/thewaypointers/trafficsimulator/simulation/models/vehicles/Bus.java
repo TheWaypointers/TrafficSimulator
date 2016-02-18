@@ -130,6 +130,11 @@ public class Bus implements IVehicle {
         return isOnExit();
     }
 
+    @Override
+    public DefaultWeightedEdge getCurrentRoadEdge() {
+        return getCurrentRoadEdge();
+    }
+
     public boolean isOnExit() {
         return onExit;
     }

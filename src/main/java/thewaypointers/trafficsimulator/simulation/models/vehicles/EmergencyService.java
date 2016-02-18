@@ -121,7 +121,12 @@ public class EmergencyService implements IVehicle {
             return isOnExit();
         }
 
-        @Override
+    @Override
+    public DefaultWeightedEdge getCurrentRoadEdge() {
+        return getCurrentRoadEdge();
+    }
+
+    @Override
         public float getVehiclesDistanceTravelled() {
             return getDistanceTravelled();
         }
