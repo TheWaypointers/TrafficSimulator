@@ -148,6 +148,7 @@ public class Simulation implements ISimulationInputListener {
             for(IVehicle vehicle : vehicleMap.get(road)){
                 if(vehicle.isVehicleLeavingRoad()){
                     vehicleMap.get(road).remove(vehicle);
+                    currentVehicleNumber--;
                 }
             }
         }
