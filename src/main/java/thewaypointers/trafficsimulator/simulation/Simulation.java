@@ -29,9 +29,11 @@ public class Simulation implements ISimulationInputListener {
 
     GraphFactory graphFactory;
 
-    final long PROGRAM_TIME_PAUSE_MULTIPLIER = 2;
+    final long SIMULATION_TIME_STEP = 500;
     final int MAX_VEHICLE_NUMBER = 1;
+    final int TRAFFIC_LIGHT_STEPS = 10;
     int currentVehicleNumber = 0;
+    int trafficLightCounter = 0;
 
 
     //TODO: use this constructor in the simulation manager
@@ -50,18 +52,17 @@ public class Simulation implements ISimulationInputListener {
         createFirstWorldState();
 
         createVehicles();
-        MainFrame mainFrame=new MainFrame(worldState);
     }
 
     //timesteps
-    public void runSimulation(long timeStep){
+    public void runSimulation(){
         run = true;
         while(run){
 
-            NextSimulationStep(timeStep);
+            NextSimulationStep();
 
             try{
-                Thread.sleep(timeStep / PROGRAM_TIME_PAUSE_MULTIPLIER);
+                Thread.sleep(SIMULATION_TIME_STEP);
             }catch(Exception ex){
                 System.out.println(ex.getMessage());
             }
@@ -73,10 +74,10 @@ public class Simulation implements ISimulationInputListener {
         // set new value for the parameter in the simulation
     }
 
-    public void NextSimulationStep(long timeStep){
+    public void NextSimulationStep(){
 
             try{
-                moveVehicles(timeStep);
+                moveVehicles(500);
                 checkForLeavingVehicles();
             }
             catch (Exception ex){
@@ -86,17 +87,7 @@ public class Simulation implements ISimulationInputListener {
 
         //temp
         changeWorldState();
-        MainFrame.mapPanel.NewStateReceived(worldState);
-        writeConsoleOutput();
         changeTrafficLightState();
-
-        //WorldStateDTO state = new WorldStateDTO();
-
-        // put the new simulation state into the DTO...
-
-
-        //null exception
-        //stateChangeListener.NewStateReceived(state);
     }
 
     private synchronized void changeWorldState() {
@@ -129,42 +120,31 @@ public class Simulation implements ISimulationInputListener {
 
     private synchronized void changeTrafficLightState() {
 
-        JunctionDTO junction = worldState.roadMap.junctions.get(0);
-        TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-        TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+        trafficLightCounter++;
+
+        if(trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
+
+            JunctionDTO junction = worldState.roadMap.junctions.get(0);
+            TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
+            TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
 
 
-        for(Node node : nodeGraphMap.keySet()){
-            if(node.getNodeType() == NodeType.JunctionTrafficLights){
-                TrafficLightNode tlNode = ((TrafficLightNode) node);
+            for (Node node : nodeGraphMap.keySet()) {
+                if (node.getNodeType() == NodeType.JunctionTrafficLights) {
+                    TrafficLightNode tlNode = ((TrafficLightNode) node);
 
-                if(tlNode.getColor() == TrafficLightColor.Green){
-                    tlNode.setColor(TrafficLightColor.Red);
-                    upTrafficLight.color = TrafficLightColor.Red;
-                    downTrafficLight.color = TrafficLightColor.Red;
+                    if (tlNode.getColor() == TrafficLightColor.Green) {
+                        tlNode.setColor(TrafficLightColor.Red);
+                        upTrafficLight.color = TrafficLightColor.Red;
+                        downTrafficLight.color = TrafficLightColor.Red;
+                    } else {
+                        tlNode.setColor(TrafficLightColor.Green);
+                        upTrafficLight.color = TrafficLightColor.Green;
+                        downTrafficLight.color = TrafficLightColor.Green;
+                    }
                 }
-                else{
-                    tlNode.setColor(TrafficLightColor.Green);
-                    upTrafficLight.color = TrafficLightColor.Green;
-                    downTrafficLight.color = TrafficLightColor.Green;
-                }
             }
-        }
-    }
-
-    //output
-    private void writeConsoleOutput() {
-        for(DefaultWeightedEdge road : vehicleMap.keySet() ){
-            for(IVehicle vehicle : vehicleMap.get(road)){
-                System.out.println(String.format("vehicle speed : %s, vehicle distance travelled: %s", vehicle.getVehiclesCurrentSpeed(), vehicle.getVehiclesDistanceTravelled()));
-            }
-        }
-
-        for(Node node : nodeGraphMap.keySet()){
-            if(node.getNodeType() == NodeType.JunctionTrafficLights){
-                TrafficLightNode tlNode = ((TrafficLightNode) node);
-                System.out.println(String.format("Traffic light is: %s", tlNode.getColor().toString()));
-            }
+            trafficLightCounter = 0;
         }
     }
 
@@ -220,4 +200,7 @@ public class Simulation implements ISimulationInputListener {
         dtoRoads = graphFactory.getDtoRoads();
     }
 
+    public WorldStateDTO getWorldState() {
+        return worldState;
+    }
 }
