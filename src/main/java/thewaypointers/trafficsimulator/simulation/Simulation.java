@@ -133,13 +133,7 @@ public class Simulation implements ISimulationInputListener {
             for(Node node : nodeGraphMap.keySet()){
                 if(node.getNodeType() == NodeType.JunctionTrafficLights){
                     TrafficLightNode tfNode = ((TrafficLightNode) node);
-
-                    if(tfNode.getColor() == TrafficLightColor.Green){
-                        tfNode.setColor(TrafficLightColor.Red);
-                    }
-                    else{
-                        tfNode.setColor(TrafficLightColor.Green);
-                    }
+                    tfNode.changeLightColor();
                 }
             }
 

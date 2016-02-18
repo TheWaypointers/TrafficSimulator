@@ -17,18 +17,29 @@ public class TrafficSimulatorManager {
         Thread t = new Thread(simulatorRunnable);
         t.start();
 
-
+        //temp fix
+        waitForThread();
+        worldState = simulatorRunnable.getWorldState();
         MainFrame mainFrame = new MainFrame(worldState);
         while(true){
             try{
                 Thread.sleep(TIME_STEP);
                 worldState = simulatorRunnable.getWorldState();
-                MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
+                mainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
                 output();
             }
-            catch(Exception ex){
+            catch(InterruptedException ex){
                 System.out.println(ex.getMessage());
             }
+        }
+    }
+
+    private static void waitForThread() {
+        try{
+            Thread.sleep(1000);
+        }
+        catch(InterruptedException ex){
+            System.out.println(ex.getMessage());
         }
     }
 
