@@ -15,4 +15,6 @@ public interface IVehicle {
     public HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap);
     public boolean isVehicleLeavingRoad();
     public DefaultWeightedEdge getCurrentRoadEdge();
+    public String getVehiclesOriginNode();
+    public String getVehiclesDestinationNode();
 }

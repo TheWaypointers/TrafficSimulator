@@ -68,47 +68,16 @@ public class GraphFactory {
     public WorldStateDTO createFirstWorldState() {
         WorldStateDTO worldState = new WorldStateDTO();
 
-        setDtoRoads(new ArrayList<>());
-
-        RoadDTO e1_a = new RoadDTO();
-        RoadDTO a_e2 = new RoadDTO();
-        e1_a.length = 300;
-        a_e2.length = 300;
-        getDtoRoads().add(e1_a);
-        getDtoRoads().add(a_e2);
-
-
-        ExitNodeDTO e1 = new ExitNodeDTO("E1");
-        ExitNodeDTO e2 = new ExitNodeDTO("E2");
-        JunctionDTO a = new JunctionDTO("A", e1_a, a_e2, null, null);
-
-        // connect the roads
-        // TODO make this more straightforward
-        e1_a.start = e1;
-        e1_a.end = a;
-        a_e2.start = a;
-        a_e2.end = e2;
+        MapDTO roadMap = worldState.getRoadMap();
+        roadMap.addRoad("1","2", Direction.Down, 300);
+        roadMap.addRoad("2", "3", Direction.Down, 300);
 
         // add traffic lights
-        TrafficLightDTO downTrafficLight = new TrafficLightDTO();
-        TrafficLightDTO upTrafficLight = new TrafficLightDTO();
-        downTrafficLight.color = TrafficLightColor.Red;
-        upTrafficLight.color = TrafficLightColor.Red;
-        a.trafficLights = new HashMap<>();
-        a.trafficLights.put(Direction.Down, downTrafficLight);
-        a.trafficLights.put(Direction.Up, upTrafficLight);
+        worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("2"));
 
-        MapDTO roadMap = new MapDTO(a);
-
-        LocationDTO loc = new LocationDTO(e1_a, e1_a.start, 0, Lane.Right);
-        VehicleDTO v1 = new VehicleDTO(loc, thewaypointers.trafficsimulator.common.VehicleType.CarNormal);
-        ArrayList<VehicleDTO> vehicles = new ArrayList<>();
-        vehicles.add(v1);
-
-        worldState = new WorldStateDTO();
-
-        worldState.roadMap = roadMap;
-        worldState.vehicles = vehicles;
+        RoadDTO startRoad = roadMap.getJunction("2").getRoad(Direction.Up);
+        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("1"), 0, Lane.Right);
+        worldState.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
 
         return worldState;
     }

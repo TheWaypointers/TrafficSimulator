@@ -1,5 +1,6 @@
 package thewaypointers.trafficsimulator;
 
+import thewaypointers.trafficsimulator.common.LocationDTO;
 import thewaypointers.trafficsimulator.common.VehicleDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.gui.MainFrame;
@@ -22,7 +23,7 @@ public class TrafficSimulatorManager {
             try{
                 Thread.sleep(TIME_STEP);
                 worldState = simulatorRunnable.getWorldState();
-                mainFrame.mapPanel.NewStateReceived(worldState);
+                MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
                 output();
             }
             catch(Exception ex){
@@ -32,9 +33,12 @@ public class TrafficSimulatorManager {
     }
 
     private static void output() {
-        for(VehicleDTO vehicle : worldState.vehicles){
-            System.out.println(vehicle.location);
-        }
+        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
+        System.out.format("Vehicle 0 position: %f en route from %s to %s",
+                loc.getDistanceTravelled(),
+                loc.getRoad().getFrom().getLabel(),
+                loc.getRoad().getTo().getLabel());
+        System.out.println();
     }
 
     public static class SimulatorRunnable implements Runnable {

@@ -2,7 +2,6 @@ package thewaypointers.trafficsimulator.simulation;
 
 import thewaypointers.trafficsimulator.common.*;
 import org.jgrapht.graph.*;
-import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.factories.GraphFactory;
 import thewaypointers.trafficsimulator.simulation.factories.VehicleFactory;
@@ -10,7 +9,6 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
-import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +30,7 @@ public class Simulation implements ISimulationInputListener {
     final long SIMULATION_TIME_STEP = 500;
     final int MAX_VEHICLE_NUMBER = 1;
     final int TRAFFIC_LIGHT_STEPS = 10;
+    final long SIMULATION_TIME_MULTIPLIER = 2;
     int currentVehicleNumber = 0;
     int trafficLightCounter = 0;
 
@@ -77,7 +76,7 @@ public class Simulation implements ISimulationInputListener {
     public void NextSimulationStep(){
 
             try{
-                moveVehicles(500);
+                moveVehicles(SIMULATION_TIME_STEP * SIMULATION_TIME_MULTIPLIER);
                 checkForLeavingVehicles();
             }
             catch (Exception ex){
@@ -92,30 +91,31 @@ public class Simulation implements ISimulationInputListener {
 
     private synchronized void changeWorldState() {
 
-        VehicleDTO v = worldState.vehicles.get(0);
-        LocationDTO loc = v.location;
-
-        IVehicle vehicle = null;
+        worldState.setVehicleList(null);
+        VehicleListDTO dtoVehicleList = new VehicleListDTO();
+        int index = 1;
 
         for(DefaultWeightedEdge road : vehicleMap.keySet()){
-            if(vehicleMap.get(road).size() > 0){
-                vehicle = vehicleMap.get(road).get(0);
+            for(IVehicle vehicle : vehicleMap.get(road)){
+                RoadDTO roadDTO = findEqualRoad(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode());
+                LocationDTO loc = new LocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
+                dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
+                index++;
+            }
+        }
+        worldState.setVehicleList(dtoVehicleList);
+
+    }
+
+    private RoadDTO findEqualRoad(String label) {
+
+        for(RoadDTO road : worldState.getRoadMap().getRoads()){
+            if(road.getLabel().equals(label)){
+                return road;
             }
         }
 
-        Car car = ((Car) vehicle);
-        RoadDTO newRoad = new RoadDTO();
-
-        if(car.getOriginNode() == "1") {
-            newRoad = dtoRoads.get(0);
-        }else{
-            newRoad = dtoRoads.get(1);
-        }
-
-
-        loc = new LocationDTO(newRoad,newRoad.start, vehicle.getVehiclesDistanceTravelled(), loc.getLane());
-        worldState.vehicles.get(0).location = loc;
-
+        return null;
     }
 
     private synchronized void changeTrafficLightState() {
@@ -124,28 +124,28 @@ public class Simulation implements ISimulationInputListener {
 
         if(trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
 
-            JunctionDTO junction = worldState.roadMap.junctions.get(0);
-            TrafficLightDTO upTrafficLight = junction.trafficLights.get(Direction.Up);
-            TrafficLightDTO downTrafficLight = junction.trafficLights.get(Direction.Down);
+            JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
+            worldState.getTrafficLightSystem()
+                    .changeTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
+            worldState.getTrafficLightSystem()
+                    .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
 
+            for(Node node : nodeGraphMap.keySet()){
+                if(node.getNodeType() == NodeType.JunctionTrafficLights){
+                    TrafficLightNode tfNode = ((TrafficLightNode) node);
 
-            for (Node node : nodeGraphMap.keySet()) {
-                if (node.getNodeType() == NodeType.JunctionTrafficLights) {
-                    TrafficLightNode tlNode = ((TrafficLightNode) node);
-
-                    if (tlNode.getColor() == TrafficLightColor.Green) {
-                        tlNode.setColor(TrafficLightColor.Red);
-                        upTrafficLight.color = TrafficLightColor.Red;
-                        downTrafficLight.color = TrafficLightColor.Red;
-                    } else {
-                        tlNode.setColor(TrafficLightColor.Green);
-                        upTrafficLight.color = TrafficLightColor.Green;
-                        downTrafficLight.color = TrafficLightColor.Green;
+                    if(tfNode.getColor() == TrafficLightColor.Green){
+                        tfNode.setColor(TrafficLightColor.Red);
+                    }
+                    else{
+                        tfNode.setColor(TrafficLightColor.Green);
                     }
                 }
             }
+
             trafficLightCounter = 0;
         }
+
     }
 
     //leaving vehicles
