@@ -45,7 +45,6 @@ public class Simulation implements ISimulationInputListener {
         setGraph();
         CreateVehicles();
         createWorldState();
-        MainFrame mainFrame=new MainFrame(worldState);
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
@@ -91,10 +90,14 @@ public class Simulation implements ISimulationInputListener {
             }
         }
 
-        Car car = ((Car) vehicle);
-        RoadDTO newRoad = new RoadDTO();
+        if(vehicle == null){
+            throw new AssertionError("Vehicle not found!");
+        }
 
-        if(car.getOriginNode() == "1") {
+        Car car = ((Car) vehicle);
+        RoadDTO newRoad;
+
+        if(car.getOriginNode().equals("1")) {
             newRoad = dtoRoads.get(0);
         }else{
             newRoad = dtoRoads.get(1);
@@ -223,7 +226,7 @@ public class Simulation implements ISimulationInputListener {
                 return nodeGraphMap.get(node).get(0);
             }
         }
-        return null;
+        throw new AssertionError("Road not found!");
     }
 
     private String calculateDestinationNode(String originNode) {
@@ -236,9 +239,10 @@ public class Simulation implements ISimulationInputListener {
         return "1";
     }
 
+    @SuppressWarnings("unchecked")
     private Stack<String> calculatePath(String origin, String destination) {
         //TODO: calculate path from graph
-        Stack decisions = new Stack<>();
+        Stack<String> decisions = new Stack<>();
         decisions.push("3");
         decisions.push("2");
         return decisions;

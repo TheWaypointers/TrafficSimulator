@@ -53,6 +53,7 @@ public class Car implements IVehicle {
         for (IVehicle vehicle : vehicleMap.get(this.getCurrentRoad())) {
             if (vehicle != this) {
                 float vehiclePosition = vehicle.getVehiclesDistanceTravelled();
+                //noinspection StatementWithEmptyBody
                 if (vehiclePosition >= this.getDistanceTravelled() && vehiclePosition <= nextPossiblePosition) {
                     //TODO: calculate next move
                 }
@@ -125,7 +126,7 @@ public class Car implements IVehicle {
             }
         }
 
-        return null;
+        throw new AssertionError("Road not found!");
     }
 
     private Node calculateNextNode(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
@@ -134,7 +135,7 @@ public class Car implements IVehicle {
                 return node;
             }
         }
-        return null;
+        throw new AssertionError("Node not found in map!");
     }
 
     private float calculateDistanceToTravel(float currentSpeed, long timeStep) {

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-/**
- * Created by User on 4.2.2016..
- */
 public class Bus implements IVehicle {
 
     private float topSpeed;

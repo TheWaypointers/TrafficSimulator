@@ -125,6 +125,7 @@ public class RoadDTO {
 
     @Override
     public boolean equals(Object o) {
-        return equals((RoadDTO) o);
+        return RoadDTO.class.isAssignableFrom(o.getClass()) &&
+                equals((RoadDTO) o);
     }
 }
