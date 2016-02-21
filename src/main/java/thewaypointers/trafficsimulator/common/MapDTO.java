@@ -87,6 +87,11 @@ public class MapDTO {
         newRoad.setTo(toJunction);
     }
 
+    public void addJunction(JunctionDTO junctionDTO){
+        JunctionDTO junction = junctionDTO;
+        junctions.put(junction.getLabel(),junction);
+    }
+
     public JunctionDTO getJunction(String label){
         //TODO rewrite processing so this can use the dictionary again
         return getJunctions().stream().filter(x->x.getLabel().equals(label)).findFirst().get();

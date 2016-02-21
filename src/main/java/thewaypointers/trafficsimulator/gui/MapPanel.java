@@ -2,10 +2,13 @@ package thewaypointers.trafficsimulator.gui;
 import javax.swing.*;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
+import thewaypointers.trafficsimulator.utils.Pair;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MapPanel extends JPanel implements IStateChangeListener{
 
@@ -101,25 +104,26 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     //draw worldState
     public void paint(Graphics g){
         super.paint(g);
+        draw_road_network(g);
 
-        JunctionDTO junction_1 = worldState.getRoadMap().getJunctions().get(0);
-        JunctionDTO junction_2 = worldState.getRoadMap().getJunctions().get(1);
-        JunctionDTO junction_3 = worldState.getRoadMap().getJunctions().get(2);
-        g.setColor(ROAD_COLOR);
-        g.fillRect(300,300,50,50);
-        this.draw_road(junction_1, Direction.Up, g, 300, 300);
-        this.draw_road(junction_1, Direction.Down, g, 300, 300);
-        this.draw_road(junction_1, Direction.Left, g, 300, 300);
-        this.draw_road(junction_1, Direction.Right, g, 300, 300);
-        g.setColor(ROAD_COLOR);
-        g.fillRect(650,300,50,50);
-        this.draw_road(junction_2, Direction.Up, g, 650, 300);
-        this.draw_road(junction_2, Direction.Down, g, 650, 300);
-        this.draw_road(junction_2, Direction.Right, g, 650, 300);
-        g.setColor(ROAD_COLOR);
-        g.fillRect(300,650,50,50);
-        this.draw_road(junction_3, Direction.Down, g, 300, 650);
-        this.draw_road(junction_3, Direction.Left, g, 300, 650);
+//        JunctionDTO junction_1 = worldState.getRoadMap().getJunctions().get(0);
+//        JunctionDTO junction_2 = worldState.getRoadMap().getJunctions().get(1);
+//        JunctionDTO junction_3 = worldState.getRoadMap().getJunctions().get(2);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(300,300,50,50);
+//        this.draw_road(junction_1, Direction.Up, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Down, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Left, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Right, g, 300, 300);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(650,300,50,50);
+//        this.draw_road(junction_2, Direction.Up, g, 650, 300);
+//        this.draw_road(junction_2, Direction.Down, g, 650, 300);
+//        this.draw_road(junction_2, Direction.Right, g, 650, 300);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(300,650,50,50);
+//        this.draw_road(junction_3, Direction.Down, g, 300, 650);
+//        this.draw_road(junction_3, Direction.Left, g, 300, 650);
 
 
 /*
@@ -167,7 +171,12 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     It gets information from worldState
     It will be used by paint
      */
-    public void draw_road_network() {
+    public void draw_road_network(Graphics g) {
+
+        int location[][]={
+                {300,300}, {300,650}, {650,300}
+        };
+
         MapDTO mapDTO = worldState.getRoadMap();
         List<JunctionDTO> junctionList = mapDTO.getJunctions();
         //List<RoadDTO> roadList = mapDTO.getRoads();
@@ -175,18 +184,31 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         for (int i = 0; i < junctionList.size(); i++) {
             JunctionDTO junctionDTO = junctionList.get(i);
             List<Direction> directionList = junctionDTO.getConnectedDirections();
+            List<Pair<RoadDTO,Direction>> roads = junctionDTO.getRoadsAndDirections();
+            //System.out.println("Juction "+i+": " +roads.size());
+            System.out.println("Directions of junction" + i + ": ");
+            for(int ii=0;ii<directionList.size();ii++){
+                System.out.println(directionList.get(ii));
 
-            for(int j=0; j<directionList.size(); j++){
-                RoadDTO roadDTO = junctionDTO.getRoad(directionList.get(j));
-                //draw_road(junctionDTO, directionList.get(j),g,x,y);
-                //still have problem here
+                RoadDTO roadDTO = junctionDTO.getRoad(directionList.get(ii));
+                draw_road(junctionDTO, roadDTO, directionList.get(ii), g,location[i][0],location[i][1]);
             }
+
+
+//            for(int j=0; j<roads.size(); j++){
+//                Pair<RoadDTO, Direction> road = roads.get(i);
+//
+//                RoadDTO roadDTO = road.getItem1();
+//                Direction direction = road.getItem2();
+//                System.out.println("Juction" +i+ ": Road" +j+ "- direction" +direction + " - location: "+location[i][0]+","+location[i][1]);
+//                draw_road(junctionDTO, roadDTO, direction, g, location[i][0], location[i][1]);
+//            }
         }
     }
 
-    public void draw_road(JunctionDTO junctionDTO, Direction direction, Graphics g, int x, int y){
+    public void draw_road(JunctionDTO junctionDTO, RoadDTO road, Direction direction, Graphics g, int x, int y){
         g.setColor(ROAD_COLOR);
-        RoadDTO road=junctionDTO.getRoad(direction);
+        //RoadDTO road=junctionDTO.getRoad(direction);
         switch(direction){
             case Up:
                 int upx=x;
