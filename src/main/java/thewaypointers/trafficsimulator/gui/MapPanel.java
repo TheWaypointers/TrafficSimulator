@@ -1,6 +1,7 @@
 package thewaypointers.trafficsimulator.gui;
 import javax.swing.*;
 
+import com.oracle.deploy.update.UpdateCheck;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 
@@ -13,23 +14,23 @@ import java.util.Map;
 public class MapPanel extends JPanel implements IStateChangeListener{
 
     // configurable parameters
-    public static final int MAP_PANEL_WIDTH = 1000;
-    public static final int MAP_PANEL_HEIGHT = 1000;
+    public static final int MAP_PANEL_WIDTH = 1010;
+    public static final int MAP_PANEL_HEIGHT = 1010;
 
     public static final int ROAD_Y1 = 250;
     public static final int ROAD_WIDTH = 50;
 
 
     public static final int VEHICLE_WIDTH = 8;
-    public static final int VEHICLE_HEIGHT = 15;
-    public static final int Lane_distance=8;
+    public static final int VEHICLE_HEIGHT = 16;
+    public static final  int Lane_distance=8;
     public static final int TRAFFIC_LIGHT_SIZE = 6;
 
     public static final Color BACKGROUND_COLOR = Color.white;
     public static final Color ROAD_COLOR = Color.gray;
     public static final Color LANE_SEPARATOR_LINE_COLOR = Color.white;
 
-    // set color of different kinds of vehicles
+    // set car color
     public static final Color VEHICLE_CarNormal_COLOR = Color.blue;
     public static final Color VEHICLE_CarCautious_COLOR = Color.yellow;
     public static final Color VEHICLE_EmergencyService_COLOR = Color.white;
@@ -88,6 +89,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         if (vehicle.getLocation().getOrigin().equals(downRoad.getTo())) {
             y = (int)(downRoad.getLength() + upRoad.getLength() - vehicle.getLocation().getDistanceTravelled()) - VEHICLE_HEIGHT;
         }
+
         g.fillRect(x, y, VEHICLE_WIDTH, VEHICLE_HEIGHT);
     }
 
@@ -116,6 +118,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             g.fillRect((int)point.getX(),(int)point.getY(),VEHICLE_WIDTH,VEHICLE_HEIGHT);
         else
             g.fillRect((int)point.getX(),(int)point.getY(),VEHICLE_HEIGHT,VEHICLE_WIDTH);
+
+
     }
 
     private void drawVehicles(Graphics g){
@@ -148,14 +152,87 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         super.paint(g);
         this.draw_road_network(g);
         this.drawVehicles(g);
+//        JunctionDTO junction_1 = worldState.getRoadMap().getJunctions().get(0);
+//        JunctionDTO junction_2 = worldState.getRoadMap().getJunctions().get(1);
+//        JunctionDTO junction_3 = worldState.getRoadMap().getJunctions().get(2);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(300,300,50,50);
+//        this.draw_road(junction_1, Direction.Up, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Down, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Left, g, 300, 300);
+//        this.draw_road(junction_1, Direction.Right, g, 300, 300);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(650,300,50,50);
+//        this.draw_road(junction_2, Direction.Up, g, 650, 300);
+//        this.draw_road(junction_2, Direction.Down, g, 650, 300);
+//        this.draw_road(junction_2, Direction.Right, g, 650, 300);
+//        g.setColor(ROAD_COLOR);
+//        g.fillRect(300,650,50,50);
+//        this.draw_road(junction_3, Direction.Down, g, 300, 650);
+//        this.draw_road(junction_3, Direction.Left, g, 300, 650);
 
+
+/*
+//        RoadDTO upRoad = junction.getRoad(Direction.Up);
+//        RoadDTO downRoad = junction.getRoad(Direction.Down);
+//        float totalLength = upRoad.getLength()+downRoad.getLength();
+
+        // draw road
+        g.setColor(ROAD_COLOR);
+        g.fillRect(ROAD_Y1,0,ROAD_WIDTH,(int)totalLength);
+
+        // draw lane separator line
+        Graphics2D g2 = (Graphics2D)g;
+        g2.setColor(LANE_SEPARATOR_LINE_COLOR);
+        float [] arr={15.0f,10.0f};
+        BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
+        g2.setStroke(stroke);
+        Line2D.Float line = new Line2D.Float(ROAD_MIDDLE_LINE,10,ROAD_MIDDLE_LINE,10+(int)totalLength);
+        g2.draw(line);
+        BasicStroke stroke2=new BasicStroke();
+        g2.setStroke(stroke2);
+
+        int junction_y = (int)upRoad.getLength();
+
+        //draw junction
+        g.setColor(Color.black);
+        g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
+
+        //draw lights
+        TrafficLightDTO upTrafficLight = worldState.getTrafficLightSystem()
+                .getTrafficLight(junction.getLabel(), Direction.Up, Lane.Right);
+        TrafficLightDTO downTrafficLight = worldState.getTrafficLightSystem()
+                .getTrafficLight(junction.getLabel(), Direction.Down, Lane.Right);
+        drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.getColor());
+        drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.getColor());
+
+        //draw cars
+        //for(VehicleDTO vehicle : worldState.getVehicleList().getAll())
+           // drawVehicle(g, vehicle, worldState.getRoadMap());
+     */
     }
 
-
+    /*
+    This method is for drawing road_network
+    It gets information from worldState
+    It will be used by paint
+     */
     public void draw_road_network(Graphics g) {
         MapDTO mapDTO = worldState.getRoadMap();
         g.setColor(ROAD_COLOR);
+        // List<JunctionDTO> junctionList = mapDTO.getJunctions();
+        //List<RoadDTO> roadList = mapDTO.getRoads();
 
+//        for (int i = 0; i < junctionList.size(); i++) {
+//            JunctionDTO junctionDTO = junctionList.get(i);
+//            List<Direction> directionList = junctionDTO.getConnectedDirections();
+//
+//            for(int j=0; j<directionList.size(); j++){
+//                RoadDTO roadDTO = junctionDTO.getRoad(directionList.get(j));
+//                //draw_road(junctionDTO, directionList.get(j),g,x,y);
+//                //still have problem here
+//            }
+//        }
         for (JunctionDTO junctionDTO:mapDTO.getJunctions()){
             g.setColor(ROAD_COLOR);
             String junname=junctionDTO.getLabel();
@@ -213,11 +290,12 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g2.setStroke(stroke2);
     }
 
-    public void processjunctionlocation(WorldStateDTO worldStateDTO){
+    public void  processjunctionlocation(WorldStateDTO worldStateDTO){
+
         MapDTO mapDTO=worldStateDTO.getRoadMap();
         String junction= mapDTO.getJunctions().get(0).getLabel();
         // Point point=new Point((int)mapDTO.getRoads().get(0).getLength(),(int)mapDTO.getRoads().get(0).getLength());
-        Point point =new Point(300,300);
+        Point point =new Point(310,310);
         junctionlocation.put(junction,point);
         for (int i=0;i<mapDTO.getJunctionCount();i++){
             JunctionDTO junctionDTO=mapDTO.getJunctions().get(i);
@@ -250,19 +328,22 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
                     }
                 }
+
+
+
             }
         }
         for(JunctionDTO junctionDTO:mapDTO.getJunctions()){
-            double minx=300;
-            double miny=300;
+            double minx=310;
+            double miny=310;
             String jun=junctionDTO.getLabel();
             if (junctionlocation.get(jun).getX()<minx)
                 minx=junctionlocation.get(jun).getX();
             if (junctionlocation.get(jun).getY()<miny)
                 miny=junctionlocation.get(jun).getY();
 
-            if (minx<300){
-                double add=300-minx;
+            if (minx<310){
+                double add=310-minx;
                 for(JunctionDTO junctionDTOx:mapDTO.getJunctions()){
                     int x=(int)junctionlocation.get(junctionDTOx.getLabel()).getX();
                     int y=(int)junctionlocation.get(junctionDTOx.getLabel()).getY();
@@ -270,8 +351,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
                 }
 
             }
-            if (miny<300){
-                double add=300-miny;
+            if (miny<310){
+                double add=310-miny;
                 for(JunctionDTO junctionDTOy:mapDTO.getJunctions()){
                     int x=(int)junctionlocation.get(junctionDTOy.getLabel()).getX();
                     int y=(int)junctionlocation.get(junctionDTOy.getLabel()).getY();
@@ -282,7 +363,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     }
 
-    // computer x&y base on location
+    // computer Vehicle x&y base on  location
+
     public  Point compute_xy(MapDTO roadmap,LocationDTO locationDTO){
         Point point=new Point();
         RoadDTO roadDTO=locationDTO.getRoad();
@@ -307,33 +389,37 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         }
 
         if (origin.getLabel().equals(junction_label)){
-            origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
+            // origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
 
             switch (road_direction){
                 case Up:
+                    origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY());
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()-distance-VEHICLE_HEIGHT);
+                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()-distance-0.5*VEHICLE_HEIGHT);
                     else
-                        point.setLocation(origin_point.getX()-Lane_distance -VEHICLE_WIDTH,origin_point.getY()+distance+VEHICLE_HEIGHT);
+                        point.setLocation(origin_point.getX()-Lane_distance -VEHICLE_WIDTH,origin_point.getY()-distance-0.5*VEHICLE_HEIGHT);
                     break;
 
                 case Down:
+                    origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()+ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()-Lane_distance-VEHICLE_WIDTH,origin_point.getY()+distance);
+                        point.setLocation(origin_point.getX()-Lane_distance-VEHICLE_WIDTH,origin_point.getY()+distance-0.5*VEHICLE_HEIGHT);
                     else
-                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()+distance);
+                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()+distance-0.5*VEHICLE_HEIGHT);
                     break;
                 case Left:
+                    origin_point.setLocation(junctionlocation.get(junction_label).getX(),junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()-distance-VEHICLE_HEIGHT,origin_point.getY()-Lane_distance-VEHICLE_WIDTH);
+                        point.setLocation(origin_point.getX()-distance-0.5*VEHICLE_HEIGHT,origin_point.getY()-Lane_distance-VEHICLE_WIDTH);
                     else
-                        point.setLocation(origin_point.getX()-distance-VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
+                        point.setLocation(origin_point.getX()-distance-0.5*VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
                     break;
                 case Right:
+                    origin_point.setLocation(junctionlocation.get(junction_label).getX()+ROAD_WIDTH,junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()+distance,origin_point.getY()+Lane_distance);
+                        point.setLocation(origin_point.getX()+distance-0.5*VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
                     else
-                        point.setLocation(origin_point.getX()+distance,origin_point.getY()-Lane_distance - VEHICLE_WIDTH);
+                        point.setLocation(origin_point.getX()+distance-0.5*VEHICLE_HEIGHT,origin_point.getY()-Lane_distance - VEHICLE_WIDTH);
                     break;
 
             }
@@ -343,32 +429,32 @@ public class MapPanel extends JPanel implements IStateChangeListener{
                 case Down:
                     origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()+roadDTO.getLength()+ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()-distance-VEHICLE_HEIGHT);
+                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()-distance-0.5*VEHICLE_HEIGHT);
                     else
-                        point.setLocation(origin_point.getX()-Lane_distance -VEHICLE_WIDTH,origin_point.getY()+distance+VEHICLE_HEIGHT);
+                        point.setLocation(origin_point.getX()-Lane_distance -VEHICLE_WIDTH,origin_point.getY()-distance-0.5*VEHICLE_HEIGHT);
 
                     break;
                 case Up:
                     origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()-roadDTO.getLength());
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()-Lane_distance-VEHICLE_WIDTH,origin_point.getY()+distance);
+                        point.setLocation(origin_point.getX()-Lane_distance-VEHICLE_WIDTH,origin_point.getY()+distance-0.5*VEHICLE_HEIGHT);
                     else
-                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()+distance);
+                        point.setLocation(origin_point.getX()+Lane_distance,origin_point.getY()+distance-0.5*VEHICLE_HEIGHT);
 
                     break;
                 case Left:
                     origin_point.setLocation(junctionlocation.get(junction_label).getX()-roadDTO.getLength(),junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()+distance,origin_point.getY()+Lane_distance);
+                        point.setLocation(origin_point.getX()+distance-0.5*VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
                     else
-                        point.setLocation(origin_point.getX()+distance,origin_point.getY()-Lane_distance -VEHICLE_WIDTH);
+                        point.setLocation(origin_point.getX()+distance-0.5*VEHICLE_HEIGHT,origin_point.getY()-Lane_distance -VEHICLE_WIDTH);
                     break;
                 case Right:
                     origin_point.setLocation(junctionlocation.get(junction_label).getX()+roadDTO.getLength()+ROAD_WIDTH,junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
                     if(lane==Lane.Right)
-                        point.setLocation(origin_point.getX()-distance-VEHICLE_HEIGHT,origin_point.getY()-Lane_distance-VEHICLE_WIDTH);
+                        point.setLocation(origin_point.getX()-distance-0.5*VEHICLE_HEIGHT,origin_point.getY()-Lane_distance-VEHICLE_WIDTH);
                     else
-                        point.setLocation(origin_point.getX()-distance-VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
+                        point.setLocation(origin_point.getX()-distance-0.5*VEHICLE_HEIGHT,origin_point.getY()+Lane_distance);
 
                     break;
             }
@@ -394,6 +480,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             }
         }
         return road_direction;
+
     }
 
 }
