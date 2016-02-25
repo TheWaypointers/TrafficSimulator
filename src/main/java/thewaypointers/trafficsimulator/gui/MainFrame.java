@@ -11,14 +11,9 @@ public class MainFrame extends JFrame{
 
     public MainFrame(WorldStateDTO worldStateDTO){
         mapContainerPanel =  new MapContainerPanel();
+        mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
         mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
-//        mapPanel  =  new MapPanel();
-//        mapPanel.NewStateReceived(worldStateDTO);
-//        mapPanel.setPreferredSize(new Dimension(1000,1000));
-//        JScrollPane jScrollPane=new JScrollPane(mapPanel);
-//        jScrollPane.setViewportView(mapPanel);
 
-        // jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.setLayout(null);
         mapContainerPanel.setBounds(0,0,600,600);
         controlPanel.setBounds(605,0,200,200);
