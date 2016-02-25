@@ -27,20 +27,20 @@ public class Simulation implements ISimulationInputListener {
 
     GraphFactory graphFactory;
 
-    final long SIMULATION_TIME_STEP = 500;
     final int MAX_VEHICLE_NUMBER = 1;
     final int TRAFFIC_LIGHT_STEPS = 10;
-    final long SIMULATION_TIME_MULTIPLIER = 2;
     int currentVehicleNumber = 0;
     int trafficLightCounter = 0;
 
+    /**
+     * The maximum internal clock time interval at which computation occurs.
+     */
+    final long RESOLUTION = 300;
 
-    //TODO: use this constructor in the simulation manager
-    public Simulation(IStateChangeListener stateChangeListener) {
-        this.stateChangeListener = stateChangeListener;
-        initiateSimulation();
-    }
-
+    /**
+     * The internal time clock.
+     */
+    long clock = 0;
 
     public Simulation(){
         initiateSimulation();
@@ -53,40 +53,30 @@ public class Simulation implements ISimulationInputListener {
         createVehicles();
     }
 
-    //timesteps
-    public void runSimulation(){
-        run = true;
-        while(run){
-
-            NextSimulationStep();
-
-            try{
-                Thread.sleep(SIMULATION_TIME_STEP);
-            }catch(Exception ex){
-                System.out.println(ex.getMessage());
-            }
-
-        }
-    }
-
     public void SimulationParameterChanged(String parameterName, String value) {
         // set new value for the parameter in the simulation
     }
 
-    public void NextSimulationStep(){
+    public WorldStateDTO getNextSimulationStep(long timeStep){
 
-            try{
-                moveVehicles(SIMULATION_TIME_STEP * SIMULATION_TIME_MULTIPLIER);
-                checkForLeavingVehicles();
-            }
-            catch (Exception ex){
-                System.out.println(ex.getMessage());
-            }
+        long timeLeft = timeStep;
+        while(timeLeft > RESOLUTION) {
+            timeLeft -= RESOLUTION;
+            computeNextSimulationStep(RESOLUTION);
+        }
+        computeNextSimulationStep(timeLeft);
+        return getWorldState();
+    }
 
+    private void computeNextSimulationStep(long timeStep){
+        moveVehicles(timeStep);
+        checkForLeavingVehicles();
 
         //temp
         changeWorldState();
         changeTrafficLightState();
+
+        clock += timeStep;
     }
 
     private synchronized void changeWorldState() {
