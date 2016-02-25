@@ -152,87 +152,14 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         super.paint(g);
         this.draw_road_network(g);
         this.drawVehicles(g);
-//        JunctionDTO junction_1 = worldState.getRoadMap().getJunctions().get(0);
-//        JunctionDTO junction_2 = worldState.getRoadMap().getJunctions().get(1);
-//        JunctionDTO junction_3 = worldState.getRoadMap().getJunctions().get(2);
-//        g.setColor(ROAD_COLOR);
-//        g.fillRect(300,300,50,50);
-//        this.draw_road(junction_1, Direction.Up, g, 300, 300);
-//        this.draw_road(junction_1, Direction.Down, g, 300, 300);
-//        this.draw_road(junction_1, Direction.Left, g, 300, 300);
-//        this.draw_road(junction_1, Direction.Right, g, 300, 300);
-//        g.setColor(ROAD_COLOR);
-//        g.fillRect(650,300,50,50);
-//        this.draw_road(junction_2, Direction.Up, g, 650, 300);
-//        this.draw_road(junction_2, Direction.Down, g, 650, 300);
-//        this.draw_road(junction_2, Direction.Right, g, 650, 300);
-//        g.setColor(ROAD_COLOR);
-//        g.fillRect(300,650,50,50);
-//        this.draw_road(junction_3, Direction.Down, g, 300, 650);
-//        this.draw_road(junction_3, Direction.Left, g, 300, 650);
 
-
-/*
-//        RoadDTO upRoad = junction.getRoad(Direction.Up);
-//        RoadDTO downRoad = junction.getRoad(Direction.Down);
-//        float totalLength = upRoad.getLength()+downRoad.getLength();
-
-        // draw road
-        g.setColor(ROAD_COLOR);
-        g.fillRect(ROAD_Y1,0,ROAD_WIDTH,(int)totalLength);
-
-        // draw lane separator line
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setColor(LANE_SEPARATOR_LINE_COLOR);
-        float [] arr={15.0f,10.0f};
-        BasicStroke stroke = new BasicStroke(1,BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f,arr,0);
-        g2.setStroke(stroke);
-        Line2D.Float line = new Line2D.Float(ROAD_MIDDLE_LINE,10,ROAD_MIDDLE_LINE,10+(int)totalLength);
-        g2.draw(line);
-        BasicStroke stroke2=new BasicStroke();
-        g2.setStroke(stroke2);
-
-        int junction_y = (int)upRoad.getLength();
-
-        //draw junction
-        g.setColor(Color.black);
-        g.drawLine(ROAD_Y1,junction_y,ROAD_Y2,junction_y);
-
-        //draw lights
-        TrafficLightDTO upTrafficLight = worldState.getTrafficLightSystem()
-                .getTrafficLight(junction.getLabel(), Direction.Up, Lane.Right);
-        TrafficLightDTO downTrafficLight = worldState.getTrafficLightSystem()
-                .getTrafficLight(junction.getLabel(), Direction.Down, Lane.Right);
-        drawTrafficLight(g, 255, 297, TRAFFIC_LIGHT_SIZE, upTrafficLight.getColor());
-        drawTrafficLight(g, 283, 297, TRAFFIC_LIGHT_SIZE, downTrafficLight.getColor());
-
-        //draw cars
-        //for(VehicleDTO vehicle : worldState.getVehicleList().getAll())
-           // drawVehicle(g, vehicle, worldState.getRoadMap());
-     */
     }
 
-    /*
-    This method is for drawing road_network
-    It gets information from worldState
-    It will be used by paint
-     */
+
     public void draw_road_network(Graphics g) {
         MapDTO mapDTO = worldState.getRoadMap();
         g.setColor(ROAD_COLOR);
-        // List<JunctionDTO> junctionList = mapDTO.getJunctions();
-        //List<RoadDTO> roadList = mapDTO.getRoads();
 
-//        for (int i = 0; i < junctionList.size(); i++) {
-//            JunctionDTO junctionDTO = junctionList.get(i);
-//            List<Direction> directionList = junctionDTO.getConnectedDirections();
-//
-//            for(int j=0; j<directionList.size(); j++){
-//                RoadDTO roadDTO = junctionDTO.getRoad(directionList.get(j));
-//                //draw_road(junctionDTO, directionList.get(j),g,x,y);
-//                //still have problem here
-//            }
-//        }
         for (JunctionDTO junctionDTO:mapDTO.getJunctions()){
             g.setColor(ROAD_COLOR);
             String junname=junctionDTO.getLabel();
@@ -364,7 +291,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     }
 
     // computer Vehicle x&y base on  location
-
     public  Point compute_xy(MapDTO roadmap,LocationDTO locationDTO){
         Point point=new Point();
         RoadDTO roadDTO=locationDTO.getRoad();
@@ -389,7 +315,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         }
 
         if (origin.getLabel().equals(junction_label)){
-            // origin_point.setLocation(junctionlocation.get(junction_label).getX()+0.5*ROAD_WIDTH,junctionlocation.get(junction_label).getY()+0.5*ROAD_WIDTH);
 
             switch (road_direction){
                 case Up:
