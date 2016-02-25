@@ -4,6 +4,7 @@ public class RoadDTO {
     private float length;
     private NodeDTO from;
     private NodeDTO to;
+    private String label;
 
     public RoadDTO(){}
 
@@ -128,4 +129,9 @@ public class RoadDTO {
         return RoadDTO.class.isAssignableFrom(o.getClass()) &&
                 equals((RoadDTO) o);
     }
+
+    public String getLabel() {
+        return getFrom().getLabel() + getTo().getLabel();
+    }
+
 }

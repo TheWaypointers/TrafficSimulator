@@ -12,6 +12,15 @@ public class TrafficLightNode extends Node {
         setColor(TrafficLightColor.Green);
     }
 
+    public void  changeLightColor(){
+        if(this.getColor() == TrafficLightColor.Green){
+            this.setColor(TrafficLightColor.Red);
+        }
+        else{
+            this.setColor(TrafficLightColor.Green);
+        }
+    }
+
     public TrafficLightColor getColor() {
         return color;
     }

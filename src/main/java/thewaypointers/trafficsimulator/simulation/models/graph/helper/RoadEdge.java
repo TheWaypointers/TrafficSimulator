@@ -47,4 +47,5 @@ public class RoadEdge {
     public void setRoadLength(float roadLength) {
         this.roadLength = roadLength;
     }
+
 }

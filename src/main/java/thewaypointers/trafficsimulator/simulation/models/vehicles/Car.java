@@ -244,6 +244,21 @@ public class Car implements IVehicle {
         return isOnExit();
     }
 
+    @Override
+    public DefaultWeightedEdge getCurrentRoadEdge() {
+        return getCurrentRoad();
+    }
+
+    @Override
+    public String getVehiclesOriginNode() {
+        return getOriginNode();
+    }
+
+    @Override
+    public String getVehiclesDestinationNode() {
+        return decisionPath.peek();
+    }
+
     public DefaultWeightedEdge getCurrentRoad() {
         return currentRoad;
     }
