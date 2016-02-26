@@ -6,14 +6,23 @@ public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
 
-    WorldStateDTO worldState;
+    WorldStateDTO roadNetworkWorldState;
+    WorldStateDTO firstVersionWorldState;
+    
+    public boolean roadNetwork = true;
+    
     private int stateNo;
 
     public SimpleWorldStateProvider(){
-        worldState = initializeWorldState();
+        firstVersionWorldState = initializeFirstVersionWorldState();
+        roadNetworkWorldState = initializeRoadNetworkWorldState();
+    }
+    
+    private WorldStateDTO initializeFirstVersionWorldState(){
+        return null;
     }
 
-    private WorldStateDTO initializeWorldState() {
+    private WorldStateDTO initializeRoadNetworkWorldState() {
 
         WorldStateDTO ws = new WorldStateDTO();
 
@@ -49,6 +58,8 @@ public class SimpleWorldStateProvider {
     }
 
     public WorldStateDTO getNextState(float vehicleMovement) {
+        
+        WorldStateDTO worldState = roadNetwork? roadNetworkWorldState : firstVersionWorldState;
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
