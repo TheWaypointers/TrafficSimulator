@@ -24,6 +24,7 @@ public class EmergencyService implements IVehicle {
         private String originNode;
         private Lane lane;
         private boolean onExit;
+        private DefaultWeightedEdge currentRoad;
 
         //Emergency Service drives 20% faster than cars
         private final long SPEED_DIFFERENCE = 20;
@@ -121,7 +122,12 @@ public class EmergencyService implements IVehicle {
             return isOnExit();
         }
 
-        @Override
+    @Override
+    public DefaultWeightedEdge getCurrentRoadEdge() {
+        return getCurrentRoad();
+    }
+
+    @Override
         public float getVehiclesDistanceTravelled() {
             return getDistanceTravelled();
         }
@@ -131,11 +137,29 @@ public class EmergencyService implements IVehicle {
             return null;
         }
 
+    @Override
+    public String getVehiclesOriginNode() {
+        return getOriginNode();
+    }
+
+    @Override
+    public String getVehiclesDestinationNode() {
+        return decisionPath.peek();
+    }
+
     public boolean isOnExit() {
         return onExit;
     }
 
     public void setOnExit(boolean onExit) {
         this.onExit = onExit;
+    }
+
+    public DefaultWeightedEdge getCurrentRoad() {
+        return currentRoad;
+    }
+
+    public void setCurrentRoad(DefaultWeightedEdge currentRoad) {
+        this.currentRoad = currentRoad;
     }
 }
