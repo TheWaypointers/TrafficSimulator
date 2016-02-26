@@ -19,7 +19,20 @@ public class SimpleWorldStateProvider {
     }
     
     private WorldStateDTO initializeFirstVersionWorldState(){
-        return null;
+        WorldStateDTO ws = new WorldStateDTO();
+
+        MapDTO roadMap = ws.getRoadMap();
+        roadMap.addRoad("E1","A", Direction.Down, ROAD_LENGTH);
+        roadMap.addRoad("A", "E2", Direction.Down, ROAD_LENGTH);
+
+        // add traffic lights
+        ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
+
+        RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
+        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
+        ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
+
+        return ws;
     }
 
     private WorldStateDTO initializeRoadNetworkWorldState() {
