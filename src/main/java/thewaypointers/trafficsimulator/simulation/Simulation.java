@@ -41,8 +41,8 @@ public class Simulation implements ISimulationInputListener {
 
 
     public Simulation(){
-        //setGraph();
-        // CreateVehicles();
+        setGraph();
+        CreateVehicles();
         createWorldState();
         MainFrame mainFrame=new MainFrame(worldState);
     }
