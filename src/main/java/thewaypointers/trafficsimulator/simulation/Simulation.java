@@ -284,15 +284,8 @@ public class Simulation implements ISimulationInputListener {
         worldState = new WorldStateDTO();
         MapDTO roadMap = worldState.getRoadMap();
         roadMap.addRoad("E1", "A", Direction.Down, 300);
-        // roadMap.addRoad("A", "E2", Direction.Down, 300);
-        roadMap.addRoad("E3","A",Direction.Right,300);
-        roadMap.addRoad("A","B",Direction.Right,300);
-        roadMap.addRoad("A","C",Direction.Down,300);
-        roadMap.addRoad("E2","B",Direction.Down,300);
-        roadMap.addRoad("B","E4",Direction.Right,300);
-        roadMap.addRoad("B","E7",Direction.Down,300);
-        roadMap.addRoad("E5","C",Direction.Right,300);
-        roadMap.addRoad("C","E6",Direction.Down,300);
+        roadMap.addRoad("A", "E2", Direction.Down, 300);
+
 
         // add traffic lights
         worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
