@@ -1,7 +1,7 @@
 package thewaypointers.trafficsimulator.gui;
 import javax.swing.*;
 
-import com.oracle.deploy.update.UpdateCheck;
+
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 
