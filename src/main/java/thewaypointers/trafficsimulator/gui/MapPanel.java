@@ -167,33 +167,43 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public void draw_road(JunctionDTO junctionDTO, Direction direction, Graphics g, int x, int y){
         g.setColor(ROAD_COLOR);
         RoadDTO road=junctionDTO.getRoad(direction);
-        switch(direction){
+        int roadX=0, roadY=0, roadWidth, roadLength, startX, startY, endX, endY;
+        switch(direction) {
             case Up:
-                int upx=x;
-                int upy=(int )(y-road.getLength());
-                g.fillRect(upx,upy,ROAD_WIDTH,(int)road.getLength());
-                draw_line(upx + 25, upy, upx + 25, upy + (int) road.getLength(), g);
+                roadX = x;
+                roadY = (int) (y - road.getLength());
                 break;
             case Down:
-                int down_x=x;
-                int down_y=y+ROAD_WIDTH;
-                g.fillRect(down_x,down_y,ROAD_WIDTH,(int)road.getLength());
-                draw_line(down_x + 25, down_y, down_x + 25, down_y + (int) road.getLength(), g);
+                roadX = x;
+                roadY = y + ROAD_WIDTH;
                 break;
             case Right:
-                int right_x=x+ROAD_WIDTH;
-                int right_y=y;
-                g.fillRect(right_x,right_y,(int)road.getLength(),ROAD_WIDTH);
-                draw_line(right_x, right_y + 25, right_x + (int) road.getLength(), right_y + 25, g);
+                roadX = x + ROAD_WIDTH;
+                roadY = y;
                 break;
             case Left:
-                int left_x=(int )(x-road.getLength());
-                int left_y=y;
-                g.fillRect(left_x,left_y,(int)road.getLength(),ROAD_WIDTH);
-                draw_line(left_x, left_y + 25, left_x + (int) road.getLength(), left_y + 25, g);
+                roadX = (int) (x - road.getLength());
+                roadY = y;
                 break;
-
         }
+        if (direction.isVertical()){
+            roadWidth = ROAD_WIDTH;
+            roadLength = (int) road.getLength();
+            startX = roadX + 25;
+            endX = roadY;
+            startY = roadX + 25;
+            endY = roadY + (int) road.getLength();
+        }else{
+            roadWidth = (int) road.getLength();
+            roadLength = ROAD_WIDTH;
+            startX = roadX;
+            endX = roadY + 25;
+            startY = roadX + (int) road.getLength();
+            endY = roadY + 25;
+        }
+
+        g.fillRect(roadX,roadY, roadWidth, roadLength);
+        draw_line(startX, endX, startY, endY, g);
     }
 
 
