@@ -27,6 +27,14 @@ public enum Direction {
         }
     }
 
+    public boolean isVertical(){
+        return this.equals(Direction.Up) || this.equals(Direction.Down);
+    }
+
+    public boolean isHorizontal(){
+        return !this.isVertical();
+    }
+
     public Direction opposite(){
         return oppositeMap.get(this);
     }

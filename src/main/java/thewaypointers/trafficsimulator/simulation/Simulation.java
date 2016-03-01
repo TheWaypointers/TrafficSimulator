@@ -9,7 +9,7 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
-
+import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
