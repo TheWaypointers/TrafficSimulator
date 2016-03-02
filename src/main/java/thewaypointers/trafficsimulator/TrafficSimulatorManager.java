@@ -8,24 +8,19 @@ import thewaypointers.trafficsimulator.simulation.Simulation;
 
 public class TrafficSimulatorManager {
 
-    final static long TIME_STEP = 500;
+    final static long TIME_STEP = 100;
+    final static long SIMULATION_TIME_STEP = 300;
     static WorldStateDTO worldState;
 
     public static void main(String[] args) {
 
-        SimulatorRunnable simulatorRunnable = new SimulatorRunnable();
-        Thread t = new Thread(simulatorRunnable);
-        t.start();
-
-        //temp fix
-        waitForThread();
-        worldState = simulatorRunnable.getWorldState();
+        Simulation simulation = new Simulation();
         MainFrame mainFrame = new MainFrame(worldState);
         while(true){
             try{
                 Thread.sleep(TIME_STEP);
-                worldState = simulatorRunnable.getWorldState();
-                mainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
+                worldState = simulation.getNextSimulationStep(SIMULATION_TIME_STEP);
+                MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
                 output();
             }
             catch(InterruptedException ex){
@@ -50,20 +45,6 @@ public class TrafficSimulatorManager {
                 loc.getRoad().getFrom().getLabel(),
                 loc.getRoad().getTo().getLabel());
         System.out.println();
-    }
-
-    public static class SimulatorRunnable implements Runnable {
-
-        Simulation sim;
-
-        public void run() {
-            sim = new Simulation();
-            sim.runSimulation();
-        }
-
-        public WorldStateDTO getWorldState(){
-            return sim.getWorldState();
-        }
     }
 
 }
