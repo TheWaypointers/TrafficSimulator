@@ -6,6 +6,7 @@ import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 public class Node {
 
     private String nodeName;
+    private boolean carEnteringFlag;
 
     private RoadEdge LeftRoad;
     private RoadEdge UpRoad;
@@ -65,5 +66,13 @@ public class Node {
 
     public void setNodeType(NodeType nodeType) {
         this.nodeType = nodeType;
+    }
+
+    public boolean isCarEnteringFlag() {
+        return carEnteringFlag;
+    }
+
+    public void setCarEnteringFlag(boolean carEnteringFlag) {
+        this.carEnteringFlag = carEnteringFlag;
     }
 }
