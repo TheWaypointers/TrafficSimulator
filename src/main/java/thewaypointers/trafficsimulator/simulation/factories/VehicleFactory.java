@@ -46,20 +46,20 @@ public class VehicleFactory {
     }
 
     private String calculateDestinationNode(String originNode) {
-        List<String> extiNodesAvailable = new ArrayList<>();
+        List<String> exitNodesAvailable = new ArrayList<>();
 
         for(Node node : exitNodes){
             if(!node.getNodeName().equals(originNode)){
-                extiNodesAvailable.add(node.getNodeName());
+                exitNodesAvailable.add(node.getNodeName());
             }
         }
 
-        int numberOfExitNodes = extiNodesAvailable.size();
+        int numberOfExitNodes = exitNodesAvailable.size();
 
         int number;
         number = (int)(Math.random() * numberOfExitNodes);
 
-        return extiNodesAvailable.get(number);
+        return exitNodesAvailable.get(number);
     }
 
     private String calculateOriginNode() {
