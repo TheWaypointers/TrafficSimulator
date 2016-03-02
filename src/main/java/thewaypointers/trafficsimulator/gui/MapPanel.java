@@ -45,7 +45,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     WorldStateDTO worldState = new WorldStateDTO(null, null, null);
 
     public  static Map<String,Point> junctionlocation;
-
+    private boolean junctionLocationsProcessed = false;
 
     public MapPanel(){
         junctionlocation=new HashMap<>();
@@ -60,6 +60,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     }
 
     public void NewStateReceived(WorldStateDTO worldStateDTO){
+        if(!junctionLocationsProcessed){
+            processjunctionlocation(worldStateDTO);
+            junctionLocationsProcessed = true;
+        }
         this.worldState = worldStateDTO;
         this.repaint();
     }

@@ -16,14 +16,12 @@ public class TrafficSimulatorManager {
     public static void main(String[] args) {
 
         Simulation simulation = new Simulation();
+        mainFrame = new MainFrame();
 
         while(true){
             try{
                 Thread.sleep(TIME_STEP);
                 worldState = simulation.getNextSimulationStep(SIMULATION_TIME_STEP);
-                if(mainFrame == null){
-                    mainFrame = new MainFrame(worldState);
-                }
                 MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
                 output();
             }
