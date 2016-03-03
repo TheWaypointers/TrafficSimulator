@@ -9,10 +9,16 @@ public class MainFrame extends JFrame{
     public static MapPanel mapPanel=null;
     ControlPanel controlPanel = new ControlPanel();
 
+    public MainFrame(){
+        this(null);
+    }
+
     public MainFrame(WorldStateDTO worldStateDTO){
         mapContainerPanel =  new MapContainerPanel();
-        mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
-        mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
+        if (worldStateDTO != null){
+            mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
+            mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
+        }
 
         this.setLayout(null);
         mapContainerPanel.setBounds(0,0,600,600);
