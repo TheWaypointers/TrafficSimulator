@@ -3,15 +3,15 @@ package thewaypointers.trafficsimulator.common;
 public class VehicleDTO {
     private String label;
     private float speed;
-    private LocationDTO location;
+    private ILocation location;
     private VehicleType type;
 
-    public VehicleDTO(String label, float speed, LocationDTO location, VehicleType type) {
+    public VehicleDTO(String label, float speed, ILocation location, VehicleType type) {
         this(label, location, type);
         this.speed = speed;
     }
 
-    public VehicleDTO(String label, LocationDTO location, VehicleType type){
+    public VehicleDTO(String label, ILocation location, VehicleType type){
         this.label = label;
         this.location = location;
         this.type = type;
@@ -19,7 +19,7 @@ public class VehicleDTO {
 
     public VehicleDTO(VehicleDTO other){
         this.label = other.getLabel();
-        this.location = new LocationDTO(other.getLocation());
+        this.location = other.getLocation().copy();
         this.speed = other.getSpeed();
         this.type = other.getType();
     }
@@ -40,11 +40,11 @@ public class VehicleDTO {
         this.speed = speed;
     }
 
-    public LocationDTO getLocation() {
+    public ILocation getLocation() {
         return location;
     }
 
-    void setLocation(LocationDTO location) {
+    void setLocation(RoadLocationDTO location) {
         this.location = location;
     }
 

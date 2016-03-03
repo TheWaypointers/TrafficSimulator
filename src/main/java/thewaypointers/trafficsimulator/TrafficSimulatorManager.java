@@ -1,7 +1,5 @@
 package thewaypointers.trafficsimulator;
 
-import thewaypointers.trafficsimulator.common.LocationDTO;
-import thewaypointers.trafficsimulator.common.VehicleDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.simulation.Simulation;

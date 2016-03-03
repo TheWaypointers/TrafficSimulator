@@ -29,7 +29,7 @@ public class SimpleWorldStateProvider {
         ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
 
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
-        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
+        RoadLocationDTO loc = new RoadLocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
 
         return ws;
@@ -58,13 +58,13 @@ public class SimpleWorldStateProvider {
 
         // add cars
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
-        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
+        RoadLocationDTO loc = new RoadLocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         RoadDTO startRoad2 = roadMap.getJunction("A").getRoad(Direction.Left);
-        LocationDTO loc2 = new LocationDTO(startRoad2, startRoad2.getEnd("E3"), 0, Lane.Right);
+        RoadLocationDTO loc2 = new RoadLocationDTO(startRoad2, startRoad2.getEnd("E3"), 0, Lane.Right);
         RoadDTO startRoad3 = roadMap.getJunction("B").getRoad(Direction.Right);
-        LocationDTO loc3 = new LocationDTO(startRoad3, startRoad3.getEnd("B"), 0, Lane.Right);
+        RoadLocationDTO loc3 = new RoadLocationDTO(startRoad3, startRoad3.getEnd("B"), 0, Lane.Right);
         RoadDTO startRoad4 = roadMap.getJunction("B").getRoad(Direction.Down);
-        LocationDTO loc4 = new LocationDTO(startRoad4, startRoad4.getEnd("E7"), 0, Lane.Right);
+        RoadLocationDTO loc4 = new RoadLocationDTO(startRoad4, startRoad4.getEnd("E7"), 0, Lane.Right);
         ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
         ws.getVehicleList().addVehicle("V2", loc2, VehicleType.EmergencyService);
         ws.getVehicleList().addVehicle("V3", loc3, VehicleType.Bus);
@@ -79,22 +79,22 @@ public class SimpleWorldStateProvider {
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
         VehicleDTO v = worldState.getVehicleList().getAll().get(0);
-        LocationDTO loc = v.getLocation();
+        RoadLocationDTO loc = (RoadLocationDTO) v.getLocation();
         if(vehicleMovement > ROAD_LENGTH)
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
 
-        LocationDTO newLocation;
+        RoadLocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
-            newLocation = new LocationDTO(loc.getRoad(),
+            newLocation = new RoadLocationDTO(loc.getRoad(),
                     loc.getOrigin(),
                     loc.getDistanceTravelled() + vehicleMovement,
                     loc.getLane());
         }else{
             // jump to next road
             RoadDTO newRoad = loc.getRoad().equals(upRoad) ? downRoad : upRoad;
-            newLocation = new LocationDTO(newRoad,
+            newLocation = new RoadLocationDTO(newRoad,
                     newRoad.getFrom(),
                     loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().getLength(),
                     loc.getLane());
