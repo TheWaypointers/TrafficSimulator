@@ -1,6 +1,8 @@
 package thewaypointers.trafficsimulator.common;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class JunctionTrafficLightsDTO {
@@ -39,5 +41,16 @@ public class JunctionTrafficLightsDTO {
             addRoad(d);
         }
     }
+
+    public List<Direction> GetTrafficlightDirections(){
+        List<Direction> directions=new ArrayList<>();
+        directions.addAll(this.roads.keySet());
+        for (Direction direction:Direction.values()){
+            if (roads.get(direction)==null)
+                directions.remove(direction);
+        }
+        return  directions;
+    }
+
 
 }

@@ -20,7 +20,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int VEHICLE_WIDTH = 8;
     public static final int VEHICLE_HEIGHT = 16;
     public static final int LANE_DISTANCE =8;
-    public static final int TRAFFIC_LIGHT_SIZE =6;
+    public static final int TRAFFIC_LIGHT_SIZE = 5;
 
     public static final int JUNCTION_STARTPOINT_X = 310;
     public static final int JUNCTION_STARTPOINT_Y = 310;
@@ -143,6 +143,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public void paint(Graphics g){
         super.paint(g);
         this.draw_road_network(g);
+        this.draw_TrafficLightSystem(g);
         this.drawVehicles(g);
     }
 
@@ -206,7 +207,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         draw_line(startX, endX, startY, endY, g);
     }
 
-
     private void draw_line(int star_X, int end_X, int star_Y, int end_Y, Graphics g){
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(LANE_SEPARATOR_LINE_COLOR);
@@ -217,6 +217,19 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         g2.draw(line);
         BasicStroke stroke2=new BasicStroke();
         g2.setStroke(stroke2);
+    }
+
+    private  void draw_TrafficLightSystem(Graphics g){
+        TrafficLightSystemDTO trafficLightSystemDTO=this.worldState.getTrafficLightSystem();
+        for (String junction:trafficLightSystemDTO.GetJunctionLabel()){
+            for (Direction direction:trafficLightSystemDTO.getJunction(junction).GetTrafficlightDirections()){
+                for(Lane lane:Lane.values()) {
+                    Point trafficlocation = this.processTrafficLight(junction,direction,lane);
+                    TrafficLightDTO trafficLight=  trafficLightSystemDTO.getJunction(junction).getRoad(direction).getTrafficLight(lane);
+                    this.drawTrafficLight(g,(int) trafficlocation.getX(),(int)trafficlocation.getY(),TRAFFIC_LIGHT_SIZE,trafficLight.getColor(),direction);
+                }
+            }
+        }
     }
 
     //compute junction location(x,y)
@@ -427,5 +440,61 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         }
         return road_direction;
     }
+
+
+    //compute  trafficLights location(x,y)
+    public Point processTrafficLight(String junction, Direction direction, Lane lane){
+        Point point = new Point();
+        int trafficlightX, trafficlightY;
+        trafficlightX = 0;
+        trafficlightY = 0;
+        Point junctionpoint = junctionlocation.get(junction);
+        switch (direction)
+        {
+            case Up:
+                if (lane == Lane.Right)
+                {
+                    trafficlightX = (int) junctionpoint.getX();
+                    trafficlightY = (int) (junctionpoint.getY()-TRAFFIC_LIGHT_SIZE);}
+                else {
+                    trafficlightX = (int) (junctionpoint.getX()+0.8*ROAD_WIDTH);
+                    trafficlightY = (int) (junctionpoint.getY()-TRAFFIC_LIGHT_SIZE);
+                }
+                break;
+            case Down:
+                if (lane == Lane.Right)
+                {   trafficlightX = (int) (junctionpoint.getX()+0.8*ROAD_WIDTH);
+                    trafficlightY = (int) (junctionpoint.getY()+ROAD_WIDTH);}
+                else {
+                    trafficlightX = (int) junctionpoint.getX();
+                    trafficlightY = (int) junctionpoint.getY()+ROAD_WIDTH;
+                }
+                break;
+            case Left:
+                if (lane == Lane.Right)
+                {   trafficlightX = (int) (junctionpoint.getX()-TRAFFIC_LIGHT_SIZE);
+                    trafficlightY = (int) (junctionpoint.getY()+0.8*ROAD_WIDTH);}
+                else {
+                    trafficlightX = (int) (junctionpoint.getX()-TRAFFIC_LIGHT_SIZE);
+                    trafficlightY = (int) junctionpoint.getY();
+                }
+                break;
+            case Right:
+                if (lane == Lane.Right)
+                {   trafficlightX = (int) (junctionpoint.getX()+ROAD_WIDTH);
+                    trafficlightY = (int) junctionpoint.getY();}
+                else {
+                    trafficlightX = (int) junctionpoint.getX()+ROAD_WIDTH;
+                    trafficlightY = (int) (junctionpoint.getY()+0.8*ROAD_WIDTH);
+                }
+                break;
+        }
+        point.setLocation(trafficlightX, trafficlightY);
+
+        return point;
+
+    }
+
+
 
 }

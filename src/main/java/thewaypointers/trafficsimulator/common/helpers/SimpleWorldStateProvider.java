@@ -53,6 +53,8 @@ public class SimpleWorldStateProvider {
 
         // add traffic lights
         ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
+        ws.getTrafficLightSystem().addJunction(roadMap.getJunction("B"));
+        ws.getTrafficLightSystem().addJunction(roadMap.getJunction("C"));
 
         // add cars
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
