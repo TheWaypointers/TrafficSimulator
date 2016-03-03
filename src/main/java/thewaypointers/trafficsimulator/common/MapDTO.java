@@ -91,4 +91,6 @@ public class MapDTO {
         //TODO rewrite processing so this can use the dictionary again
         return getJunctions().stream().filter(x->x.getLabel().equals(label)).findFirst().get();
     }
+
+
 }
