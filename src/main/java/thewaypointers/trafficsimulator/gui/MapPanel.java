@@ -16,12 +16,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     public static final int ROAD_Y1 = 250;
     public static final int ROAD_WIDTH = 50;
-    public static final int HALF_ROAD_WIDTH = 25;
     public static final int TRAFFICLIGHTS_DISTANCE = 40;
 
     public static final int VEHICLE_WIDTH = 8;
     public static final int VEHICLE_HEIGHT = 16;
-    public static final int HALF_VEHICLE_HEIGHT = 8;
     public static final int LANE_DISTANCE =8;
     public static final int TRAFFIC_LIGHT_SIZE = 5;
 
@@ -44,6 +42,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int ROAD_MIDDLE_LINE = ROAD_Y1 + (ROAD_WIDTH/2);
     public static final int ROAD_RIGHT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*3/4);
     public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
+    public static final int HALF_ROAD_WIDTH = ROAD_WIDTH/2;
+    public static final int HALF_VEHICLE_HEIGHT = VEHICLE_HEIGHT/2;
+
 
     WorldStateDTO worldState = new WorldStateDTO(null, null, null);
 
