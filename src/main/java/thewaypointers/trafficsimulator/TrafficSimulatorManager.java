@@ -23,21 +23,11 @@ public class TrafficSimulatorManager {
                 Thread.sleep(TIME_STEP);
                 worldState = simulation.getNextSimulationStep(SIMULATION_TIME_STEP);
                 MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
-                output();
             }
             catch(InterruptedException ex){
                 System.out.println(ex.getMessage());
             }
         }
-    }
-
-    private static void output() {
-        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
-        System.out.format("Vehicle 0 position: %f en route from %s to %s",
-                loc.getDistanceTravelled(),
-                loc.getRoad().getFrom().getLabel(),
-                loc.getRoad().getTo().getLabel());
-        System.out.println();
     }
 
 }
