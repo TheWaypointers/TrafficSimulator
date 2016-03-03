@@ -10,6 +10,7 @@ public class SimpleWorldStateProviderTest {
     public void Provider_generates_correct_world_state() {
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        provider.roadNetwork = false;
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);
@@ -54,6 +55,7 @@ public class SimpleWorldStateProviderTest {
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/30;
+        provider.roadNetwork = false;
 
         // act
         WorldStateDTO ws1 = provider.getNextState(moveDistance);
@@ -73,6 +75,7 @@ public class SimpleWorldStateProviderTest {
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+        provider.roadNetwork = false;
 
         // act
         provider.getNextState(moveDistance);
@@ -90,6 +93,7 @@ public class SimpleWorldStateProviderTest {
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+        provider.roadNetwork = false;
 
         // act
         provider.getNextState(moveDistance);
@@ -107,6 +111,7 @@ public class SimpleWorldStateProviderTest {
     public void Traffic_lights_change(){
         // arrange
         SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        provider.roadNetwork = false;
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);

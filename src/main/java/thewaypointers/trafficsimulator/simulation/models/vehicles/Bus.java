@@ -26,7 +26,7 @@ public class Bus implements IVehicle {
     private final long SPEED_DIFFERENCE = 10;
 
     //same constructor as in Car
-    public Bus(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane){
+    public Bus(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane) {
         this.vehicleType = VehicleType.Bus;
         this.decisionPath = decisionPath;
         this.originNode = originNode;
@@ -35,14 +35,13 @@ public class Bus implements IVehicle {
     }
 
     //constructor without VehicleType
-    public Bus(float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane){
+    public Bus(float roadSpeedLimit, Stack<String> decisionPath, String originNode, Lane lane) {
         this.vehicleType = VehicleType.Bus;
         this.decisionPath = decisionPath;
         this.originNode = originNode;
         this.lane = lane;
         calculateVehicleSpeed(roadSpeedLimit);
     }
-
 
 
     public float getTopSpeed() {
@@ -119,13 +118,7 @@ public class Bus implements IVehicle {
     }
 
     @Override
-    public HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap) {
-        return null;
-    }
-
-    @Override
-    public boolean isVehicleLeavingRoad() {
-        return isOnExit();
+    public void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
     }
 
     @Override

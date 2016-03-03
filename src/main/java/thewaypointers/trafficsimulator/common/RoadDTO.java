@@ -4,7 +4,6 @@ public class RoadDTO {
     private float length;
     private NodeDTO from;
     private NodeDTO to;
-    private String label;
 
     public RoadDTO(){}
 
@@ -124,6 +123,10 @@ public class RoadDTO {
                 getLength() == other.getLength();
     }
 
+    public boolean equals(String label){
+        return getLabel().equals(label) || getLabelAlternate().equals(label);
+    }
+
     @Override
     public boolean equals(Object o) {
         return RoadDTO.class.isAssignableFrom(o.getClass()) &&
@@ -131,7 +134,15 @@ public class RoadDTO {
     }
 
     public String getLabel() {
-        return getFrom().getLabel() + getTo().getLabel();
+        return produceLabel(getFrom(), getTo());
+    }
+
+    public String getLabelAlternate(){
+        return produceLabel(getTo(), getFrom());
+    }
+
+    private String produceLabel(NodeDTO node1, NodeDTO node2){
+        return node1.getLabel()+node2.getLabel();
     }
 
 }
