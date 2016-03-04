@@ -17,11 +17,11 @@ public class VehicleListDTO {
         vehicles.put(vehicle.getLabel(), new VehicleDTO(vehicle));
     }
 
-    public void addVehicle(String label, RoadLocationDTO location, VehicleType type){
+    public void addVehicle(String label, ILocation location, VehicleType type){
         vehicles.put(label, new VehicleDTO(label, location, type));
     }
 
-    public void addVehicle(String label, RoadLocationDTO location, VehicleType type, float speed){
+    public void addVehicle(String label, ILocation location, VehicleType type, float speed){
         vehicles.put(label, new VehicleDTO(label, speed, location, type));
     }
 
@@ -33,8 +33,8 @@ public class VehicleListDTO {
         vehicles.get(label).setSpeed(newSpeed);
     }
 
-    public void setVehicleLocation(String label, RoadLocationDTO newLocation){
-        vehicles.get(label).setLocation(new RoadLocationDTO(newLocation));
+    public void setVehicleLocation(String label, ILocation newLocation){
+        vehicles.get(label).setLocation(newLocation);
     }
 
     public List<VehicleDTO> getAll(){

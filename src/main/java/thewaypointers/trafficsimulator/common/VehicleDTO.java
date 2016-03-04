@@ -44,7 +44,7 @@ public class VehicleDTO {
         return location;
     }
 
-    void setLocation(RoadLocationDTO location) {
+    void setLocation(ILocation location) {
         this.location = location;
     }
 
