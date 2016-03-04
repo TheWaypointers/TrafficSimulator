@@ -1,5 +1,6 @@
 package thewaypointers.trafficsimulator.common;
 
+import thewaypointers.trafficsimulator.utils.Angle;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 import thewaypointers.trafficsimulator.utils.Rotation;
 
@@ -55,7 +56,7 @@ public class JunctionLocationDTO implements ILocation {
     }
 
     // default origin - Down
-    private FloatPoint getLeftTurnRouteCoordinates(float progress){
+    private FloatPoint getLeftTurnCoordinates(float progress){
         float x,y;
         if (progress <= 1/3f){
             x = 0.75f;
@@ -72,7 +73,7 @@ public class JunctionLocationDTO implements ILocation {
     }
 
     // default origin - Down
-    private FloatPoint getRightTurnRouteCoordinates(float progress){
+    private FloatPoint getRightTurnCoordinates(float progress){
         double radians = Math.toRadians(progress*90);
         float x = (float)(0.75f + 0.25*Math.sin(radians));
         float y = (float)(1 - 0.25*Math.sin(radians));
@@ -91,9 +92,9 @@ public class JunctionLocationDTO implements ILocation {
         // get correct curve
         FloatPoint coords;
         if(getTarget().equals(getOrigin().toLeft())){
-            coords = getLeftTurnRouteCoordinates(getPercentageTravelled());
+            coords = getLeftTurnCoordinates(getPercentageTravelled());
         }else if(getTarget().equals(getOrigin().toRight())){
-            coords = getRightTurnRouteCoordinates(getPercentageTravelled());
+            coords = getRightTurnCoordinates(getPercentageTravelled());
         }else if(getTarget().equals(getOrigin().opposite())){
             coords = getStraightRouteCoordinates(getPercentageTravelled());
         }else{
@@ -123,4 +124,63 @@ public class JunctionLocationDTO implements ILocation {
         return rotated;
     }
 
+    // default orientation - Down
+    private double getStraightRouteAngle(){
+        return Math.PI/2;
+    }
+
+    // default orientation - Down
+    private double getRightTurnAngle(float progress){
+        return Math.PI/2 - (Math.PI/2)*progress;
+    }
+
+    // default orientation - Down
+    private double getLeftTurnAngle(float progress){
+        if (progress <= 1/3f){
+            return Math.PI/2;
+        }else if(progress >= 1/3f && progress <= 2/3f){
+            float progressNormalized = (getPercentageTravelled()-1/3f)*3;
+            return Math.PI/2 + (Math.PI/2)*progressNormalized;
+        }else{
+            return Math.PI;
+        }
+    }
+
+    public double getAngle(){
+
+        // get correct angle
+        double angle;
+        if(getTarget().equals(getOrigin().toLeft())){
+            angle = getLeftTurnAngle(getPercentageTravelled());
+        }else if(getTarget().equals(getOrigin().toRight())){
+            angle = getRightTurnAngle(getPercentageTravelled());
+        }else if(getTarget().equals(getOrigin().opposite())){
+            angle = getStraightRouteAngle();
+        }else{
+            throw new AssertionError(String.format(
+                    "Invalid target %s for origin %s", getTarget(), getOrigin()));
+        }
+
+        // rotate the coordinates
+        double rotated;
+        switch(getOrigin()){
+            case Down:
+                rotated = angle;
+                break;
+            case Right:
+                rotated = Angle.rotate90(angle, Rotation.Counterclockwise);
+                break;
+            case Left:
+                rotated = Angle.rotate90(angle, Rotation.Clockwise);
+                break;
+            case Up:
+                rotated = Angle.rotate90(angle, Rotation.Clockwise);
+                rotated = Angle.rotate90(rotated, Rotation.Clockwise);
+                break;
+            default:
+                throw new AssertionError(String.format(
+                        "Unexpected enum value: %s", getOrigin()));
+        }
+        return rotated;
+    }
 }

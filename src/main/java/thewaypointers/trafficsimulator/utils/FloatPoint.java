@@ -1,8 +1,5 @@
 package thewaypointers.trafficsimulator.utils;
 
-import sun.font.StrikeCache;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 public class FloatPoint {
     private float x;
     private float y;

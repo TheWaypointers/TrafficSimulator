@@ -284,4 +284,134 @@ public class JunctionLocationDTOTest {
                 .isEqualTo(new FloatPoint(0.25f, 0.25f));
     }
 
+    @Test
+    public void testGetAngle_straightRoute(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Up,
+                0.75f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI/2, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_rightTurn_start(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Right,
+                0f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI/2, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_rightTurn_end(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Right,
+                1f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(0, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_rightTurn_middle(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Right,
+                0.5f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI/4, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_leftTurn_firstSection(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Left,
+                0.25f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI/2, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_leftTurn_middle(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Left,
+                0.5f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo((3/4f)*Math.PI, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_leftTurn_lastSection(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Left,
+                0.75f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_originLeft(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Left,
+                Direction.Right,
+                0.25f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(0, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_originUp(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Up,
+                Direction.Down,
+                0.25f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo((3/2f)*Math.PI, Offset.offset(0.0001));
+    }
+
+    @Test
+    public void testGetAngle_originRight(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Right,
+                Direction.Left,
+                0.25f);
+
+        // act and assert
+        assertThat(loc.getAngle()).isEqualTo(Math.PI, Offset.offset(0.0001));
+    }
+
 }
