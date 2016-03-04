@@ -4,20 +4,20 @@ import thewaypointers.trafficsimulator.utils.FloatPoint;
 import thewaypointers.trafficsimulator.utils.Rotation;
 
 public class JunctionLocationDTO implements ILocation {
-    private JunctionDTO junction;
+    private String junctionLabel;
     private Direction origin;
     private Direction target;
     private float percentageTravelled;
 
-    public JunctionLocationDTO(JunctionDTO junction, Direction origin, Direction target, float percentageTravelled) {
-        this.junction = junction;
+    public JunctionLocationDTO(String junctionLabel, Direction origin, Direction target, float percentageTravelled) {
+        this.junctionLabel = junctionLabel;
         this.origin = origin;
         this.target = target;
         this.percentageTravelled = percentageTravelled;
     }
 
-    public JunctionDTO getJunction() {
-        return junction;
+    public String getJunctionLabel() {
+        return junctionLabel;
     }
 
     public Direction getOrigin() {
@@ -33,12 +33,25 @@ public class JunctionLocationDTO implements ILocation {
     }
 
     public JunctionLocationDTO(JunctionLocationDTO other){
-        this(other.getJunction(), other.getOrigin(), other.getTarget(), other.getPercentageTravelled());
+        this(other.getJunctionLabel(), other.getOrigin(), other.getTarget(), other.getPercentageTravelled());
     }
 
     @Override
     public ILocation copy() {
         return new JunctionLocationDTO(this);
+    }
+
+    public boolean equals(JunctionLocationDTO other){
+        return  getJunctionLabel().equals(other.getJunctionLabel()) &&
+                getTarget().equals(other.getTarget()) &&
+                getOrigin().equals(other.getOrigin()) &&
+                getPercentageTravelled() == other.getPercentageTravelled();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o.getClass() == JunctionLocationDTO.class &&
+                equals((JunctionLocationDTO)o);
     }
 
     // default origin - Down
