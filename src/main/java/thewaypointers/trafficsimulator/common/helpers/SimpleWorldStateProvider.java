@@ -6,16 +6,22 @@ public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
 
-    WorldStateDTO roadNetworkWorldState;
-    WorldStateDTO firstVersionWorldState;
-    
-    public boolean roadNetwork = true;
+    WorldStateDTO worldState;
     
     private int stateNo;
 
-    public SimpleWorldStateProvider(){
-        firstVersionWorldState = initializeFirstVersionWorldState();
-        roadNetworkWorldState = initializeRoadNetworkWorldState();
+    public SimpleWorldStateProvider(SimpleWorldState state){
+        switch(state){
+            case FIRST_VERSION:
+                worldState = initializeFirstVersionWorldState();
+                break;
+            case ROAD_NETWORK:
+                worldState = initializeRoadNetworkWorldState();
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        "No logic implemented for specified state!");
+        }
     }
     
     private WorldStateDTO initializeFirstVersionWorldState(){
@@ -73,8 +79,7 @@ public class SimpleWorldStateProvider {
     }
 
     public WorldStateDTO getNextState(float vehicleMovement) {
-        
-        WorldStateDTO worldState = roadNetwork? roadNetworkWorldState : firstVersionWorldState;
+
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
