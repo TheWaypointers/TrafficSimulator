@@ -108,10 +108,10 @@ public class JunctionLocationDTO implements ILocation {
                 rotated = coords;
                 break;
             case Right:
-                rotated = coords.rotate90(center, Rotation.Counterclockwise);
+                rotated = coords.rotate90(center, Rotation.Clockwise);
                 break;
             case Left:
-                rotated = coords.rotate90(center, Rotation.Clockwise);
+                rotated = coords.rotate90(center, Rotation.Counterclockwise);
                 break;
             case Up:
                 rotated = coords.mirror(center);
