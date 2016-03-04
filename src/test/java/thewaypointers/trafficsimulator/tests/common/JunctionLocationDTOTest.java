@@ -5,6 +5,7 @@ import org.junit.Test;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.JunctionDTO;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
+import thewaypointers.trafficsimulator.common.JunctionMoveResult;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 
 import static org.junit.Assert.*;
@@ -414,4 +415,89 @@ public class JunctionLocationDTOTest {
         assertThat(loc.getAngle()).isEqualTo(Math.PI, Offset.offset(0.0001));
     }
 
+    @Test
+    public void testMove_straightRoute(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Up,
+                0.25f);
+
+        // act
+        JunctionMoveResult result = loc.move(0.5f, 1, 1);
+
+        // assert
+        assertThat(result.getNewLocation().getPercentageTravelled())
+                .isEqualTo(0.75f, Offset.offset(0.0001f));
+    }
+
+    @Test
+    public void testMove_RightTurn(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Right,
+                0.25f);
+
+        // act
+        JunctionMoveResult result = loc.move(0.25f, 1, 1);
+
+        // assert
+        assertThat(result.getNewLocation().getPercentageTravelled())
+                .isEqualTo(0.75f, Offset.offset(0.0001f));
+    }
+
+    public void testMove_LeftTurn(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Left,
+                0.25f);
+
+        // act
+        JunctionMoveResult result = loc.move(0.3f, 1, 1);
+
+        // assert
+        assertThat(result.getNewLocation().getPercentageTravelled())
+                .isEqualTo(0.45f, Offset.offset(0.0001f));
+    }
+
+    @Test
+    public void testMove_remainder(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Up,
+                0.75f);
+
+        // act
+        JunctionMoveResult result = loc.move(0.5f, 1, 1);
+
+        // assert
+        assertThat(result.getNewLocation().getPercentageTravelled())
+                .isEqualTo(1f, Offset.offset(0.0001f));
+        assertThat(result.getRemainder()).isEqualTo(0.25f, Offset.offset(0.0001f));
+    }
+
+    @Test
+    public void testMove_scaleJunction(){
+        // arrange
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "A",
+                Direction.Down,
+                Direction.Up,
+                0.5f);
+
+        // act
+        JunctionMoveResult result = loc.move(2f, 2, 2);
+
+        // assert
+        assertThat(result.getNewLocation().getPercentageTravelled())
+                .isEqualTo(1f, Offset.offset(0.0001f));
+        assertThat(result.getRemainder()).isEqualTo(1f, Offset.offset(0.0001f));
+    }
 }

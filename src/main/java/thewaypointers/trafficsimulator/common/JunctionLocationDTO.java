@@ -1,5 +1,6 @@
 package thewaypointers.trafficsimulator.common;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import thewaypointers.trafficsimulator.utils.Angle;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 import thewaypointers.trafficsimulator.utils.Rotation;
@@ -9,6 +10,12 @@ public class JunctionLocationDTO implements ILocation {
     private Direction origin;
     private Direction target;
     private float percentageTravelled;
+
+    private enum JunctionRoute{
+        StraightRoute,
+        LeftTurn,
+        RightTurn
+    }
 
     public JunctionLocationDTO(String junctionLabel, Direction origin, Direction target, float percentageTravelled) {
         this.junctionLabel = junctionLabel;
@@ -31,6 +38,19 @@ public class JunctionLocationDTO implements ILocation {
 
     public float getPercentageTravelled() {
         return percentageTravelled;
+    }
+
+    private JunctionRoute getJunctionRoute(){
+        if(getTarget().equals(getOrigin().toLeft())){
+            return JunctionRoute.LeftTurn;
+        }else if(getTarget().equals(getOrigin().toRight())){
+            return JunctionRoute.RightTurn;
+        }else if(getTarget().equals(getOrigin().opposite())){
+            return JunctionRoute.StraightRoute;
+        }else{
+            throw new AssertionError(String.format(
+                    "Invalid target %s for origin %s", getTarget(), getOrigin()));
+        }
     }
 
     public JunctionLocationDTO(JunctionLocationDTO other){
@@ -91,15 +111,18 @@ public class JunctionLocationDTO implements ILocation {
 
         // get correct curve
         FloatPoint coords;
-        if(getTarget().equals(getOrigin().toLeft())){
-            coords = getLeftTurnCoordinates(getPercentageTravelled());
-        }else if(getTarget().equals(getOrigin().toRight())){
-            coords = getRightTurnCoordinates(getPercentageTravelled());
-        }else if(getTarget().equals(getOrigin().opposite())){
-            coords = getStraightRouteCoordinates(getPercentageTravelled());
-        }else{
-            throw new AssertionError(String.format(
-                    "Invalid target %s for origin %s", getTarget(), getOrigin()));
+        switch(getJunctionRoute()){
+            case LeftTurn:
+                coords = getLeftTurnCoordinates(getPercentageTravelled());
+                break;
+            case RightTurn:
+                coords = getRightTurnCoordinates(getPercentageTravelled());
+                break;
+            case StraightRoute:
+                coords = getStraightRouteCoordinates(getPercentageTravelled());
+                break;
+            default:
+                throw new AssertionError("Unexpected enum value");
         }
 
         // rotate the coordinates
@@ -150,15 +173,18 @@ public class JunctionLocationDTO implements ILocation {
 
         // get correct angle
         double angle;
-        if(getTarget().equals(getOrigin().toLeft())){
-            angle = getLeftTurnAngle(getPercentageTravelled());
-        }else if(getTarget().equals(getOrigin().toRight())){
-            angle = getRightTurnAngle(getPercentageTravelled());
-        }else if(getTarget().equals(getOrigin().opposite())){
-            angle = getStraightRouteAngle();
-        }else{
-            throw new AssertionError(String.format(
-                    "Invalid target %s for origin %s", getTarget(), getOrigin()));
+        switch(getJunctionRoute()){
+            case LeftTurn:
+                angle = getLeftTurnAngle(getPercentageTravelled());
+                break;
+            case RightTurn:
+                angle = getRightTurnAngle(getPercentageTravelled());
+                break;
+            case StraightRoute:
+                angle = getStraightRouteAngle();
+                break;
+            default:
+                throw new AssertionError("Unexpected enum value");
         }
 
         // rotate the coordinates
@@ -182,5 +208,50 @@ public class JunctionLocationDTO implements ILocation {
                         "Unexpected enum value: %s", getOrigin()));
         }
         return rotated;
+    }
+
+    private float getRouteLength(){
+        switch (getJunctionRoute()){
+            case StraightRoute:
+                return 1;
+            case RightTurn:
+                return 0.5f;
+            case LeftTurn:
+                return 1.5f;
+            default:
+                throw new AssertionError("Unexpected enum value");
+        }
+    }
+
+    private JunctionMoveResult move(float distance){
+        if(distance<0){
+            throw new IllegalArgumentException("Distance cannot be negative");
+        }
+
+        float routeLength = getRouteLength();
+        float remainder = 0;
+        float newDistance = getPercentageTravelled()*routeLength + distance;
+        if(newDistance > routeLength){
+            remainder = newDistance - routeLength;
+            newDistance = routeLength;
+        }
+        float newProgress = newDistance/routeLength;
+        return new JunctionMoveResult(
+                new JunctionLocationDTO(this.getJunctionLabel(),
+                                        this.getOrigin(),
+                                        this.getTarget(),
+                                        newProgress),
+                remainder
+        );
+    }
+
+    public JunctionMoveResult move(float distance, float junctionWidth, float junctionHeight){
+        if(junctionWidth!=junctionHeight){
+            throw new IllegalArgumentException("Non-square junctions not supported yet...");
+        }
+        float normalized = distance/junctionWidth;
+        JunctionMoveResult result = move(normalized);
+        return new JunctionMoveResult(result.getNewLocation(),
+                                      result.getRemainder()*junctionWidth);
     }
 }

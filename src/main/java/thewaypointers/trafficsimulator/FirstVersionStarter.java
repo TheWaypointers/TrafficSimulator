@@ -20,7 +20,6 @@ public class FirstVersionStarter {
         //noinspection InfiniteLoopStatement
         while(true){
             WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            //gui.NewStateReceived(newWorldState);   // in this method the GUI draws the new world state
             MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
             try {
                 Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
