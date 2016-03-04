@@ -3,12 +3,10 @@ package thewaypointers.trafficsimulator.tests.common;
 import org.fest.assertions.data.Offset;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.Direction;
-import thewaypointers.trafficsimulator.common.JunctionDTO;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.JunctionMoveResult;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 
-import static org.junit.Assert.*;
 import static org.fest.assertions.api.Assertions.*;
 
 public class JunctionLocationDTOTest {
@@ -53,7 +51,7 @@ public class JunctionLocationDTOTest {
     }
 
     @Test
-    public void testGetPercentageTravelled() {
+    public void testGetProgress() {
         // arrange
         JunctionLocationDTO loc = new JunctionLocationDTO(
                 "A",
@@ -62,7 +60,7 @@ public class JunctionLocationDTOTest {
                 0.5f);
 
         // act and assert
-        assertThat(loc.getPercentageTravelled()).isEqualTo(0.5f);
+        assertThat(loc.getProgress()).isEqualTo(0.5f);
     }
 
     @Test
@@ -428,7 +426,7 @@ public class JunctionLocationDTOTest {
         JunctionMoveResult result = loc.move(0.5f, 1, 1);
 
         // assert
-        assertThat(result.getNewLocation().getPercentageTravelled())
+        assertThat(result.getNewLocation().getProgress())
                 .isEqualTo(0.75f, Offset.offset(0.0001f));
     }
 
@@ -445,7 +443,7 @@ public class JunctionLocationDTOTest {
         JunctionMoveResult result = loc.move(0.25f, 1, 1);
 
         // assert
-        assertThat(result.getNewLocation().getPercentageTravelled())
+        assertThat(result.getNewLocation().getProgress())
                 .isEqualTo(0.75f, Offset.offset(0.0001f));
     }
 
@@ -461,7 +459,7 @@ public class JunctionLocationDTOTest {
         JunctionMoveResult result = loc.move(0.3f, 1, 1);
 
         // assert
-        assertThat(result.getNewLocation().getPercentageTravelled())
+        assertThat(result.getNewLocation().getProgress())
                 .isEqualTo(0.45f, Offset.offset(0.0001f));
     }
 
@@ -478,7 +476,7 @@ public class JunctionLocationDTOTest {
         JunctionMoveResult result = loc.move(0.5f, 1, 1);
 
         // assert
-        assertThat(result.getNewLocation().getPercentageTravelled())
+        assertThat(result.getNewLocation().getProgress())
                 .isEqualTo(1f, Offset.offset(0.0001f));
         assertThat(result.getRemainder()).isEqualTo(0.25f, Offset.offset(0.0001f));
     }
@@ -496,7 +494,7 @@ public class JunctionLocationDTOTest {
         JunctionMoveResult result = loc.move(2f, 2, 2);
 
         // assert
-        assertThat(result.getNewLocation().getPercentageTravelled())
+        assertThat(result.getNewLocation().getProgress())
                 .isEqualTo(1f, Offset.offset(0.0001f));
         assertThat(result.getRemainder()).isEqualTo(1f, Offset.offset(0.0001f));
     }

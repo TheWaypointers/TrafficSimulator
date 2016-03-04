@@ -1,15 +1,26 @@
 package thewaypointers.trafficsimulator.common;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import thewaypointers.trafficsimulator.utils.Angle;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 import thewaypointers.trafficsimulator.utils.Rotation;
 
+/**
+ * The representation of location of objects inside junctions. The location is defined in
+ * three parameters:
+ *     - origin - where the vehicle is coming from
+ *     - target - where the vehicle is headed
+ *     - progress - percent of completion of the move through the junction, a number between 0.0 and 1.0
+ * The class determines what kind of move the object is making and what is the shape of the move.
+ * It provides helpful methods using the determined information:
+ *     - getJunctionCoordinates() - gives normalized coordinates of object in the junction rectangle
+ *     - getAngle() - gives object orientation
+ *     - move() - produces a new location resulting from object moving ahead by specified distance
+ */
 public class JunctionLocationDTO implements ILocation {
     private String junctionLabel;
     private Direction origin;
     private Direction target;
-    private float percentageTravelled;
+    private float progress;
 
     private enum JunctionRoute{
         StraightRoute,
@@ -17,11 +28,11 @@ public class JunctionLocationDTO implements ILocation {
         RightTurn
     }
 
-    public JunctionLocationDTO(String junctionLabel, Direction origin, Direction target, float percentageTravelled) {
+    public JunctionLocationDTO(String junctionLabel, Direction origin, Direction target, float progress) {
         this.junctionLabel = junctionLabel;
         this.origin = origin;
         this.target = target;
-        this.percentageTravelled = percentageTravelled;
+        this.progress = progress;
     }
 
     public String getJunctionLabel() {
@@ -36,8 +47,8 @@ public class JunctionLocationDTO implements ILocation {
         return target;
     }
 
-    public float getPercentageTravelled() {
-        return percentageTravelled;
+    public float getProgress() {
+        return progress;
     }
 
     private JunctionRoute getJunctionRoute(){
@@ -54,7 +65,7 @@ public class JunctionLocationDTO implements ILocation {
     }
 
     public JunctionLocationDTO(JunctionLocationDTO other){
-        this(other.getJunctionLabel(), other.getOrigin(), other.getTarget(), other.getPercentageTravelled());
+        this(other.getJunctionLabel(), other.getOrigin(), other.getTarget(), other.getProgress());
     }
 
     @Override
@@ -66,7 +77,7 @@ public class JunctionLocationDTO implements ILocation {
         return  getJunctionLabel().equals(other.getJunctionLabel()) &&
                 getTarget().equals(other.getTarget()) &&
                 getOrigin().equals(other.getOrigin()) &&
-                getPercentageTravelled() == other.getPercentageTravelled();
+                getProgress() == other.getProgress();
     }
 
     @Override
@@ -107,19 +118,24 @@ public class JunctionLocationDTO implements ILocation {
         return new FloatPoint(x,y);
     }
 
+    /**
+     * Retrieves normalized coordinates of object inside junction.
+     * Top left is (0.0, 0.0), bottom right is (1.0, 1.0).
+     * @return coordinates of object
+     */
     public FloatPoint getJunctionCoordinates(){
 
         // get correct curve
         FloatPoint coords;
         switch(getJunctionRoute()){
             case LeftTurn:
-                coords = getLeftTurnCoordinates(getPercentageTravelled());
+                coords = getLeftTurnCoordinates(getProgress());
                 break;
             case RightTurn:
-                coords = getRightTurnCoordinates(getPercentageTravelled());
+                coords = getRightTurnCoordinates(getProgress());
                 break;
             case StraightRoute:
-                coords = getStraightRouteCoordinates(getPercentageTravelled());
+                coords = getStraightRouteCoordinates(getProgress());
                 break;
             default:
                 throw new AssertionError("Unexpected enum value");
@@ -162,23 +178,28 @@ public class JunctionLocationDTO implements ILocation {
         if (progress <= 1/3f){
             return Math.PI/2;
         }else if(progress >= 1/3f && progress <= 2/3f){
-            float progressNormalized = (getPercentageTravelled()-1/3f)*3;
+            float progressNormalized = (getProgress()-1/3f)*3;
             return Math.PI/2 + (Math.PI/2)*progressNormalized;
         }else{
             return Math.PI;
         }
     }
 
+    /**
+     * Retrieves orientation of object inside junction. Orientation is returned as
+     * angle in radians, default orientation (0 radians) is object facing right.
+     * @return Angle of object in radians.
+     */
     public double getAngle(){
 
         // get correct angle
         double angle;
         switch(getJunctionRoute()){
             case LeftTurn:
-                angle = getLeftTurnAngle(getPercentageTravelled());
+                angle = getLeftTurnAngle(getProgress());
                 break;
             case RightTurn:
-                angle = getRightTurnAngle(getPercentageTravelled());
+                angle = getRightTurnAngle(getProgress());
                 break;
             case StraightRoute:
                 angle = getStraightRouteAngle();
@@ -230,7 +251,7 @@ public class JunctionLocationDTO implements ILocation {
 
         float routeLength = getRouteLength();
         float remainder = 0;
-        float newDistance = getPercentageTravelled()*routeLength + distance;
+        float newDistance = getProgress()*routeLength + distance;
         if(newDistance > routeLength){
             remainder = newDistance - routeLength;
             newDistance = routeLength;
@@ -245,6 +266,18 @@ public class JunctionLocationDTO implements ILocation {
         );
     }
 
+    /**
+     * Moves the object ahead using specified distance. You should specify real dimensions
+     * of the junction for the distance to be calculated correctly. Only square junctions are supported
+     * for now. Return value is normally JunctionMoveResult containing your new location. In case the
+     * move distance is big enough to leave the junction, JunctionMoveResult remainder will be nonzero
+     * and will contain the distance that is left to move outside of junction.
+     * @param distance - distance to move
+     * @param junctionWidth - junction width
+     * @param junctionHeight - junction height
+     * @return JunctionMoveResult with new location and optionally remainder of distance to move
+     *      outside junction
+     */
     public JunctionMoveResult move(float distance, float junctionWidth, float junctionHeight){
         if(junctionWidth!=junctionHeight){
             throw new IllegalArgumentException("Non-square junctions not supported yet...");
