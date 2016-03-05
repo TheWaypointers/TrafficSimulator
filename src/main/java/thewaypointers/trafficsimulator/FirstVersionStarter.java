@@ -14,7 +14,6 @@ public class FirstVersionStarter {
 
         SimpleWorldStateProvider simulation = new SimpleWorldStateProvider(SimpleWorldState.ROAD_NETWORK);   // this will be simulation
         //IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
-        MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
 
 
         //noinspection InfiniteLoopStatement

@@ -17,6 +17,7 @@ public abstract class NodeDTO {
 
     @Override
     public boolean equals(Object o) {
-        return equals((NodeDTO)o);
+        return NodeDTO.class.isAssignableFrom(o.getClass()) &&
+                equals((NodeDTO) o);
     }
 }
