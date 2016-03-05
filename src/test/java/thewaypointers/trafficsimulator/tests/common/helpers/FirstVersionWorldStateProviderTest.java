@@ -3,6 +3,7 @@ package thewaypointers.trafficsimulator.tests.common.helpers;
 import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
+import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 
 public class FirstVersionWorldStateProviderTest {
