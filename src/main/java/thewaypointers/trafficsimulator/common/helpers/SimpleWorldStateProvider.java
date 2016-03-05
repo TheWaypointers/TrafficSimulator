@@ -5,17 +5,29 @@ import thewaypointers.trafficsimulator.common.*;
 public class SimpleWorldStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
+    public static final float ROAD_WIDTH = 20;
 
-    WorldStateDTO roadNetworkWorldState;
-    WorldStateDTO firstVersionWorldState;
-    
-    public boolean roadNetwork = true;
+    WorldStateDTO worldState;
+    SimpleWorldState stateType;
     
     private int stateNo;
 
-    public SimpleWorldStateProvider(){
-        firstVersionWorldState = initializeFirstVersionWorldState();
-        roadNetworkWorldState = initializeRoadNetworkWorldState();
+    public SimpleWorldStateProvider(SimpleWorldState stateType){
+        this.stateType = stateType;
+        switch(stateType){
+            case FIRST_VERSION:
+                worldState = initializeFirstVersionWorldState();
+                break;
+            case ROAD_NETWORK:
+                worldState = initializeRoadNetworkWorldState();
+                break;
+            case JUNCTION_LOCATION_TEST:
+                worldState = initializeJunctionLocationTestWorldState();
+                break;
+            default:
+                throw new IllegalArgumentException(
+                        "No logic implemented for specified state!");
+        }
     }
     
     private WorldStateDTO initializeFirstVersionWorldState(){
@@ -29,9 +41,25 @@ public class SimpleWorldStateProvider {
         ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
 
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
-        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
+        RoadLocationDTO loc = new RoadLocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
 
+        return ws;
+    }
+
+    private WorldStateDTO initializeJunctionLocationTestWorldState(){
+        WorldStateDTO ws = new WorldStateDTO();
+
+        MapDTO roadMap = ws.getRoadMap();
+        roadMap.addRoad("A","B", Direction.Down, ROAD_LENGTH);
+        roadMap.addRoad("B","C", Direction.Right, ROAD_LENGTH);
+
+        JunctionLocationDTO loc = new JunctionLocationDTO(
+                "B",
+                Direction.Up,
+                Direction.Right,
+                0f);
+        ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
         return ws;
     }
 
@@ -58,13 +86,13 @@ public class SimpleWorldStateProvider {
 
         // add cars
         RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
-        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
+        RoadLocationDTO loc = new RoadLocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
         RoadDTO startRoad2 = roadMap.getJunction("A").getRoad(Direction.Left);
-        LocationDTO loc2 = new LocationDTO(startRoad2, startRoad2.getEnd("E3"), 0, Lane.Right);
+        RoadLocationDTO loc2 = new RoadLocationDTO(startRoad2, startRoad2.getEnd("E3"), 0, Lane.Right);
         RoadDTO startRoad3 = roadMap.getJunction("B").getRoad(Direction.Right);
-        LocationDTO loc3 = new LocationDTO(startRoad3, startRoad3.getEnd("B"), 0, Lane.Right);
+        RoadLocationDTO loc3 = new RoadLocationDTO(startRoad3, startRoad3.getEnd("B"), 0, Lane.Right);
         RoadDTO startRoad4 = roadMap.getJunction("B").getRoad(Direction.Down);
-        LocationDTO loc4 = new LocationDTO(startRoad4, startRoad4.getEnd("E7"), 0, Lane.Right);
+        RoadLocationDTO loc4 = new RoadLocationDTO(startRoad4, startRoad4.getEnd("E7"), 0, Lane.Right);
         ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
         ws.getVehicleList().addVehicle("V2", loc2, VehicleType.EmergencyService);
         ws.getVehicleList().addVehicle("V3", loc3, VehicleType.Bus);
@@ -72,29 +100,27 @@ public class SimpleWorldStateProvider {
         return ws;
     }
 
-    public WorldStateDTO getNextState(float vehicleMovement) {
-        
-        WorldStateDTO worldState = roadNetwork? roadNetworkWorldState : firstVersionWorldState;
+    private WorldStateDTO getNextStateForFirstVersion(float vehicleMovement){
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
         VehicleDTO v = worldState.getVehicleList().getAll().get(0);
-        LocationDTO loc = v.getLocation();
+        RoadLocationDTO loc = (RoadLocationDTO) v.getLocation();
         if(vehicleMovement > ROAD_LENGTH)
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
 
-        LocationDTO newLocation;
+        RoadLocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
-            newLocation = new LocationDTO(loc.getRoad(),
+            newLocation = new RoadLocationDTO(loc.getRoad(),
                     loc.getOrigin(),
                     loc.getDistanceTravelled() + vehicleMovement,
                     loc.getLane());
         }else{
             // jump to next road
             RoadDTO newRoad = loc.getRoad().equals(upRoad) ? downRoad : upRoad;
-            newLocation = new LocationDTO(newRoad,
+            newLocation = new RoadLocationDTO(newRoad,
                     newRoad.getFrom(),
                     loc.getDistanceTravelled() + vehicleMovement - loc.getRoad().getLength(),
                     loc.getLane());
@@ -108,7 +134,29 @@ public class SimpleWorldStateProvider {
             worldState.getTrafficLightSystem()
                     .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
         }
-
         return worldState;
+    }
+
+    @SuppressWarnings("SuspiciousNameCombination")
+    private WorldStateDTO getNextStateForJunctionLocationTest(float vehicleMovement){
+        JunctionLocationDTO loc = (JunctionLocationDTO) worldState.getVehicleList().getVehicle("V1").getLocation();
+        JunctionMoveResult result = loc.move(vehicleMovement, ROAD_WIDTH, ROAD_WIDTH);
+        loc = result.getRemainder()>0?
+                new JunctionLocationDTO(loc.getJunctionLabel(),
+                                        loc.getOrigin(),
+                                        loc.getTarget(),
+                                        0f) :
+                result.getNewLocation();
+
+        worldState.getVehicleList().setVehicleLocation("V1", loc);
+        return worldState;
+    }
+
+    public WorldStateDTO getNextState(float vehicleMovement) {
+        if (stateType == SimpleWorldState.JUNCTION_LOCATION_TEST){
+            return getNextStateForJunctionLocationTest(vehicleMovement);
+        }else{
+            return getNextStateForFirstVersion(vehicleMovement);
+        }
     }
 }

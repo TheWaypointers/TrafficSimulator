@@ -73,11 +73,14 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     }
 
     private void draw_Vehicle(Graphics g, VehicleDTO vehicle,MapDTO map){
+        if (vehicle.getLocation().getClass() != RoadLocationDTO.class)
+            return;
+        RoadLocationDTO location = (RoadLocationDTO) vehicle.getLocation();
         Color color=Color.white;
         int wide,length;
         VehicleType type=vehicle.getType();
-        Direction road_direction=this.Getcar_roadedirection(map,vehicle.getLocation());
-        Point point=this.compute_xy(map,vehicle.getLocation());
+        Direction road_direction=this.Getcar_roadedirection(map, location);
+        Point point=this.compute_xy(map,location);
         switch (type) {
             case CarNormal:
                 color=VEHICLE_CarNormal_COLOR;
@@ -310,7 +313,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     }
 
     // computer vehicle x&y base on location
-    public  Point compute_xy(MapDTO roadmap,LocationDTO locationDTO){
+    public  Point compute_xy(MapDTO roadmap,RoadLocationDTO locationDTO){
         Point point = new Point();
         double px = 0, py = 0;
         RoadDTO roadDTO = locationDTO.getRoad();
@@ -431,8 +434,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         return  point;
     }
 
-    public Direction Getcar_roadedirection(MapDTO road_map,LocationDTO locationDTO){
-        RoadDTO roadDTO=locationDTO.getRoad();
+    public Direction Getcar_roadedirection(MapDTO road_map,RoadLocationDTO roadLocationDTO){
+        RoadDTO roadDTO= roadLocationDTO.getRoad();
         Direction road_direction=null;
         String junction_label;
         if (junctionlocation.containsKey(roadDTO.getFrom().getLabel())){

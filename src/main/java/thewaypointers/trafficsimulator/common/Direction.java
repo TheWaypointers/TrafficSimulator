@@ -38,4 +38,22 @@ public enum Direction {
     public Direction opposite(){
         return oppositeMap.get(this);
     }
+
+    public Direction toLeft(){
+        switch(this){
+            case Down:
+                return Left;
+            case Left:
+                return Up;
+            case Up:
+                return Right;
+            case Right:
+                return Down;
+        }
+        throw new AssertionError("Unexpected enum value");
+    }
+
+    public Direction toRight(){
+        return toLeft().opposite();
+    }
 }

@@ -1,6 +1,6 @@
 package thewaypointers.trafficsimulator.common;
 
-public class LocationDTO {
+public class RoadLocationDTO implements ILocation{
     private RoadDTO road;
     private float distanceTravelled;
     private NodeDTO origin;
@@ -22,14 +22,19 @@ public class LocationDTO {
         return lane;
     }
 
-    public LocationDTO(RoadDTO road, NodeDTO origin, float distanceTravelled, Lane lane) {
+    public RoadLocationDTO(RoadDTO road, NodeDTO origin, float distanceTravelled, Lane lane) {
         this.road = road;
         this.distanceTravelled = distanceTravelled;
         this.origin = origin;
         this.lane = lane;
     }
 
-    public LocationDTO(LocationDTO other){
+    public RoadLocationDTO(RoadLocationDTO other){
         this(other.road, other.origin, other.distanceTravelled, other.lane);
+    }
+
+    @Override
+    public ILocation copy() {
+        return new RoadLocationDTO(this);
     }
 }

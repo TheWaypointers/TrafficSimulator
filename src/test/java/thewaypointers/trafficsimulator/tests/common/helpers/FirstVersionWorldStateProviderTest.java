@@ -3,14 +3,14 @@ package thewaypointers.trafficsimulator.tests.common.helpers;
 import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
+import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 
-public class SimpleWorldStateProviderTest {
+public class FirstVersionWorldStateProviderTest {
     @Test
     public void Provider_generates_correct_world_state() {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
-        provider.roadNetwork = false;
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);
@@ -41,7 +41,7 @@ public class SimpleWorldStateProviderTest {
         VehicleDTO v = worldState.getVehicleList().getAll().get(0);
         assertThat(v.getType()).isEqualTo(VehicleType.CarNormal);
 
-        LocationDTO loc = v.getLocation();
+        RoadLocationDTO loc = (RoadLocationDTO) v.getLocation();
         assertThat(loc.getLane()).isEqualTo(Lane.Right);
         assertThat(loc.getRoad().equals(downRoad));
         assertThat(loc.getOrigin().getLabel().equals("E1"));
@@ -53,15 +53,14 @@ public class SimpleWorldStateProviderTest {
     public void Provider_moves_vehicle()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/30;
-        provider.roadNetwork = false;
 
         // act
         WorldStateDTO ws1 = provider.getNextState(moveDistance);
-        LocationDTO loc1 = ws1.getVehicleList().getAll().get(0).getLocation();
+        RoadLocationDTO loc1 = (RoadLocationDTO) ws1.getVehicleList().getAll().get(0).getLocation();
         WorldStateDTO ws2 = provider.getNextState(moveDistance);
-        LocationDTO loc2 = ws2.getVehicleList().getAll().get(0).getLocation();
+        RoadLocationDTO loc2 = (RoadLocationDTO) ws2.getVehicleList().getAll().get(0).getLocation();
 
         // assert
         assertThat(loc1 != loc2).isTrue();
@@ -73,16 +72,15 @@ public class SimpleWorldStateProviderTest {
     public void Vehicle_jumps_from_up_to_down_road()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
-        provider.roadNetwork = false;
 
         // act
         provider.getNextState(moveDistance);
         WorldStateDTO worldState = provider.getNextState(moveDistance);
 
         // assert
-        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
+        RoadLocationDTO loc = (RoadLocationDTO)worldState.getVehicleList().getAll().get(0).getLocation();
         RoadDTO downRoad = worldState.getRoadMap().getJunctions().get(0).getRoad(Direction.Down);
         assertThat(loc.getRoad()).isEqualTo(downRoad);
     }
@@ -91,9 +89,8 @@ public class SimpleWorldStateProviderTest {
     public void Vehicle_loops_back_to_up_road()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
         final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
-        provider.roadNetwork = false;
 
         // act
         provider.getNextState(moveDistance);
@@ -102,7 +99,7 @@ public class SimpleWorldStateProviderTest {
         WorldStateDTO worldState = provider.getNextState(moveDistance);
 
         // assert
-        LocationDTO loc = worldState.getVehicleList().getAll().get(0).getLocation();
+        RoadLocationDTO loc = (RoadLocationDTO) worldState.getVehicleList().getAll().get(0).getLocation();
         RoadDTO upRoad = worldState.getRoadMap().getJunctions().get(0).getRoad(Direction.Up);
         assertThat(loc.getRoad()).isEqualTo(upRoad);
     }
@@ -110,8 +107,7 @@ public class SimpleWorldStateProviderTest {
     @Test
     public void Traffic_lights_change(){
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider();
-        provider.roadNetwork = false;
+        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);

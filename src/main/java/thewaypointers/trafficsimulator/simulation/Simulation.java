@@ -87,7 +87,7 @@ public class Simulation implements ISimulationInputListener {
         for (DefaultWeightedEdge road : VehicleManager.getVehicleMap().keySet()) {
             for (IVehicle vehicle : VehicleManager.getVehicleMap().get(road)) {
                 RoadDTO roadDTO = findEqualRoad(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode());
-                LocationDTO loc = new LocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
+                RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
                 dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
                 index++;
             }
