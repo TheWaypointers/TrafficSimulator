@@ -13,9 +13,9 @@ public class FirstVersionStarter {
 
         SimpleWorldStateProvider simulation = new SimpleWorldStateProvider();   // this will be simulation
         //IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
-        MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
 
 
+        //noinspection InfiniteLoopStatement
         while(true){
             WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
             //gui.NewStateReceived(newWorldState);   // in this method the GUI draws the new world state
