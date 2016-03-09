@@ -4,7 +4,9 @@ import javax.swing.*;
 import thewaypointers.trafficsimulator.common.*;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,6 +46,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
     public static final int HALF_ROAD_WIDTH = ROAD_WIDTH/2;
     public static final int HALF_VEHICLE_HEIGHT = VEHICLE_HEIGHT/2;
+    public static final int HALF_VEHICLE_WIDTH = VEHICLE_WIDTH/2;
 
 
     WorldStateDTO worldState = new WorldStateDTO(null, null, null);
@@ -56,7 +59,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         this.setVisible(true);
         this.setSize(MAP_PANEL_WIDTH,MAP_PANEL_HEIGHT);
         this.setBackground(BACKGROUND_COLOR);
-
         PanelMouseDragger mouseDragger= new PanelMouseDragger(this);
         this.addMouseListener(mouseDragger);
         this.addMouseMotionListener(mouseDragger);
@@ -72,16 +74,74 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         this.repaint();
     }
 
-    private void draw_Vehicle(Graphics g, VehicleDTO vehicle,MapDTO map){
-        if (vehicle.getLocation().getClass() != RoadLocationDTO.class)
-            return;
+    //draw vehicles in the junction
+    private  void drawVehicleInJunction(Graphics g, VehicleDTO vehicle){
+        int junlocationx, junlocationy, vx, vy, rectwidth, rectheiht;
+        double rotate=0;
+        Rectangle2D rect;
+        JunctionLocationDTO junctionLocationDTO=(JunctionLocationDTO)vehicle.getLocation();
+        Point junctionPoint = junctionlocation.get( junctionLocationDTO.getJunctionLabel());
+        double junLocationAngle=junctionLocationDTO.getAngle();
+        //(junlocationx,junlocationy) is the coordinate of a central point in a vehicle
+        junlocationx = (int) (junctionLocationDTO.getJunctionCoordinates().getX()*ROAD_WIDTH +junctionPoint.getX());
+        junlocationy = (int) (junctionLocationDTO.getJunctionCoordinates().getY()*ROAD_WIDTH +junctionPoint.getY());
+        if (junctionLocationDTO.getOrigin()==Direction.Up||junctionLocationDTO.getOrigin()==Direction.Down){
+            //(vx,xy) is the coordinate of the top left point on a vehicle
+            vx=junlocationx-HALF_VEHICLE_WIDTH;
+            vy=junlocationy-HALF_VEHICLE_HEIGHT;
+            rectwidth=VEHICLE_WIDTH;
+            rectheiht=VEHICLE_HEIGHT;
+            if (junctionLocationDTO.getTarget()==Direction.Left||junctionLocationDTO.getTarget()==Direction.Right)
+                rotate=Math.PI/2-junLocationAngle;
+        }else{
+            vx=junlocationx-HALF_VEHICLE_HEIGHT;
+            vy=junlocationy-HALF_VEHICLE_WIDTH;
+            rectwidth=VEHICLE_HEIGHT;
+            rectheiht=VEHICLE_WIDTH;
+            if (junctionLocationDTO.getTarget()==Direction.Up||junctionLocationDTO.getTarget()==Direction.Down)
+                rotate=2*Math.PI-junLocationAngle;
+        }
+        Graphics2D g2d = (Graphics2D)g;
+        AffineTransform identify = new AffineTransform();
+        rect=new Rectangle2D.Float(vx,vy,rectwidth,rectheiht);
+        g2d.setTransform(identify);
+        g2d.setColor(this.GetVehicleColor(vehicle.getType()));
+        g2d.setTransform(identify);
+        g2d.rotate(rotate, junlocationx, junlocationy);
+        g2d.fill(rect);
+    }
+
+    //draw vehicles on the road
+    private  void drawVehicleOnRoad(Graphics g, VehicleDTO vehicle,MapDTO map){
         RoadLocationDTO location = (RoadLocationDTO) vehicle.getLocation();
         Color color=Color.white;
         int wide,length;
         VehicleType type=vehicle.getType();
         Direction road_direction=this.Getcar_roadedirection(map, location);
         Point point=this.compute_xy(map,location);
-        switch (type) {
+        if (road_direction==Direction.Up || road_direction==Direction.Down) {
+            wide = VEHICLE_WIDTH;
+            length = VEHICLE_HEIGHT;
+        }
+        else{
+            wide = VEHICLE_HEIGHT;
+            length = VEHICLE_WIDTH;
+        }
+
+        g.setColor(this.GetVehicleColor(type));
+        g.fillRect((int) point.getX(), (int) point.getY(), wide, length);
+    }
+
+    private void draw_Vehicle(Graphics g, VehicleDTO vehicle,MapDTO map){
+        if (vehicle.getLocation().getClass() == JunctionLocationDTO.class)
+            this.drawVehicleInJunction(g,vehicle);
+        if(vehicle.getLocation().getClass() == RoadLocationDTO.class)
+            this.drawVehicleOnRoad(g, vehicle, map);
+    }
+
+    private  Color GetVehicleColor(VehicleType vehicleType){
+        Color color=Color.white;
+        switch (vehicleType) {
             case CarNormal:
                 color=VEHICLE_CarNormal_COLOR;
                 break;
@@ -98,17 +158,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
                 color=VEHICLE_EmergencyService_COLOR;
                 break;
         }
-        if (road_direction==Direction.Up || road_direction==Direction.Down) {
-            wide = VEHICLE_WIDTH;
-            length = VEHICLE_HEIGHT;
-        }
-        else{
-            wide = VEHICLE_HEIGHT;
-            length = VEHICLE_WIDTH;
-        }
-        g.setColor(color);
-        g.fillRect((int) point.getX(), (int) point.getY(), wide, length);
+        return  color;
+
     }
+
 
     private void drawVehicles(Graphics g){
         for (VehicleDTO vehicleDTO:worldState.getVehicleList().getAll()){
@@ -201,17 +254,17 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         if (direction.isVertical()){
             roadWidth = ROAD_WIDTH;
             roadLength = (int) road.getLength();
-            startX = roadX + 25;
+            startX = roadX + HALF_ROAD_WIDTH;
             endX = roadY;
-            startY = roadX + 25;
+            startY = roadX + HALF_ROAD_WIDTH;
             endY = roadY + (int) road.getLength();
         }else{
             roadWidth = (int) road.getLength();
             roadLength = ROAD_WIDTH;
             startX = roadX;
-            endX = roadY + 25;
+            endX = roadY + HALF_ROAD_WIDTH;
             startY = roadX + (int) road.getLength();
-            endY = roadY + 25;
+            endY = roadY + HALF_ROAD_WIDTH;
         }
 
         g.fillRect(roadX,roadY, roadWidth, roadLength);
@@ -505,7 +558,5 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         return point;
 
     }
-
-
 
 }

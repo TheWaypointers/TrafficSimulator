@@ -3,14 +3,13 @@ package thewaypointers.trafficsimulator.tests.common.helpers;
 import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
+import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
 
 public class FirstVersionWorldStateProviderTest {
     @Test
     public void Provider_generates_correct_world_state() {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
+        FirstVersionProvider provider = new FirstVersionProvider();
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);
@@ -53,8 +52,8 @@ public class FirstVersionWorldStateProviderTest {
     public void Provider_moves_vehicle()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
-        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/30;
+        FirstVersionProvider provider = new FirstVersionProvider();
+        final float moveDistance = FirstVersionProvider.ROAD_LENGTH/30;
 
         // act
         WorldStateDTO ws1 = provider.getNextState(moveDistance);
@@ -72,8 +71,8 @@ public class FirstVersionWorldStateProviderTest {
     public void Vehicle_jumps_from_up_to_down_road()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
-        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+        FirstVersionProvider provider = new FirstVersionProvider();
+        final float moveDistance = FirstVersionProvider.ROAD_LENGTH/2;
 
         // act
         provider.getNextState(moveDistance);
@@ -89,8 +88,8 @@ public class FirstVersionWorldStateProviderTest {
     public void Vehicle_loops_back_to_up_road()
     {
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
-        final float moveDistance = SimpleWorldStateProvider.ROAD_LENGTH/2;
+        FirstVersionProvider provider = new FirstVersionProvider();
+        final float moveDistance = FirstVersionProvider.ROAD_LENGTH/2;
 
         // act
         provider.getNextState(moveDistance);
@@ -107,7 +106,7 @@ public class FirstVersionWorldStateProviderTest {
     @Test
     public void Traffic_lights_change(){
         // arrange
-        SimpleWorldStateProvider provider = new SimpleWorldStateProvider(SimpleWorldState.FIRST_VERSION);
+        FirstVersionProvider provider = new FirstVersionProvider();
 
         // act
         WorldStateDTO worldState = provider.getNextState(15);
@@ -116,7 +115,7 @@ public class FirstVersionWorldStateProviderTest {
                 .getTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
         TrafficLightColor downStartColor = worldState.getTrafficLightSystem()
                 .getTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
-        for(int i=0; i<SimpleWorldStateProvider.CHANGE_LIGHTS_EVERY_N_STATES; i++){
+        for(int i=0; i<FirstVersionProvider.CHANGE_LIGHTS_EVERY_N_STATES; i++){
             worldState = provider.getNextState(15);
         }
 

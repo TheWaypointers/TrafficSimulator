@@ -2,68 +2,20 @@ package thewaypointers.trafficsimulator.common.helpers;
 
 import thewaypointers.trafficsimulator.common.*;
 
-public class SimpleWorldStateProvider {
+public class RoadNetworkProvider implements IStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
     public static final float ROAD_WIDTH = 20;
 
     WorldStateDTO worldState;
-    SimpleWorldState stateType;
-    
+
     private int stateNo;
 
-    public SimpleWorldStateProvider(SimpleWorldState stateType){
-        this.stateType = stateType;
-        switch(stateType){
-            case FIRST_VERSION:
-                worldState = initializeFirstVersionWorldState();
-                break;
-            case ROAD_NETWORK:
-                worldState = initializeRoadNetworkWorldState();
-                break;
-            case JUNCTION_LOCATION_TEST:
-                worldState = initializeJunctionLocationTestWorldState();
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        "No logic implemented for specified state!");
-        }
-    }
-    
-    private WorldStateDTO initializeFirstVersionWorldState(){
-        WorldStateDTO ws = new WorldStateDTO();
-
-        MapDTO roadMap = ws.getRoadMap();
-        roadMap.addRoad("E1","A", Direction.Down, ROAD_LENGTH);
-        roadMap.addRoad("A", "E2", Direction.Down, ROAD_LENGTH);
-
-        // add traffic lights
-        ws.getTrafficLightSystem().addJunction(roadMap.getJunction("A"));
-
-        RoadDTO startRoad = roadMap.getJunction("A").getRoad(Direction.Up);
-        RoadLocationDTO loc = new RoadLocationDTO(startRoad, startRoad.getEnd("E1"), 0, Lane.Right);
-        ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
-
-        return ws;
+    public RoadNetworkProvider(){
+        worldState = initialize();
     }
 
-    private WorldStateDTO initializeJunctionLocationTestWorldState(){
-        WorldStateDTO ws = new WorldStateDTO();
-
-        MapDTO roadMap = ws.getRoadMap();
-        roadMap.addRoad("A","B", Direction.Down, ROAD_LENGTH);
-        roadMap.addRoad("B","C", Direction.Right, ROAD_LENGTH);
-
-        JunctionLocationDTO loc = new JunctionLocationDTO(
-                "B",
-                Direction.Up,
-                Direction.Right,
-                0f);
-        ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
-        return ws;
-    }
-
-    private WorldStateDTO initializeRoadNetworkWorldState() {
+    private WorldStateDTO initialize() {
 
         WorldStateDTO ws = new WorldStateDTO();
 
@@ -100,7 +52,7 @@ public class SimpleWorldStateProvider {
         return ws;
     }
 
-    private WorldStateDTO getNextStateForFirstVersion(float vehicleMovement){
+    public WorldStateDTO getNextState(float vehicleMovement){
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
@@ -137,26 +89,4 @@ public class SimpleWorldStateProvider {
         return worldState;
     }
 
-    @SuppressWarnings("SuspiciousNameCombination")
-    private WorldStateDTO getNextStateForJunctionLocationTest(float vehicleMovement){
-        JunctionLocationDTO loc = (JunctionLocationDTO) worldState.getVehicleList().getVehicle("V1").getLocation();
-        JunctionMoveResult result = loc.move(vehicleMovement, ROAD_WIDTH, ROAD_WIDTH);
-        loc = result.getRemainder()>0?
-                new JunctionLocationDTO(loc.getJunctionLabel(),
-                                        loc.getOrigin(),
-                                        loc.getTarget(),
-                                        0f) :
-                result.getNewLocation();
-
-        worldState.getVehicleList().setVehicleLocation("V1", loc);
-        return worldState;
-    }
-
-    public WorldStateDTO getNextState(float vehicleMovement) {
-        if (stateType == SimpleWorldState.JUNCTION_LOCATION_TEST){
-            return getNextStateForJunctionLocationTest(vehicleMovement);
-        }else{
-            return getNextStateForFirstVersion(vehicleMovement);
-        }
-    }
 }

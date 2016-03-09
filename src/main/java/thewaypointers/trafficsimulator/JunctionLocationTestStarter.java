@@ -1,9 +1,9 @@
 package thewaypointers.trafficsimulator;
 
+import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
+import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 
@@ -14,20 +14,12 @@ public class JunctionLocationTestStarter {
 
     public static void main(String[] args){
 
-        SimpleWorldStateProvider simulation = new SimpleWorldStateProvider(SimpleWorldState.JUNCTION_LOCATION_TEST);
+        IStateProvider simulation = new JunctionTestProvider();
         MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
 
         //noinspection InfiniteLoopStatement
         while(true){
             WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            JunctionLocationDTO loc = (JunctionLocationDTO) newWorldState
-                    .getVehicleList().getVehicle("V1").getLocation();
-            FloatPoint coords = loc.getJunctionCoordinates();
-            System.out.println(String.format(
-                    "Vehicle coordinates: (%f, %f), angle: %f",
-                    coords.getX(),
-                    coords.getY(),
-                    loc.getAngle()));
             MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
             try {
                 Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));

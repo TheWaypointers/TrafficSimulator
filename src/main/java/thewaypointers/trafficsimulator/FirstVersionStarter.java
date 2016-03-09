@@ -1,8 +1,8 @@
 package thewaypointers.trafficsimulator;
 
+import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
+import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class FirstVersionStarter {
@@ -12,7 +12,7 @@ public class FirstVersionStarter {
 
     public static void main(String[] args){
 
-        SimpleWorldStateProvider simulation = new SimpleWorldStateProvider(SimpleWorldState.ROAD_NETWORK);   // this will be simulation
+        IStateProvider simulation = new RoadNetworkProvider();   // this will be simulation
         //IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
 
 
