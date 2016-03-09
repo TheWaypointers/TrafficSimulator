@@ -22,7 +22,7 @@ public class MainFrame extends JFrame{
 
         this.setLayout(null);
         mapContainerPanel.setBounds(0,0,600,600);
-        controlPanel.setBounds(605,0,200,200);
+        controlPanel.setBounds(600,0,200,600);
         this.add(mapContainerPanel);
         this.setSize(800,600);
 
