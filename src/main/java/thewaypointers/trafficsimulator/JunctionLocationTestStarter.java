@@ -1,20 +1,21 @@
 package thewaypointers.trafficsimulator;
 
+import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
+import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 
 public class JunctionLocationTestStarter {
 
     public static final float VEHICLE_MOVEMENT_SPEED = 2;
-    public static final float STATES_PER_SECOND = 1;
+    public static final float STATES_PER_SECOND = 10;
 
     public static void main(String[] args){
 
-        SimpleWorldStateProvider simulation = new SimpleWorldStateProvider(SimpleWorldState.JUNCTION_LOCATION_TEST);
+        IStateProvider simulation = new JunctionTestProvider();
         MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
 
         //noinspection InfiniteLoopStatement
