@@ -4,7 +4,6 @@ import static org.fest.assertions.api.Assertions.*;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
 
 public class FirstVersionWorldStateProviderTest {
     @Test

@@ -3,7 +3,6 @@ package thewaypointers.trafficsimulator;
 import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldState;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class FirstVersionStarter {
