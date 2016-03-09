@@ -56,8 +56,8 @@ public class SimpleWorldStateProvider {
 
         JunctionLocationDTO loc = new JunctionLocationDTO(
                 "B",
-                Direction.Up,
                 Direction.Right,
+                Direction.Up,
                 0f);
         ws.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
         return ws;
