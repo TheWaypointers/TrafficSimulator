@@ -10,7 +10,7 @@ import thewaypointers.trafficsimulator.utils.FloatPoint;
 public class JunctionLocationTestStarter {
 
     public static final float VEHICLE_MOVEMENT_SPEED = 2;
-    public static final float STATES_PER_SECOND = 10;
+    public static final float STATES_PER_SECOND = 1;
 
     public static void main(String[] args){
 
@@ -20,14 +20,6 @@ public class JunctionLocationTestStarter {
         //noinspection InfiniteLoopStatement
         while(true){
             WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            JunctionLocationDTO loc = (JunctionLocationDTO) newWorldState
-                    .getVehicleList().getVehicle("V1").getLocation();
-            FloatPoint coords = loc.getJunctionCoordinates();
-            System.out.println(String.format(
-                    "Vehicle coordinates: (%f, %f), angle: %f",
-                    coords.getX(),
-                    coords.getY(),
-                    loc.getAngle()));
             MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
             try {
                 Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
