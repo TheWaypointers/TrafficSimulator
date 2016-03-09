@@ -78,8 +78,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     private  void drawVehicleInJunction(Graphics g, VehicleDTO vehicle){
         int junlocationx, junlocationy, vx, vy, rectwidth, rectheiht;
         double rotate=0;
-        rectwidth=VEHICLE_WIDTH;
-        rectheiht=VEHICLE_HEIGHT;
         Rectangle2D rect;
         JunctionLocationDTO junctionLocationDTO=(JunctionLocationDTO)vehicle.getLocation();
         Point junctionPoint = junctionlocation.get( junctionLocationDTO.getJunctionLabel());
@@ -91,11 +89,15 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             //(vx,xy) is the coordinate of the top left point on a vehicle
             vx=junlocationx-HALF_VEHICLE_WIDTH;
             vy=junlocationy-HALF_VEHICLE_HEIGHT;
+            rectwidth=VEHICLE_WIDTH;
+            rectheiht=VEHICLE_HEIGHT;
             if (junctionLocationDTO.getTarget()==Direction.Left||junctionLocationDTO.getTarget()==Direction.Right)
                 rotate=Math.PI/2-junLocationAngle;
         }else{
             vx=junlocationx-HALF_VEHICLE_HEIGHT;
             vy=junlocationy-HALF_VEHICLE_WIDTH;
+            rectwidth=VEHICLE_HEIGHT;
+            rectheiht=VEHICLE_WIDTH;
             if (junctionLocationDTO.getTarget()==Direction.Up||junctionLocationDTO.getTarget()==Direction.Down)
                 rotate=2*Math.PI-junLocationAngle;
         }
