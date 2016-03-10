@@ -118,7 +118,8 @@ public class RoadDTO {
     }
 
     public boolean equals(RoadDTO other) {
-        return  isConnectedTo(other.getFrom()) &&
+        return  other!=null &&
+                isConnectedTo(other.getFrom()) &&
                 isConnectedTo(other.getTo()) &&
                 getLength() == other.getLength();
     }
