@@ -12,32 +12,32 @@ public class ControlPanel extends JPanel {
 
 
     //private JSplitPane worldControlPanel = new JSplitPane();
-    private JLabel worldStateLable = new JLabel();
+    private JLabel worldStateLabel = new JLabel();
     private JButton startPauseButton = new JButton();
     // private JSeparator firstLevelSep2 = new JSeparator();
     private JButton clearButton = new JButton();
     //private JSeparator firstLevelSep3 = new JSeparator();
-    private JLabel timeStepLable = new JLabel();
+    private JLabel timeStepLabel = new JLabel();
     private JSlider timeStepSlider = new JSlider(0, 100);
     //private JSeparator secondLevelSep1 = new JSeparator();
 
     //private JSplitPane vehicleControlPanel = new JSplitPane();
-    private JLabel vehiclesLable = new JLabel();
-    private JLabel cautionCarLable = new JLabel();
+    private JLabel vehiclesLabel = new JLabel();
+    private JLabel cautionCarLabel = new JLabel();
     private JTextField cautionCarsNumberTextField = new JTextField();
-    private JLabel normalCarLable = new JLabel();
+    private JLabel normalCarLabel = new JLabel();
     private JTextField normalCarsNumberTextField = new JTextField();
-    private JLabel recklessCarLable = new JLabel();
+    private JLabel recklessCarLabel = new JLabel();
     private JTextField reckCarsNumberTextField = new JTextField();
-    private JLabel busLable = new JLabel();
+    private JLabel busLabel = new JLabel();
     private JTextField busNumberTextField = new JTextField();
-    private JLabel ambulanceLable = new JLabel();
+    private JLabel ambulanceLabel = new JLabel();
     private JTextField ambulanceTextField = new JTextField();
     private JButton submitButton = new JButton();
 
     //private JSplitPane trafficLightControlPanel = new JSplitPane();
-    private JLabel trafficLightLable = new JLabel();
-    private JLabel trafficLightTimeLable = new JLabel();
+    private JLabel trafficLightLabel = new JLabel();
+    private JLabel trafficLightTimeLabel = new JLabel();
     private JSlider trafficLightTimeSlider = new JSlider(0, 100);
 
     Graphics2D g2;
@@ -87,9 +87,9 @@ public class ControlPanel extends JPanel {
     }
 
     private void initComponents() {
-        initTitle(worldStateLable);
-        worldStateLable.setText("World");
-        worldStateLable.setLocation(10, 0);
+        initTitle(worldStateLabel);
+        worldStateLabel.setText("World");
+        worldStateLabel.setLocation(10, 0);
 
         initButton(startPauseButton);
         startPauseButton.setText("Start");
@@ -109,9 +109,9 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        initLable(timeStepLable);
-        timeStepLable.setText("Time step");
-        timeStepLable.setLocation(22, 120);
+        initLabel(timeStepLabel);
+        timeStepLabel.setText("Time step");
+        timeStepLabel.setLocation(22, 120);
 
         initSlider(timeStepSlider);
         timeStepSlider.setLocation(80, 120);
@@ -120,41 +120,41 @@ public class ControlPanel extends JPanel {
         timeStepSlider.addChangeListener(timeStepChange);
 
 
-        initTitle(vehiclesLable);
-        vehiclesLable.setText("Vehicles number");
-        vehiclesLable.setLocation(10, 160);
+        initTitle(vehiclesLabel);
+        vehiclesLabel.setText("Vehicles number");
+        vehiclesLabel.setLocation(10, 160);
 
-        initLable(cautionCarLable);
-        cautionCarLable.setText("Caution car");
-        cautionCarLable.setLocation(22, 200);
+        initLabel(cautionCarLabel);
+        cautionCarLabel.setText("Caution car");
+        cautionCarLabel.setLocation(22, 200);
 
         initTextField(cautionCarsNumberTextField);
         cautionCarsNumberTextField.setLocation(120, 200);
 
-        initLable(normalCarLable);
-        normalCarLable.setText("Normal car");
-        normalCarLable.setLocation(22, 240);
+        initLabel(normalCarLabel);
+        normalCarLabel.setText("Normal car");
+        normalCarLabel.setLocation(22, 240);
 
         initTextField(normalCarsNumberTextField);
         normalCarsNumberTextField.setLocation(120, 240);
 
-        initLable(recklessCarLable);
-        recklessCarLable.setText("Reckless car");
-        recklessCarLable.setLocation(22, 280);
+        initLabel(recklessCarLabel);
+        recklessCarLabel.setText("Reckless car");
+        recklessCarLabel.setLocation(22, 280);
 
         initTextField(reckCarsNumberTextField);
         reckCarsNumberTextField.setLocation(120, 280);
 
-        initLable(busLable);
-        busLable.setText("Bus");
-        busLable.setLocation(22, 320);
+        initLabel(busLabel);
+        busLabel.setText("Bus");
+        busLabel.setLocation(22, 320);
 
         initTextField(busNumberTextField);
         busNumberTextField.setLocation(120, 320);
 
-        initLable(ambulanceLable);
-        ambulanceLable.setText("Ambulance");
-        ambulanceLable.setLocation(22, 360);
+        initLabel(ambulanceLabel);
+        ambulanceLabel.setText("Ambulance");
+        ambulanceLabel.setLocation(22, 360);
 
         initTextField(ambulanceTextField);
         ambulanceTextField.setLocation(120, 360);
@@ -168,13 +168,13 @@ public class ControlPanel extends JPanel {
             }
         });
 
-        initTitle(trafficLightLable);
-        trafficLightLable.setText("Traffic light");
-        trafficLightLable.setLocation(10, 440);
+        initTitle(trafficLightLabel);
+        trafficLightLabel.setText("Traffic light");
+        trafficLightLabel.setLocation(10, 440);
 
-        initLable(trafficLightTimeLable);
-        trafficLightTimeLable.setText("Flip Interval");
-        trafficLightTimeLable.setLocation(22, 480);
+        initLabel(trafficLightTimeLabel);
+        trafficLightTimeLabel.setText("Flip Interval");
+        trafficLightTimeLabel.setLocation(22, 480);
 
         initSlider(trafficLightTimeSlider);
         trafficLightTimeSlider.setLocation(80, 480);
@@ -182,25 +182,25 @@ public class ControlPanel extends JPanel {
         trafficLightTimeSlider.setMinorTickSpacing(10);
         trafficLightTimeSlider.addChangeListener(trafficLightTimeChange);
 
-        this.add(worldStateLable);
+        this.add(worldStateLabel);
         this.add(startPauseButton);
         this.add(clearButton);
-        this.add(timeStepLable);
+        this.add(timeStepLabel);
         this.add(timeStepSlider);
-        this.add(vehiclesLable);
-        this.add(cautionCarLable);
+        this.add(vehiclesLabel);
+        this.add(cautionCarLabel);
         this.add(cautionCarsNumberTextField);
-        this.add(normalCarLable);
+        this.add(normalCarLabel);
         this.add(normalCarsNumberTextField);
-        this.add(recklessCarLable);
+        this.add(recklessCarLabel);
         this.add(reckCarsNumberTextField);
-        this.add(busLable);
+        this.add(busLabel);
         this.add(busNumberTextField);
-        this.add(ambulanceLable);
+        this.add(ambulanceLabel);
         this.add(ambulanceTextField);
         this.add(submitButton);
-        this.add(trafficLightLable);
-        this.add(trafficLightTimeLable);
+        this.add(trafficLightLabel);
+        this.add(trafficLightTimeLabel);
         this.add(trafficLightTimeSlider);
 
 
@@ -217,11 +217,11 @@ public class ControlPanel extends JPanel {
         button.setHorizontalAlignment(SwingConstants.LEFT);
     }
 
-    private void initLable(JLabel lable) {
-        lable.setBackground(null);
-        lable.setVisible(true);
-        lable.setSize(80, 38);
-        lable.setFont(new Font("Arial", 0, 12));
+    private void initLabel(JLabel label) {
+        label.setBackground(null);
+        label.setVisible(true);
+        label.setSize(80, 38);
+        label.setFont(new Font("Arial", 0, 12));
 
     }
 
