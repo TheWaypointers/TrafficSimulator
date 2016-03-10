@@ -42,20 +42,14 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
-    ChangeListener timeStepChange = new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            int tmp = timeStepSlider.getValue();
-            //System.out.println("time step: "+tmp);
-        }
+    ChangeListener timeStepChange = e -> {
+        int tmp = timeStepSlider.getValue();
+        //System.out.println("time step: "+tmp);
     };
 
-    ChangeListener trafficLightTimeChange = new ChangeListener() {
-        @Override
-        public void stateChanged(ChangeEvent e) {
-            int tmp = trafficLightTimeSlider.getValue();
-            //System.out.println("traffic light time: "+tmp);
-        }
+    ChangeListener trafficLightTimeChange = e -> {
+        int tmp = trafficLightTimeSlider.getValue();
+        //System.out.println("traffic light time: "+tmp);
     };
 
 
@@ -94,20 +88,12 @@ public class ControlPanel extends JPanel {
         initButton(startPauseButton);
         startPauseButton.setText("Start");
         startPauseButton.setLocation(0, 40);
-        startPauseButton.addActionListener(new ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                startPausePerformed(evt);
-            }
-        });
+        startPauseButton.addActionListener(this::startPausePerformed);
 
         initButton(clearButton);
         clearButton.setText("Clear");
         clearButton.setLocation(0, 80);
-        clearButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                clearPerformed(evt);
-            }
-        });
+        clearButton.addActionListener(this::clearPerformed);
 
         initLabel(timeStepLabel);
         timeStepLabel.setText("Time step");
@@ -162,11 +148,7 @@ public class ControlPanel extends JPanel {
         initButton(submitButton);
         submitButton.setText("Add vehicles");
         submitButton.setLocation(0, 400);
-        submitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                submitPerformed(evt);
-            }
-        });
+        submitButton.addActionListener(this::submitPerformed);
 
         initTitle(trafficLightLabel);
         trafficLightLabel.setText("Traffic light");
@@ -277,11 +259,11 @@ public class ControlPanel extends JPanel {
 //        if(cautionCarNum.equals("0")){
 //            new JumpOutDialog("test");
 //        }
-        if((cautionCarNum.equals(null))
-                ||(normalCarNum.equals(null))
-                ||(recklessCarNum.equals(null))
-                ||(busNum.equals(null))
-                || (ambulanceNum.equals(null))){
+        if(cautionCarNum == null
+                ||normalCarNum == null
+                ||recklessCarNum == null
+                ||busNum == null
+                ||ambulanceNum == null){
             new JumpOutDialog("Textfeild can't be empty!");
 
         }
