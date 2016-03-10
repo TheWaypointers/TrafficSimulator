@@ -3,7 +3,9 @@ package thewaypointers.trafficsimulator.common;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.TrafficLightDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TrafficLightSystemDTO {
@@ -69,4 +71,12 @@ public class TrafficLightSystemDTO {
     ){
         getTrafficLight(junctionLabel, direction, lane).changeColor();
     }
+
+    public List<String> GetJunctionLabel(){
+        List<String> junctionlabel=new ArrayList<>();
+        junctionlabel.addAll(this.junctions.keySet());
+        return junctionlabel;
+    }
+
+
 }

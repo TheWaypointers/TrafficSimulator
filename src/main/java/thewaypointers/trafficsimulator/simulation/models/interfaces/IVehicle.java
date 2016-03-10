@@ -9,12 +9,11 @@ import java.util.HashMap;
 
 public interface IVehicle {
 
-    public void calculateVehicleSpeed(float roadSpeedLimit);
-    public float getVehiclesCurrentSpeed();
-    public float getVehiclesDistanceTravelled();
-    public HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap);
-    public boolean isVehicleLeavingRoad();
-    public DefaultWeightedEdge getCurrentRoadEdge();
-    public String getVehiclesOriginNode();
-    public String getVehiclesDestinationNode();
+    void calculateVehicleSpeed(float roadSpeedLimit);
+    float getVehiclesCurrentSpeed();
+    float getVehiclesDistanceTravelled();
+    void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap);
+    DefaultWeightedEdge getCurrentRoadEdge();
+    String getVehiclesOriginNode();
+    String getVehiclesDestinationNode();
 }

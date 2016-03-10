@@ -61,6 +61,11 @@ public class MapDTO {
         return getRoads(getJunctions());
     }
 
+    public RoadDTO getRoad(String label){
+        List<RoadDTO> roads = getRoads();
+        return roads.stream().filter(x->x.equals(label)).findFirst().get();
+    }
+
     public int getJunctionCount(){
         return getJunctions().size();
     }

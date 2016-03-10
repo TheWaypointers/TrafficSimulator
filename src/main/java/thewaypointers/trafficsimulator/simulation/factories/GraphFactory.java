@@ -43,15 +43,23 @@ public class GraphFactory {
         getRoadGraph().setEdgeWeight(e2, 300);
         getVehicleMap().put(e2, new ArrayList<>());
 
+        DefaultWeightedEdge e3 = getRoadGraph().addEdge("2", "1");
+        getRoadGraph().setEdgeWeight(e3, 300);
+        getVehicleMap().put(e3, new ArrayList<>());
+
+        DefaultWeightedEdge e4 = getRoadGraph().addEdge("3", "2");
+        getRoadGraph().setEdgeWeight(e4, 300);
+        getVehicleMap().put(e4, new ArrayList<>());
+
         Node node1 = new Node("1", NodeType.ExitNode);
-        RoadEdge re1 = new RoadEdge(e1, DirectionFromNode.Right, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
+        RoadEdge re1 = new RoadEdge(e1, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
 
         Node node2 = new TrafficLightNode("2", NodeType.JunctionTrafficLights);
-        RoadEdge re21 = new RoadEdge(e1, DirectionFromNode.Left, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
-        RoadEdge re22 = new RoadEdge(e2, DirectionFromNode.Right, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+        RoadEdge re21 = new RoadEdge(e1, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
+        RoadEdge re22 = new RoadEdge(e2, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
 
         Node node3 = new Node("3", NodeType.ExitNode);
-        RoadEdge re3 = new RoadEdge(e2, DirectionFromNode.Left, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+        RoadEdge re3 = new RoadEdge(e2, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
 
         getNodeGraphMap().put(node1, new ArrayList<>());
         getNodeGraphMap().get(node1).add(re1);
@@ -72,12 +80,9 @@ public class GraphFactory {
         roadMap.addRoad("1","2", Direction.Down, 300);
         roadMap.addRoad("2", "3", Direction.Down, 300);
 
+
         // add traffic lights
         worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("2"));
-
-        RoadDTO startRoad = roadMap.getJunction("2").getRoad(Direction.Up);
-        LocationDTO loc = new LocationDTO(startRoad, startRoad.getEnd("1"), 0, Lane.Right);
-        worldState.getVehicleList().addVehicle("V1", loc, VehicleType.CarNormal);
 
         return worldState;
     }
