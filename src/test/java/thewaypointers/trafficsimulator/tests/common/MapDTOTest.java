@@ -64,8 +64,8 @@ public class MapDTOTest {
         assertThat(downRoad.equals("AC"));
 
 //        //Select junctionC and test the direction of road AB is left; passed?  not sure because from A to B
-        RoadDTO upRoad = junctionB.getRoad(Direction.Left);
-        assertThat(upRoad.equals("AB"));
+        RoadDTO leftRoad = junctionB.getRoad(Direction.Left);
+        assertThat(leftRoad.equals("AB"));
 
 //        //Select junctionC and test the direction of road CD is Right; passed? not sure because from D to C
         RoadDTO rightRoad = junctionC.getRoad(Direction.Right);
@@ -73,8 +73,8 @@ public class MapDTOTest {
 
 //
 //        //Select junctionC and test the direction of road DB is Right; passed? not sure because from B to D
-        RoadDTO leftRoad = junctionD.getRoad(Direction.Up);
-        assertThat(leftRoad.equals("DB"));
+        RoadDTO upRoad = junctionD.getRoad(Direction.Up);
+        assertThat(upRoad.equals("DB"));
 
 //
     }
@@ -102,6 +102,9 @@ public class MapDTOTest {
     public void node_is_different_from_junction() {
         // arrange
         MapDTO map = new MapDTO();
+        map.addRoad("A", "B", Direction.Right, ROAD_LENGTH);
+        map.addRoad("B", "C", Direction.Down, ROAD_LENGTH);
+
         //act
         int node = map.getNodeCount();
         int junction = map.getJunctionCount();
