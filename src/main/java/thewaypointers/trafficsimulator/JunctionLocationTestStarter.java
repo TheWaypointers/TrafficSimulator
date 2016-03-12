@@ -4,7 +4,6 @@ import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
-import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.utils.FloatPoint;
 
@@ -15,7 +14,7 @@ public class JunctionLocationTestStarter {
 
     public static void main(String[] args){
 
-        IStateProvider simulation = new RoadNetworkProvider();
+        IStateProvider simulation = new JunctionTestProvider();
         MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
 
         //noinspection InfiniteLoopStatement
