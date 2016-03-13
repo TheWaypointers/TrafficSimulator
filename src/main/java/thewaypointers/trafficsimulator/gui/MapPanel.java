@@ -29,7 +29,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int JUNCTION_STARTPOINT_Y = 300;
 
     public static final Color BACKGROUND_COLOR = Color.white;
-    public static final Color ROAD_COLOR = Color.gray;
+    public static final Color ROAD_COLOR = Color.GRAY;
     public static final Color LANE_SEPARATOR_LINE_COLOR = Color.white;
 
     // set color of different kinds of vehicles
@@ -47,6 +47,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int HALF_ROAD_WIDTH = ROAD_WIDTH/2;
     public static final int HALF_VEHICLE_HEIGHT = VEHICLE_HEIGHT/2;
     public static final int HALF_VEHICLE_WIDTH = VEHICLE_WIDTH/2;
+    public static final int LABEL_SIZE=16;
+
+    // set whether display debug or not
+    boolean debug=true;
 
 
     WorldStateDTO worldState = new WorldStateDTO(null, null, null);
@@ -117,6 +121,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         Color color=Color.white;
         int wide,length;
         VehicleType type=vehicle.getType();
+        String label=vehicle.getLabel();
         Direction road_direction=this.Getcar_roadedirection(map, location);
         Point point=this.compute_xy(map,location);
         if (road_direction==Direction.Up || road_direction==Direction.Down) {
@@ -130,6 +135,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
         g.setColor(this.GetVehicleColor(type));
         g.fillRect((int) point.getX(), (int) point.getY(), wide, length);
+        drawLabel(g,(int) point.getX()+wide,(int) point.getY(),label);
     }
 
     private void draw_Vehicle(Graphics g, VehicleDTO vehicle,MapDTO map){
@@ -222,6 +228,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             int x=(int)junctionlocation.get(junname).getX();
             int y=(int)junctionlocation.get(junname).getY();
             g.fillRect(x,y,ROAD_WIDTH,ROAD_WIDTH);
+            drawLabel(g, x+HALF_ROAD_WIDTH-LABEL_SIZE/2+2 , y+HALF_ROAD_WIDTH+LABEL_SIZE/2-2 ,junname);
             for (Direction direction:junctionDTO.getConnectedDirections()){
                 this.draw_road(junctionDTO, direction, g, x, y);
             }
@@ -557,6 +564,21 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
         return point;
 
+    }
+
+    //draw label on vehicles and junctions
+    public void drawLabel(Graphics g,int x,int y,String label){
+        if (!debug){
+            return;
+        }
+        g.setFont(new Font("Arial",Font.PLAIN,LABEL_SIZE));
+        g.setColor(Color.black);
+        g.drawString(label,x,y);
+    }
+
+    //display labels or not
+    public void SetDebug(boolean debug){
+        this.debug=debug;
     }
 
 }
