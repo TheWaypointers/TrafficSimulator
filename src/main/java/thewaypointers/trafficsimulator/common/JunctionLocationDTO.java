@@ -282,9 +282,10 @@ public class JunctionLocationDTO implements ILocation {
         if(junctionWidth!=junctionHeight){
             throw new IllegalArgumentException("Non-square junctions not supported yet...");
         }
-        float normalized = distance/junctionWidth;
+        float normalized = distance/(junctionWidth*getRouteLength());
         JunctionMoveResult result = move(normalized);
         return new JunctionMoveResult(result.getNewLocation(),
                                       result.getRemainder()*junctionWidth);
     }
+
 }
