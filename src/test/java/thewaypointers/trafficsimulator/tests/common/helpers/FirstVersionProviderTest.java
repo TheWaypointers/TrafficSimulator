@@ -5,7 +5,7 @@ import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
 
-public class FirstVersionWorldStateProviderTest {
+public class FirstVersionProviderTest {
     @Test
     public void Provider_generates_correct_world_state() {
         // arrange
@@ -131,5 +131,19 @@ public class FirstVersionWorldStateProviderTest {
         assertThat(upColor).isEqualTo(downColor);
         assertThat(upColor).isNotEqualTo(upStartColor);
         assertThat(downColor).isNotEqualTo(downStartColor);
+    }
+
+    @Test
+    public void Provider_increments_simulation_time(){
+        // arrange
+        FirstVersionProvider provider = new FirstVersionProvider();
+        final float moveDistance = FirstVersionProvider.ROAD_LENGTH/6;
+
+        // act and assert
+        WorldStateDTO result;
+        result = provider.getNextState(moveDistance);
+        assertThat(result.getClock()).isEqualTo(moveDistance);
+        result = provider.getNextState(moveDistance);
+        assertThat(result.getClock()).isEqualTo(moveDistance*2);
     }
 }
