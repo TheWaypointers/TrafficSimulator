@@ -35,6 +35,21 @@ public class JunctionLocationDTO implements ILocation {
         this.progress = progress;
     }
 
+    public JunctionLocationDTO(String junctionLabel,
+                               Direction origin,
+                               Direction target,
+                               float distanceTravelled,
+                               float junctionWidth,
+                               float junctionHeight){
+        this(junctionLabel,
+                origin,
+                target,
+                progressFromDistanceTravelled(distanceTravelled,
+                                              junctionWidth,
+                                              junctionHeight,
+                                              getRouteLength(getJunctionRoute(origin,target))));
+    }
+
     public String getJunctionLabel() {
         return junctionLabel;
     }
@@ -51,17 +66,21 @@ public class JunctionLocationDTO implements ILocation {
         return progress;
     }
 
-    private JunctionRoute getJunctionRoute(){
-        if(getTarget().equals(getOrigin().toLeft())){
+    private static JunctionRoute getJunctionRoute(Direction origin, Direction target){
+        if(target.equals(origin.toLeft())){
             return JunctionRoute.LeftTurn;
-        }else if(getTarget().equals(getOrigin().toRight())){
+        }else if(target.equals(origin.toRight())){
             return JunctionRoute.RightTurn;
-        }else if(getTarget().equals(getOrigin().opposite())){
+        }else if(target.equals(origin.opposite())){
             return JunctionRoute.StraightRoute;
         }else{
             throw new AssertionError(String.format(
-                    "Invalid target %s for origin %s", getTarget(), getOrigin()));
+                    "Invalid target %s for origin %s", target, origin));
         }
+    }
+
+    private JunctionRoute getJunctionRoute(){
+        return  getJunctionRoute(getOrigin(), getTarget());
     }
 
     public JunctionLocationDTO(JunctionLocationDTO other){
@@ -231,8 +250,8 @@ public class JunctionLocationDTO implements ILocation {
         return rotated;
     }
 
-    private float getRouteLength(){
-        switch (getJunctionRoute()){
+    private static float getRouteLength(JunctionRoute route){
+        switch (route){
             case StraightRoute:
                 return 1;
             case RightTurn:
@@ -242,6 +261,10 @@ public class JunctionLocationDTO implements ILocation {
             default:
                 throw new AssertionError("Unexpected enum value");
         }
+    }
+
+    private float getRouteLength(){
+        return getRouteLength(getJunctionRoute());
     }
 
     private JunctionMoveResult move(float distance){
@@ -282,10 +305,28 @@ public class JunctionLocationDTO implements ILocation {
         if(junctionWidth!=junctionHeight){
             throw new IllegalArgumentException("Non-square junctions not supported yet...");
         }
-        float normalized = distance/(junctionWidth*getRouteLength());
+        float normalized = distance/junctionWidth;
         JunctionMoveResult result = move(normalized);
         return new JunctionMoveResult(result.getNewLocation(),
                                       result.getRemainder()*junctionWidth);
+    }
+
+    private static float progressFromDistanceTravelled(float distanceTravelled, float junctionWidth, float junctionHeight, float routeLength){
+        if(junctionWidth!=junctionHeight){
+            throw new IllegalArgumentException("Non-square junctions not supported yet...");
+        }
+        return distanceTravelled/(junctionWidth*routeLength);
+    }
+
+    private static float distanceTravelledFromProgress(float progress, float junctionWidth, float junctionHeight, float routeLength){
+        if(junctionWidth!=junctionHeight){
+            throw new IllegalArgumentException("Non-square junctions not supported yet...");
+        }
+        return progress*junctionWidth*routeLength;
+    }
+
+    public float getDistanceTravelled(float junctionWidth, float junctionHeight){
+        return distanceTravelledFromProgress(getProgress(), junctionWidth, junctionHeight, getRouteLength());
     }
 
 }
