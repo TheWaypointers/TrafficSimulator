@@ -142,8 +142,8 @@ public class FirstVersionProviderTest {
         // act and assert
         WorldStateDTO result;
         result = provider.getNextState(moveDistance);
-        assertThat(result.getClock()).isEqualTo(moveDistance);
+        assertThat(result.getClock()).isEqualTo((long)moveDistance);
         result = provider.getNextState(moveDistance);
-        assertThat(result.getClock()).isEqualTo(moveDistance*2);
+        assertThat(result.getClock()).isEqualTo(((long)moveDistance)*2);
     }
 }

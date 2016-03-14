@@ -1,7 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
 public class WorldStateDTO {
-    private float clock;
+    private long clock;
     private MapDTO roadMap;
     private VehicleListDTO vehicleList;
     private TrafficLightSystemDTO trafficLightSystem;
@@ -22,7 +22,7 @@ public class WorldStateDTO {
     public WorldStateDTO(MapDTO roadMap,
                          VehicleListDTO vehicles,
                          TrafficLightSystemDTO trafficLightSystem,
-                         float clock){
+                         long clock){
         this(roadMap, vehicles, trafficLightSystem);
         this.clock = clock;
     }
@@ -51,11 +51,11 @@ public class WorldStateDTO {
         this.trafficLightSystem = trafficLightSystem;
     }
 
-    public float getClock() {
+    public long getClock() {
         return clock;
     }
 
-    public void setClock(float clock){
+    public void setClock(long clock){
         this.clock = clock;
     }
 

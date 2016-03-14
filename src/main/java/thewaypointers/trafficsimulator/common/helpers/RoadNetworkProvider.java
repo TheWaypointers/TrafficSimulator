@@ -62,7 +62,7 @@ public class RoadNetworkProvider implements IStateProvider {
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
-        worldState.setClock(worldState.getClock()+vehicleMovement);
+        worldState.setClock(worldState.getClock()+(long)vehicleMovement);
 
         RoadLocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
