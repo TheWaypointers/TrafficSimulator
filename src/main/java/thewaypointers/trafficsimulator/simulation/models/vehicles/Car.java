@@ -50,7 +50,7 @@ public class Car implements IVehicle {
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
 
         //check if there is a vehicle in the distance to travel
-        for (IVehicle vehicle : VehicleManager.getVehicleMap().get(this.getCurrentRoad())) {
+        for (IVehicle vehicle : VehicleManager.getVehicleMap().getFromRoad(this.getCurrentRoad())) {
             if (vehicle != this) {
                 float vehiclePosition = vehicle.getVehiclesDistanceTravelled();
                 if (vehiclePosition >= this.getDistanceTravelled() && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
@@ -74,12 +74,12 @@ public class Car implements IVehicle {
 
                 if (tlNode.getColor() == TrafficLightColor.Green) {
                     float overLap = nextPossiblePosition - roadLength;
-                    VehicleManager.removeVehicle(currentRoad, this);
+                    VehicleManager.getVehicleMap().remove(this);
                     RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
 
                     currentRoad = nextRoadEdge.getRoad();
                     roadLength = nextRoadEdge.getRoadLength();
-                    VehicleManager.getVehicleMap().get(currentRoad).add(this);
+                    VehicleManager.getVehicleMap().add(currentRoad, this);
 
                     this.setDistanceTravelled(overLap);
 
@@ -92,7 +92,7 @@ public class Car implements IVehicle {
                     return;
                 }
             } else if (nextNode.getNodeType() == NodeType.ExitNode) {
-                VehicleManager.removeVehicle(currentRoad, this);
+                VehicleManager.getVehicleMap().remove(this);
                 return;
             }
         } else {
