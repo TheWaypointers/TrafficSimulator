@@ -13,7 +13,7 @@ public interface IVehicle {
     float getVehiclesCurrentSpeed();
     float getVehiclesDistanceTravelled();
     void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap);
-    DefaultWeightedEdge getCurrentRoadEdge();
+    RoadEdge getCurrentRoadEdge();
     String getVehiclesOriginNode();
     String getVehiclesDestinationNode();
 }

@@ -21,7 +21,7 @@ public class Bus implements IVehicle {
     private String originNode;
     private Lane lane;
     private boolean onExit;
-    private DefaultWeightedEdge currentRoad;
+    private RoadEdge currentRoad;
 
     private final long SPEED_DIFFERENCE = 10;
 
@@ -122,7 +122,7 @@ public class Bus implements IVehicle {
     }
 
     @Override
-    public DefaultWeightedEdge getCurrentRoadEdge() {
+    public RoadEdge getCurrentRoadEdge() {
         return getCurrentRoad();
     }
 
@@ -144,11 +144,11 @@ public class Bus implements IVehicle {
         this.onExit = onExit;
     }
 
-    public DefaultWeightedEdge getCurrentRoad() {
+    public RoadEdge getCurrentRoad() {
         return currentRoad;
     }
 
-    public void setCurrentRoad(DefaultWeightedEdge currentRoad) {
+    public void setCurrentRoad(RoadEdge currentRoad) {
         this.currentRoad = currentRoad;
     }
 }

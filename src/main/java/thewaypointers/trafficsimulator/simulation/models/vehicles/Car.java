@@ -24,20 +24,28 @@ public class Car implements IVehicle {
     private Stack<String> decisionPath;
     private String originNode;
     private Lane lane;
-    private DefaultWeightedEdge currentRoad;
-    private float roadLength;
+    private RoadEdge currentRoad;
+    private Node currentNode;
 
     private final long SPEED_DIFFERENCE = 10;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
 
-    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, DefaultWeightedEdge currentRoad, float roadLength, String originNode, Lane lane) {
+    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, float roadLength, String originNode, Lane lane) {
+        initialize(type, roadSpeedLimit, decisionPath, roadLength, originNode, lane);
+        this.currentRoad = currentRoad;
+    }
+
+    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, Node currentNode, float roadLength, String originNode, Lane lane) {
+        initialize(type, roadSpeedLimit, decisionPath, roadLength, originNode, lane);
+        this.currentNode = currentNode;
+    }
+
+    private void initialize(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, float roadLength, String originNode, Lane lane){
         this.vehicleType = type;
         this.decisionPath = decisionPath;
         this.originNode = originNode;
         this.lane = lane;
-        this.currentRoad = currentRoad;
         distanceTravelled = 0;
-        this.roadLength = roadLength;
         calculateVehicleSpeed(roadSpeedLimit);
         this.currentSpeed = this.topSpeed;
     }
@@ -50,7 +58,7 @@ public class Car implements IVehicle {
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
 
         //check if there is a vehicle in the distance to travel
-        for (IVehicle vehicle : VehicleManager.getVehicleMap().getFromRoad(this.getCurrentRoad())) {
+        for (IVehicle vehicle : VehicleManager.getVehicleMap().getFromRoad(this.getCurrentRoad().getRoad())) {
             if (vehicle != this) {
                 float vehiclePosition = vehicle.getVehiclesDistanceTravelled();
                 if (vehiclePosition >= this.getDistanceTravelled() && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
@@ -65,7 +73,7 @@ public class Car implements IVehicle {
 
         Node nextNode = calculateNextNode(nodeGraphMap);
         //check if a node is coming up
-        if (nextPossiblePosition >= roadLength) {
+        if (nextPossiblePosition >= currentRoad.getLength()) {
             //get the upcoming node
 
 
@@ -73,20 +81,19 @@ public class Car implements IVehicle {
                 TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
 
                 if (tlNode.getColor() == TrafficLightColor.Green) {
-                    float overLap = nextPossiblePosition - roadLength;
+                    float overLap = nextPossiblePosition - currentRoad.getLength();
                     VehicleManager.getVehicleMap().remove(this);
                     RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
 
-                    currentRoad = nextRoadEdge.getRoad();
-                    roadLength = nextRoadEdge.getRoadLength();
-                    VehicleManager.getVehicleMap().add(currentRoad, this);
+                    currentRoad = nextRoadEdge;
+                    VehicleManager.getVehicleMap().add(currentRoad.getRoad(), this);
 
                     this.setDistanceTravelled(overLap);
 
                     return;
                 } else {
-                    if (getDistanceTravelled() < roadLength - 20) {
-                        setDistanceTravelled(roadLength - 20);
+                    if (getDistanceTravelled() < currentRoad.getLength() - 20) {
+                        setDistanceTravelled(currentRoad.getLength() - 20);
                     }
                     currentSpeed = 0;
                     return;
@@ -242,7 +249,7 @@ public class Car implements IVehicle {
     }
 
     @Override
-    public DefaultWeightedEdge getCurrentRoadEdge() {
+    public RoadEdge getCurrentRoadEdge() {
         return getCurrentRoad();
     }
 
@@ -256,19 +263,19 @@ public class Car implements IVehicle {
         return decisionPath.peek();
     }
 
-    public DefaultWeightedEdge getCurrentRoad() {
+    public RoadEdge getCurrentRoad() {
         return currentRoad;
     }
 
-    public void setCurrentRoad(DefaultWeightedEdge currentRoad) {
+    public void setCurrentRoad(RoadEdge currentRoad) {
         this.currentRoad = currentRoad;
     }
 
-    public float getRoadLength() {
-        return roadLength;
+    public Node getCurrentNode() {
+        return currentNode;
     }
 
-    public void setRoadLength(float roadLength) {
-        this.roadLength = roadLength;
+    public void setCurrentNode(Node currentNode) {
+        this.currentNode = currentNode;
     }
 }

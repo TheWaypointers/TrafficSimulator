@@ -7,13 +7,13 @@ public class RoadEdge {
     private DefaultWeightedEdge road;
     private DirectionFromNode direction;
     private long speedLimit;
-    private float roadLength;
+    private float length;
 
     public RoadEdge(DefaultWeightedEdge road, DirectionFromNode direction, long speedLimit, float roadLength){
         this.road = road;
         this.direction = direction;
         this.speedLimit = speedLimit;
-        this.roadLength = roadLength;
+        this.length = roadLength;
     }
 
     public DefaultWeightedEdge getRoad() {
@@ -40,12 +40,12 @@ public class RoadEdge {
         this.speedLimit = speedLimit;
     }
 
-    public float getRoadLength() {
-        return roadLength;
+    public float getLength() {
+        return length;
     }
 
-    public void setRoadLength(float roadLength) {
-        this.roadLength = roadLength;
+    public void setLength(float length) {
+        this.length = length;
     }
 
 }

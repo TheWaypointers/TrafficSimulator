@@ -174,7 +174,7 @@ public class Simulation implements ISimulationInputListener {
 
         VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap);
         IVehicle vehicle = vehicleFactory.buildVehicle(roadGraph, nodeGraphMap);
-        VehicleManager.getVehicleMap().add(vehicle.getCurrentRoadEdge(), vehicle);
+        VehicleManager.getVehicleMap().add(vehicle.getCurrentRoadEdge().getRoad(), vehicle);
 
     }
 
