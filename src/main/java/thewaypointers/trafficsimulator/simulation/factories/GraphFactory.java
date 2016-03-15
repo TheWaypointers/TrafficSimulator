@@ -25,7 +25,7 @@ public class GraphFactory {
     public GraphFactory(){
         setRoadGraph(new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class));
         setNodeGraphMap(new HashMap<>());
-        setVehicleMap(vehicleMap);
+        setVehicleMap(new VehicleMap());
 
         prepareRoadGraph();
     }
