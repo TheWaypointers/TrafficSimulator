@@ -1,31 +1,66 @@
 package thewaypointers.trafficsimulator;
 
+import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.gui.MainFrame;
-import thewaypointers.trafficsimulator.simulation.Simulation;
 
-public class TrafficSimulatorManager {
+import static thewaypointers.trafficsimulator.gui.MainFrame.*;
 
-    final static long TIME_STEP = 100;
-    final static long SIMULATION_TIME_STEP = 300;
-    static WorldStateDTO worldState;
-    static MainFrame mainFrame;
+public class TrafficSimulatorManager{
 
-    public static void main(String[] args) {
+    public static final float VEHICLE_MOVEMENT_SPEED = 2;
+    public static final float STATES_PER_SECOND = 1;
+    WorldStateDTO worldState;
+    private static MainFrame mainFrame;
+    private static IStateProvider simulation;
+    private static TrafficSimulatorManager trafficSimulatorManager;
+    private static boolean run = false;
 
-        Simulation simulation = new Simulation();
-        mainFrame = new MainFrame();
 
+    //Simulation simulation = new Simulation();
+
+    private TrafficSimulatorManager(){
+
+    }
+
+
+    public static void setSimulation(IStateProvider simulation) {
+        TrafficSimulatorManager.simulation = simulation;
+    }
+
+    public static void setMainFrame(MainFrame mainFrame) {
+        TrafficSimulatorManager.mainFrame = mainFrame;
+    }
+
+    public static TrafficSimulatorManager GetInstance()
+    {
+
+        if (trafficSimulatorManager == null)
+        {
+            trafficSimulatorManager = new TrafficSimulatorManager();
+        }
+        return trafficSimulatorManager;
+    }
+
+    public void run(){
         while(true){
-            try{
-                Thread.sleep(TIME_STEP);
-                worldState = simulation.getNextSimulationStep(SIMULATION_TIME_STEP);
-                MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
-            }
-            catch(InterruptedException ex){
-                System.out.println(ex.getMessage());
+            System.out.println("test");
+            worldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
+            mapContainerPanel.mapPanel.NewStateReceived(worldState);
+            try {
+                Thread.sleep((long) (1f / STATES_PER_SECOND * 1000));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    public void pauseSimulation(){
+
+    }
+
+    public void stopSimulation(){
+
     }
 
 }

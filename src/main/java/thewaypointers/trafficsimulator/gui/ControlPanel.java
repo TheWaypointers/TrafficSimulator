@@ -1,4 +1,9 @@
 package thewaypointers.trafficsimulator.gui;
+import thewaypointers.trafficsimulator.JunctionLocationTestStarter;
+import thewaypointers.trafficsimulator.TrafficSimulatorManager;
+import thewaypointers.trafficsimulator.common.WorldStateDTO;
+import thewaypointers.trafficsimulator.simulation.Simulation;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,6 +15,7 @@ import java.awt.event.ActionEvent;
 
 public class ControlPanel extends JPanel {
 
+    TrafficSimulatorManager trafficSimulatorManager = TrafficSimulatorManager.GetInstance();
 
     //private JSplitPane worldControlPanel = new JSplitPane();
     private JLabel worldStateLabel = new JLabel();
@@ -232,8 +238,8 @@ public class ControlPanel extends JPanel {
     private void startPausePerformed(ActionEvent evt) {
         String action = startPauseButton.getText();
         if(action.equals("Start")){
+            trafficSimulatorManager.run();
             startPauseButton.setText("Pause");
-            //method for start
         }
         if(action.equals("Pause")){
             startPauseButton.setText("Start");
