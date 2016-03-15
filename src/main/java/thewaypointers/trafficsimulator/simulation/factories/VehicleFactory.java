@@ -33,7 +33,7 @@ public class VehicleFactory {
         String destinationNode = calculateDestinationNode(originNode);
         RoadEdge firstRoad = getTheFirstRoad(originNode, nodeGraphMap);
         Stack<String> decisions = calculatePath(originNode, destinationNode, roadGraph);
-        return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, ((float) roadGraph.getEdgeWeight(firstRoad.getRoad())), originNode, Lane.Left);
+        return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left);
     }
 
     private RoadEdge getTheFirstRoad(String originNode, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {

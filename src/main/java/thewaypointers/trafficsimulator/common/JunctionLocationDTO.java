@@ -263,7 +263,7 @@ public class JunctionLocationDTO implements ILocation {
         }
     }
 
-    private float getRouteLength(){
+    public float getRouteLength(){
         return getRouteLength(getJunctionRoute());
     }
 
