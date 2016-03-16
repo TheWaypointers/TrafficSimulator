@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 
 public class ControlPanel extends JPanel {
 
-    TrafficSimulatorManager trafficSimulatorManager = TrafficSimulatorManager.GetInstance();
-
     //private JSplitPane worldControlPanel = new JSplitPane();
     private JLabel worldStateLabel = new JLabel();
     private JButton startPauseButton = new JButton();
@@ -48,6 +46,8 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
+    final TrafficSimulatorManager trafficSimulatorManager = new TrafficSimulatorManager(startPauseButton);
+
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
         //System.out.println("time step: "+tmp);
@@ -65,6 +65,7 @@ public class ControlPanel extends JPanel {
         this.setVisible(true);
         this.setSize(200, 600);
         this.initComponents();
+        trafficSimulatorManager.start();
     }
 
 
@@ -236,19 +237,13 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        String action = startPauseButton.getText();
-        if(action.equals("Start")){
-            trafficSimulatorManager.run();
-            startPauseButton.setText("Pause");
-        }
-        if(action.equals("Pause")){
-            startPauseButton.setText("Start");
-            //method for pause
-        }
+        //String action = startPauseButton.getText();
+        trafficSimulatorManager.changeState();
     }
 
     private void clearPerformed(ActionEvent evt) {
         //method for stop
+        trafficSimulatorManager.stopState();
     }
 
     private void submitPerformed(ActionEvent evt) {

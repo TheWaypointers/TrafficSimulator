@@ -19,17 +19,5 @@ public class JunctionLocationTestStarter {
         MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
         TrafficSimulatorManager.setMainFrame(mainFrame);
         TrafficSimulatorManager.setSimulation(simulation);
-
-        //TrafficSimulatorManager.GetInstance().run();
-        //noinspection InfiniteLoopStatement
-//        while(true){
-//            WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-//            MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
-//            try {
-//                Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
     }
 }
