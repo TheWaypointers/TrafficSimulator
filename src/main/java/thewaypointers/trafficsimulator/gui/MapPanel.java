@@ -568,17 +568,24 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     //draw label on vehicles and junctions
     public void drawLabel(Graphics g,int x,int y,String label){
-        if (!debug){
-            return;
+        if (debug){
+            g.setFont(new Font("Arial",Font.PLAIN,LABEL_SIZE));
+            g.setColor(Color.black);
+            g.drawString(label,x,y);
         }
-        g.setFont(new Font("Arial",Font.PLAIN,LABEL_SIZE));
-        g.setColor(Color.black);
-        g.drawString(label,x,y);
     }
 
     //display labels or not
-    public void SetDebug(boolean debug){
-        this.debug=debug;
+    public void SetDebug(boolean debugornot){
+        this.debug=debugornot;
     }
 
+    //store junction location - the top left coordinate
+    public Point GetJunctionLocation(String junctionLabel){
+        Point point = null;
+        if (junctionlocation.containsKey(junctionLabel)){
+            point = junctionlocation.get(junctionLabel);
+        }
+        return point;
+    }
 }
