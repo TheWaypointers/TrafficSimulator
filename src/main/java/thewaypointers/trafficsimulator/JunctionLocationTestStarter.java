@@ -15,7 +15,7 @@ public class JunctionLocationTestStarter {
     public static MainFrame mainFrame=null;
     public static void main(String[] args){
 
-        IStateProvider simulation = new RoadNetworkProvider();
+        IStateProvider simulation = new JunctionTestProvider();
         mainFrame=new MainFrame(simulation.getNextState(0));
 
         //noinspection InfiniteLoopStatement
