@@ -581,4 +581,12 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         this.debug=debug;
     }
 
+    //store junction location - the top left coordinate
+    public Point GetJunctionLocation(String junctionLabel){
+        Point point = null;
+        if (junctionlocation.containsKey(junctionLabel)){
+            point = junctionlocation.get(junctionLabel);
+        }
+        return point;
+    }
 }
