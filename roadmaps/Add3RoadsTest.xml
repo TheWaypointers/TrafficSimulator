@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<simulation>
+	<!--roadtestAdd3-->
+
+	<roads>
+		<road>
+			<origin>A</origin>
+			<destination>B</destination>
+			<length>500</length>
+			<direction>Right</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>C</destination>
+			<length>500</length>
+			<direction>Down</direction>
+		</road>
+		<road>
+			<origin>C</origin>
+			<destination>D</destination>
+			<length>500</length>
+			<direction>Down</direction>
+		</road>
+	</roads>
+	<junctions>
+		<junction>
+			<name>A</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+		<junction>
+			<name>C</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+	</junctions>
+</simulation>

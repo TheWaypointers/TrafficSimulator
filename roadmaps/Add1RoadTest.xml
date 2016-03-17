@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<simulation>
+	<!--roadtestAdd1-->
+
+	<roads>
+		<road>
+			<origin>A</origin>
+			<destination>B</destination>
+			<length>300</length>
+			<direction>Right</direction>
+		</road>
+	</roads>
+</simulation>
