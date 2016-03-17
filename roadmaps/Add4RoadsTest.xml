@@ -46,3 +46,4 @@
         </junction>
 	</junctions>
 </simulation>
+		<!--4 roads can not be added as a circuit  because  there has to be at least one ExitNode where Vehicles from-->

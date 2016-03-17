@@ -16,7 +16,7 @@ public class TrafficSimulatorManager {
 
     public static void main(String[] args) {
 
-        MapWorldStateFactory worldStateFactory = new MapWorldStateFactory("roadmaps\\Add1RoadTest.xml");
+        MapWorldStateFactory worldStateFactory = new MapWorldStateFactory("roadmaps\\Add4RoadsTest2.xml");
         worldState = worldStateFactory.getWorldState();
         Simulation simulation = new Simulation(worldState);
         mainFrame = new MainFrame();

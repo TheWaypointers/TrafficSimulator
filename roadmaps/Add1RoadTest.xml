@@ -4,10 +4,11 @@
 
 	<roads>
 		<road>
-			<origin>A</origin>
-			<destination>B</destination>
+			<origin>E1</origin>
+			<destination>E2</destination>
 			<length>300</length>
-			<direction>Right</direction>
+			<direction>Up</direction>
 		</road>
 	</roads>
 </simulation>
+		<!--One road can not be added  because  there has to be one junction-->
