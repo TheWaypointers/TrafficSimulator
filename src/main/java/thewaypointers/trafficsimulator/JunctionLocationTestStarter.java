@@ -1,7 +1,7 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
+import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class JunctionLocationTestStarter {
@@ -14,7 +14,7 @@ public class JunctionLocationTestStarter {
     public static void main(String[] args){
 
         TrafficSimulatorManager trafficSimulatorManager = new TrafficSimulatorManager();
-        IStateProvider simulation = new RoadNetworkProvider();
+        IStateProvider simulation = new JunctionTestProvider();
         mainFrame=new MainFrame(simulation.getNextState(0),trafficSimulatorManager);
         trafficSimulatorManager.setMainFrame(mainFrame);
         trafficSimulatorManager.setSimulation(simulation);

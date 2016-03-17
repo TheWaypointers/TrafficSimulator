@@ -1,11 +1,11 @@
 package thewaypointers.trafficsimulator;
-import javax.swing.JButton;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
-import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
+
+import javax.swing.*;
 
 public class TrafficSimulatorManager extends Thread {
 
@@ -49,7 +49,7 @@ public class TrafficSimulatorManager extends Thread {
 
     public synchronized void stopState() {
         stop = !stop;
-        simulation = new RoadNetworkProvider();
+        simulation = new JunctionTestProvider();
         mainFrame.setVisible(false);
         mainFrame = new MainFrame(simulation.getNextState(0),new TrafficSimulatorManager());
     }
