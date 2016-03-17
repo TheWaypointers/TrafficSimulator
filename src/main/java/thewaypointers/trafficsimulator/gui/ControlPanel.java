@@ -46,7 +46,7 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
-    final TrafficSimulatorManager trafficSimulatorManager = new TrafficSimulatorManager(startPauseButton);
+    final TrafficSimulatorManager trafficSimulatorManager;
 
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
@@ -59,16 +59,21 @@ public class ControlPanel extends JPanel {
     };
 
 
-    public ControlPanel() {
+    public ControlPanel(TrafficSimulatorManager trafficSimulatorManager) {
         this.setLayout(null);
         this.setBackground(Color.white);
         this.setVisible(true);
         this.setSize(200, 600);
         this.initComponents();
-        trafficSimulatorManager.start();
+        this.trafficSimulatorManager = trafficSimulatorManager;
+        initTrafficSimulatorManager();
     }
 
 
+    private void initTrafficSimulatorManager(){
+        trafficSimulatorManager.setStart_pauseButton(startPauseButton);
+        trafficSimulatorManager.start();
+    }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
@@ -244,6 +249,8 @@ public class ControlPanel extends JPanel {
     private void clearPerformed(ActionEvent evt) {
         //method for stop
         trafficSimulatorManager.stopState();
+        //initTrafficSimulatorManager();
+
     }
 
     private void submitPerformed(ActionEvent evt) {

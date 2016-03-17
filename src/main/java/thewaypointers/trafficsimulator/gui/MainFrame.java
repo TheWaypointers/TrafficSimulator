@@ -2,6 +2,7 @@ package thewaypointers.trafficsimulator.gui;
 import java.awt.*;
 import javax.swing.*;
 
+import thewaypointers.trafficsimulator.TrafficSimulatorManager;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 
 public class MainFrame extends JFrame{
@@ -9,11 +10,12 @@ public class MainFrame extends JFrame{
     public static ControlPanel controlPanel =  null;
 
     public MainFrame(){
-        this(null);
+
+        this(null,null);
     }
 
-    public MainFrame(WorldStateDTO worldStateDTO){
-        controlPanel = new ControlPanel();
+    public MainFrame(WorldStateDTO worldStateDTO, TrafficSimulatorManager trafficSimulatorManager){
+        controlPanel = new ControlPanel(trafficSimulatorManager);
         mapContainerPanel =  new MapContainerPanel();
         if (worldStateDTO != null){
             mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
@@ -34,6 +36,15 @@ public class MainFrame extends JFrame{
 
         this.addComponentListener(new MainFrameEventHandle());
 
+    }
+
+    public void updateMainFrame(WorldStateDTO worldStateDTO, TrafficSimulatorManager trafficSimulatorManager){
+        controlPanel = new ControlPanel(trafficSimulatorManager);
+        mapContainerPanel =  new MapContainerPanel();
+        if (worldStateDTO != null){
+            mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
+            mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
+        }
     }
 
 }

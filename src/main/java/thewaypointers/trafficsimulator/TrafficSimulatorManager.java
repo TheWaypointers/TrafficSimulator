@@ -3,6 +3,8 @@ import javax.swing.JButton;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
+import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
+import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class TrafficSimulatorManager extends Thread {
@@ -14,7 +16,13 @@ public class TrafficSimulatorManager extends Thread {
     private WorldStateDTO worldState;
     private boolean stop = true;
     private boolean isSleep = true;
+
+
+
     private JButton start_pauseButton;
+
+    public TrafficSimulatorManager() {
+    }
 
 
     public static void setSimulation(IStateProvider simulation) {
@@ -25,17 +33,25 @@ public class TrafficSimulatorManager extends Thread {
         TrafficSimulatorManager.mainFrame = mainFrame;
     }
 
+    public void setStart_pauseButton(JButton start_pauseButton) {
+        this.start_pauseButton = start_pauseButton;
+    }
     public TrafficSimulatorManager(JButton start_pause){
         start_pauseButton = start_pause;
     }
 
-    public void changeState() {
+
+
+    public synchronized void changeState() {
         isSleep = !isSleep;
         start_pauseButton.setText("Start");
     }
 
-    public void stopState() {
+    public synchronized void stopState() {
         stop = !stop;
+        simulation = new RoadNetworkProvider();
+        mainFrame.setVisible(false);
+        mainFrame = new MainFrame(simulation.getNextState(0),new TrafficSimulatorManager());
     }
 
     public void run() {

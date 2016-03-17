@@ -1,13 +1,8 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
+import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 import thewaypointers.trafficsimulator.gui.MainFrame;
-import thewaypointers.trafficsimulator.utils.FloatPoint;
-
-import static thewaypointers.trafficsimulator.TrafficSimulatorManager.*;
 
 public class JunctionLocationTestStarter {
 
@@ -18,9 +13,10 @@ public class JunctionLocationTestStarter {
 
     public static void main(String[] args){
 
-        IStateProvider simulation = new JunctionTestProvider();
-        mainFrame=new MainFrame(simulation.getNextState(0));
-        TrafficSimulatorManager.setMainFrame(mainFrame);
-        TrafficSimulatorManager.setSimulation(simulation);
+        TrafficSimulatorManager trafficSimulatorManager = new TrafficSimulatorManager();
+        IStateProvider simulation = new RoadNetworkProvider();
+        mainFrame=new MainFrame(simulation.getNextState(0),trafficSimulatorManager);
+        trafficSimulatorManager.setMainFrame(mainFrame);
+        trafficSimulatorManager.setSimulation(simulation);
     }
 }
