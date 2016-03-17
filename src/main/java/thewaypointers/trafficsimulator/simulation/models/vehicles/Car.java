@@ -77,12 +77,7 @@ public class Car implements IVehicle {
                     VehicleManager.removeVehicle(currentRoad, this);
                     RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
 
-                    try{
-                        currentRoad = nextRoadEdge.getRoad();
-                    }
-                    catch (Exception ex){
-                        System.out.println("Lol");
-                    }
+                    currentRoad = nextRoadEdge.getRoad();
                     roadLength = nextRoadEdge.getRoadLength();
                     VehicleManager.getVehicleMap().get(currentRoad).add(this);
 
@@ -122,8 +117,8 @@ public class Car implements IVehicle {
             }
         }
 
-        for(RoadEdge road : nodeGraphMap.get(currentNode)){
-            if(road.getOrigin().equals(currentNodeName) && road.getDestination().equals(nextNodeName)){
+        for (RoadEdge road : nodeGraphMap.get(currentNode)) {
+            if (road.getOrigin().equals(currentNodeName) && road.getDestination().equals(nextNodeName)) {
                 return road;
             }
         }
