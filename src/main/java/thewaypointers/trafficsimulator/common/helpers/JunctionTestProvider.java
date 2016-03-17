@@ -61,6 +61,7 @@ public class JunctionTestProvider implements IStateProvider {
 
             worldState.getVehicleList().setVehicleLocation(v.getLabel(), loc);
         }
+        worldState.setClock(worldState.getClock()+1);
         return worldState;
     }
 }
