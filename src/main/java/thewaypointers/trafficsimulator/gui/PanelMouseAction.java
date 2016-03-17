@@ -1,13 +1,12 @@
 package thewaypointers.trafficsimulator.gui;
 
-import thewaypointers.trafficsimulator.common.JunctionDTO;
+import thewaypointers.trafficsimulator.common.SimulationInputListener;
 import thewaypointers.trafficsimulator.common.TrafficLightSystemDTO;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.util.List;
 
 public class PanelMouseAction implements MouseInputListener {
@@ -44,11 +43,11 @@ public class PanelMouseAction implements MouseInputListener {
 
             if (((junction_x <= x) && (x <= junction_x + 50)) && ((junction_y <= y) && (y <= junction_y + 50))) {
                 //pass label here
-                System.out.println("click test, pass label to the simulation");
-
+                //System.out.println("click test, pass label to the simulation");
+                SimulationInputListener s = new SimulationInputListener();
+                s.SimulationParameterChanged("junctionLabel", label);
             }
         }
-
     }
 
     //record the location of mouse
