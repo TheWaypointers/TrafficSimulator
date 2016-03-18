@@ -1,10 +1,12 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
+import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
+import thewaypointers.trafficsimulator.simulation.models.graph.helper.DirectionFromNode;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
@@ -13,6 +15,7 @@ import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class Car implements IVehicle {
@@ -64,25 +67,33 @@ public class Car implements IVehicle {
 
 
         Node nextNode = calculateNextNode(nodeGraphMap);
-        //check if a node is coming up
         if (nextPossiblePosition >= roadLength) {
             //get the upcoming node
 
 
             if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
+
                 TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
 
-                if (tlNode.getColor() == TrafficLightColor.Green) {
-                    float overLap = nextPossiblePosition - roadLength;
-                    VehicleManager.removeVehicle(currentRoad, this);
-                    RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
+                if (lightFromThisDirection(tlNode) == TrafficLightColor.Green) {
+                    if (canGoTroughJunction(nodeGraphMap, tlNode, timeStep)) {
+                        float overLap = nextPossiblePosition - roadLength;
+                        VehicleManager.removeVehicle(currentRoad, this);
+                        RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
 
-                    currentRoad = nextRoadEdge.getRoad();
-                    roadLength = nextRoadEdge.getRoadLength();
-                    VehicleManager.getVehicleMap().get(currentRoad).add(this);
+                        currentRoad = nextRoadEdge.getRoad();
+                        roadLength = nextRoadEdge.getRoadLength();
+                        VehicleManager.getVehicleMap().get(currentRoad).add(this);
 
-                    this.setDistanceTravelled(overLap);
+                        this.setDistanceTravelled(overLap);
 
+                        return;
+                    }
+                    System.out.println("propustam suprotnog" );
+                    if (getDistanceTravelled() < roadLength - 20) {
+                        setDistanceTravelled(roadLength - 20);
+                    }
+                    currentSpeed = 0;
                     return;
                 } else {
                     if (getDistanceTravelled() < roadLength - 20) {
@@ -91,6 +102,18 @@ public class Car implements IVehicle {
                     currentSpeed = 0;
                     return;
                 }
+            } else if (nextNode.getNodeType() == NodeType.JunctionNormal) {
+                float overLap = nextPossiblePosition - roadLength;
+                VehicleManager.removeVehicle(currentRoad, this);
+                RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
+
+                currentRoad = nextRoadEdge.getRoad();
+                roadLength = nextRoadEdge.getRoadLength();
+                VehicleManager.getVehicleMap().get(currentRoad).add(this);
+
+                this.setDistanceTravelled(overLap);
+
+                return;
             } else if (nextNode.getNodeType() == NodeType.ExitNode) {
                 VehicleManager.removeVehicle(currentRoad, this);
                 return;
@@ -101,6 +124,115 @@ public class Car implements IVehicle {
 
         this.setDistanceTravelled(nextPossiblePosition);
         return;
+    }
+
+    private boolean canGoTroughJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, TrafficLightNode tlNode, long timeStep) {
+        DirectionFromNode direciton = DirectionVehicleIsApproachingJunction(nodeGraphMap, tlNode);
+        if (!isVehicleIsTurningLeft(tlNode, direciton)) {
+            return true;
+        }
+
+        RoadEdge oppositeRoad = getOppositeRoad(tlNode, direciton);
+
+        if (oppositeRoad != null) {
+            List<IVehicle> carsFromTheOppositeRoad = VehicleManager.getVehicleMap().get(oppositeRoad.getRoad());
+
+            if (carsFromTheOppositeRoad.size() > 0) {
+
+                for (IVehicle vehicle : carsFromTheOppositeRoad) {
+                    if (vehicle.getVehiclesDistanceTravelled() >= 260) {
+                        if (vehicle.getVehiclesNextDestinationNode().equals(this.getOriginNode())) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private RoadEdge getOppositeRoad(TrafficLightNode tlNode, DirectionFromNode direciton) {
+        switch (direciton) {
+            case Left:
+                return tlNode.getRightRoad();
+            case Up:
+                return tlNode.getDownRoad();
+            case Right:
+                return tlNode.getLeftRoad();
+            case Down:
+                return tlNode.getUpRoad();
+            default:
+                break;
+        }
+        return null;
+    }
+
+    private boolean isVehicleIsTurningLeft(TrafficLightNode tlNode, DirectionFromNode direciton) {
+        String nextNodeName = getVehiclesNextDestinationNode();
+
+
+        switch (direciton) {
+            case Left:
+                if (tlNode.getUpRoad() != null) {
+                    if (tlNode.getUpRoad().getDestination().equals(nextNodeName)) {
+                        return true;
+                    }
+                }
+                break;
+            case Up:
+                if (tlNode.getRightRoad() != null) {
+                    if (tlNode.getRightRoad().getDestination().equals(nextNodeName)) {
+                        return true;
+                    }
+                }
+                break;
+            case Right:
+                if (tlNode.getDownRoad() != null) {
+                    if (tlNode.getDownRoad().getDestination().equals(nextNodeName)) {
+                        return true;
+                    }
+                }
+                break;
+            case Down:
+                if (tlNode.getLeftRoad() != null) {
+                    if (tlNode.getLeftRoad().getDestination().equals(nextNodeName)) {
+                        return true;
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private DirectionFromNode DirectionVehicleIsApproachingJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, TrafficLightNode tlNode) {
+        for (RoadEdge re : nodeGraphMap.get(tlNode)) {
+            if (re.getDestination().equals(this.getOriginNode())) {
+                return re.getDirection();
+            }
+        }
+        return null;
+    }
+
+    private TrafficLightColor lightFromThisDirection(TrafficLightNode tlNode) {
+        if (tlNode.getLeftRoad() != null) {
+            if (tlNode.getLeftRoad().getDestination().equals(originNode)) {
+                return tlNode.getLeft();
+            }
+        }
+        if (tlNode.getRightRoad() != null) {
+            if (tlNode.getRightRoad().getDestination().equals(originNode)) {
+                return tlNode.getRight();
+            }
+        }
+        if (tlNode.getUpRoad() != null) {
+            if (tlNode.getUpRoad().getDestination().equals(originNode)) {
+                return tlNode.getUp();
+            }
+        }
+        return tlNode.getDown();
     }
 
     private RoadEdge calculateNextRoad(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
@@ -249,6 +381,21 @@ public class Car implements IVehicle {
     @Override
     public String getVehiclesDestinationNode() {
         return decisionPath.peek();
+    }
+
+    @Override
+    public String getVehiclesNextDestinationNode() {
+        if(decisionPath.size() >= 2){
+            return decisionPath.get(decisionPath.size() - 2);
+        }
+        else{
+            return decisionPath.peek();
+        }
+    }
+
+    @Override
+    public float getVehiclesCurrentRoadLength() {
+        return this.roadLength;
     }
 
     public DefaultWeightedEdge getCurrentRoad() {

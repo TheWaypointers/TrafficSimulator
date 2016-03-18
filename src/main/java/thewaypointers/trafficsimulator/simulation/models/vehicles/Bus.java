@@ -136,6 +136,16 @@ public class Bus implements IVehicle {
         return decisionPath.peek();
     }
 
+    @Override
+    public String getVehiclesNextDestinationNode() {
+        return null;
+    }
+
+    @Override
+    public float getVehiclesCurrentRoadLength() {
+        return 0;
+    }
+
     public boolean isOnExit() {
         return onExit;
     }

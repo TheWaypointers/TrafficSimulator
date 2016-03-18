@@ -95,7 +95,7 @@ public class RoadDTO {
             return getTo();
         }
     }
-    
+
     void setEnd(NodeDTO end, NodeDTO value){
         if(!isConnectedTo(end)){
             throw new IllegalArgumentException("Road is not connected to this node!");

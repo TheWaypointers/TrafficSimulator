@@ -16,4 +16,6 @@ public interface IVehicle {
     DefaultWeightedEdge getCurrentRoadEdge();
     String getVehiclesOriginNode();
     String getVehiclesDestinationNode();
+    String getVehiclesNextDestinationNode();
+    float getVehiclesCurrentRoadLength();
 }

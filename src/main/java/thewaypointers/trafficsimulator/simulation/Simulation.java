@@ -12,7 +12,6 @@ import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,11 +25,11 @@ public class Simulation implements ISimulationInputListener {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 15;
+    final int MAX_VEHICLE_NUMBER = 70;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 15;
+    final int TRAFFIC_LIGHT_STEPS = 30;
     int trafficLightCounter = 0;
 
     /**
