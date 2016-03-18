@@ -43,13 +43,14 @@ public class Simulation implements ISimulationInputListener {
      */
     long clock = 0;
 
-    public Simulation() {
+    public Simulation(WorldStateDTO worldState) {
+        this.worldState = worldState;
+        this.dtoRoads = worldState.getRoadMap().getRoads();
         initiateSimulation();
     }
 
     public void initiateSimulation() {
         prepareRoadGraph();
-        createFirstWorldState();
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
@@ -86,8 +87,8 @@ public class Simulation implements ISimulationInputListener {
 
         for (DefaultWeightedEdge road : VehicleManager.getVehicleMap().keySet()) {
             for (IVehicle vehicle : VehicleManager.getVehicleMap().get(road)) {
-                RoadDTO roadDTO = findEqualRoad(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode());
-                RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
+                RoadDTO roadDTO = findEqualRoad(vehicle);
+                LocationDTO loc = new LocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
                 dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
                 index++;
             }
@@ -96,24 +97,26 @@ public class Simulation implements ISimulationInputListener {
 
     }
 
-    private RoadDTO findEqualRoad(String label) {
-
-        String sortedLabel = sortLabel(label);
+    private RoadDTO findEqualRoad(IVehicle vehicle) {
 
         for (RoadDTO road : worldState.getRoadMap().getRoads()) {
-            if (road.getLabel().equals(sortedLabel)) {
-                return road;
+            if (road != null) {
+                if (road.getLabel().equals(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode())) {
+                    return road;
+                }
             }
         }
+
+        for (RoadDTO road : worldState.getRoadMap().getRoads()) {
+            if (road != null) {
+                if (road.getLabel().equals(vehicle.getVehiclesDestinationNode() + vehicle.getVehiclesOriginNode())) {
+                    return road;
+                }
+            }
+        }
+
         return null;
     }
-
-    private String sortLabel(String label) {
-        char[] chars = label.toCharArray();
-        Arrays.sort(chars);
-        return new String(chars);
-    }
-
 
     private synchronized void changeTrafficLightState() {
 
@@ -183,16 +186,11 @@ public class Simulation implements ISimulationInputListener {
     }
 
     private void prepareRoadGraph() {
-        graphFactory = new GraphFactory();
+        graphFactory = new GraphFactory(worldState);
 
         roadGraph = graphFactory.getRoadGraph();
         VehicleManager.setVehicleMap(graphFactory.getVehicleMap());
         nodeGraphMap = graphFactory.getNodeGraphMap();
-    }
-
-    private void createFirstWorldState() {
-        worldState = graphFactory.createFirstWorldState();
-        dtoRoads = graphFactory.getDtoRoads();
     }
 
     public WorldStateDTO getWorldState() {

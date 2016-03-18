@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<simulation>
+	<roads>
+		<road>
+			<origin>1</origin>
+			<destination>2</destination>
+			<length>300</length>
+			<direction>Down</direction>
+		</road>
+		<road>
+			<origin>2</origin>
+			<destination>3</destination>
+			<length>300</length>
+			<direction>Down</direction>
+		</road>
+	</roads>
+	<junctions>
+		<junction>
+			<name>2</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+	</junctions>
+</simulation>

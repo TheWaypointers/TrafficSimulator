@@ -22,6 +22,7 @@ public class Node {
 
     public String getNodeName() {
         return nodeName;
+
     }
 
     public void setNodeName(String nodeName) {
