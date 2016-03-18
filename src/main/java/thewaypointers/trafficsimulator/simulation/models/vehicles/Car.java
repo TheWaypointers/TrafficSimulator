@@ -99,16 +99,19 @@ public class Car implements IVehicle {
         }
 
         // advance to next road or junction
+        float overLap = nextPossiblePosition - currentRoad.getLength();
         Node nextNode = calculateNextNode(nodeGraphMap);
+        RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
         if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
             TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
-
             if (tlNode.getColor() == TrafficLightColor.Green) {
-                float overLap = nextPossiblePosition - currentRoad.getLength();
                 VehicleManager.getVehicleMap().remove(this);
-                RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
 
-                currentRoad = nextRoadEdge;
+                Direction origin = tlNode.getDirectionOfRoad(currentRoad);
+                Direction target = tlNode.getDirectionOfRoad(nextRoadEdge);
+                currentRoad = null;
+                currentNode = tlNode;
+                junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, )
                 VehicleManager.getVehicleMap().add(currentRoad.getRoad(), this);
 
                 this.setDistanceTravelled(overLap);

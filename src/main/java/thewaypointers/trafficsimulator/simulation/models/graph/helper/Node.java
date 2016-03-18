@@ -1,21 +1,26 @@
 package thewaypointers.trafficsimulator.simulation.models.graph.helper;
 
 
+import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Node {
 
     private String nodeName;
     private boolean carEnteringFlag;
 
-    private RoadEdge LeftRoad;
-    private RoadEdge UpRoad;
-    private RoadEdge RightRoad;
-    private RoadEdge DownRoad;
+    private Map<Direction, RoadEdge> roads;
 
     private NodeType nodeType;
 
     public Node(String nodeName, NodeType nodeType){
+        roads = new HashMap<>();
+        for(Direction d : Direction.values()){
+            roads.put(d, null);
+        }
         this.setNodeName(nodeName);
         this.setNodeType(nodeType);
     }
@@ -29,35 +34,43 @@ public class Node {
     }
 
     public RoadEdge getLeftRoad() {
-        return LeftRoad;
+        return roads.get(Direction.Left);
     }
 
     public void setLeftRoad(RoadEdge leftRoad) {
-        LeftRoad = leftRoad;
+        roads.put(Direction.Left, leftRoad);
     }
 
     public RoadEdge getUpRoad() {
-        return UpRoad;
+        return roads.get(Direction.Up);
     }
 
     public void setUpRoad(RoadEdge upRoad) {
-        UpRoad = upRoad;
+        roads.put(Direction.Up, upRoad);
     }
 
     public RoadEdge getRightRoad() {
-        return RightRoad;
+        return roads.get(Direction.Right);
     }
 
     public void setRightRoad(RoadEdge rightRoad) {
-        RightRoad = rightRoad;
+        roads.put(Direction.Right, rightRoad);
     }
 
     public RoadEdge getDownRoad() {
-        return DownRoad;
+        return roads.get(Direction.Down);
     }
 
     public void setDownRoad(RoadEdge downRoad) {
-        DownRoad = downRoad;
+        roads.put(Direction.Down, downRoad);
+    }
+
+    public Direction getDirectionOfRoad(RoadEdge road){
+        return roads.entrySet().stream()
+                .filter(x->x.getValue()==road)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .get();
     }
 
     public NodeType getNodeType() {
