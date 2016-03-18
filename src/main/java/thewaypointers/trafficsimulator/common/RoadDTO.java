@@ -122,11 +122,6 @@ public class RoadDTO {
         return getLabel().equals(label) || getLabelAlternate().equals(label);
     }
 
-    /*@Override
-    public boolean equals(Object o) {
-        return o.getClass() == RoadDTO.class && equals((RoadDTO) o);
-    }*/
-
     public String getLabel() {
         return produceLabel(getFrom(), getTo());
     }
