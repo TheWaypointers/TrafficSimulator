@@ -5,17 +5,17 @@ import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.models.VehicleMap;
-import thewaypointers.trafficsimulator.simulation.models.graph.helper.DirectionFromNode;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
-import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class GraphFactory {
+
+    private final float ROAD_WIDTH = 50;
 
     private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  roadGraph;
     private HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
@@ -49,14 +49,14 @@ public class GraphFactory {
         getRoadGraph().setEdgeWeight(e4, 300);
 
         Node node1 = new Node("1", NodeType.ExitNode);
-        RoadEdge re1 = new RoadEdge(e1, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
+        RoadEdge re1 = new RoadEdge(e1, Direction.Down, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
 
-        Node node2 = new TrafficLightNode("2", NodeType.JunctionTrafficLights);
-        RoadEdge re21 = new RoadEdge(e1, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
-        RoadEdge re22 = new RoadEdge(e2, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+        Node node2 = new TrafficLightNode("2", NodeType.JunctionTrafficLights, ROAD_WIDTH, ROAD_WIDTH);
+        RoadEdge re21 = new RoadEdge(e1, Direction.Up, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
+        RoadEdge re22 = new RoadEdge(e2, Direction.Down, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
 
         Node node3 = new Node("3", NodeType.ExitNode);
-        RoadEdge re3 = new RoadEdge(e2, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+        RoadEdge re3 = new RoadEdge(e2, Direction.Up, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
 
         getNodeGraphMap().put(node1, new ArrayList<>());
         getNodeGraphMap().get(node1).add(re1);

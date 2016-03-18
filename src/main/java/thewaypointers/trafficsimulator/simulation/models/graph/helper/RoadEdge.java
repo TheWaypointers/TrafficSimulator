@@ -1,15 +1,16 @@
 package thewaypointers.trafficsimulator.simulation.models.graph.helper;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
+import thewaypointers.trafficsimulator.common.Direction;
 
 public class RoadEdge {
 
     private DefaultWeightedEdge road;
-    private DirectionFromNode direction;
+    private Direction direction;
     private long speedLimit;
     private float length;
 
-    public RoadEdge(DefaultWeightedEdge road, DirectionFromNode direction, long speedLimit, float roadLength){
+    public RoadEdge(DefaultWeightedEdge road, Direction direction, long speedLimit, float roadLength){
         this.road = road;
         this.direction = direction;
         this.speedLimit = speedLimit;
@@ -24,11 +25,11 @@ public class RoadEdge {
         this.road = road;
     }
 
-    public DirectionFromNode getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(DirectionFromNode direction) {
+    public void setDirection(Direction direction) {
         this.direction = direction;
     }
 

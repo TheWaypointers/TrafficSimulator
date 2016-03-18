@@ -50,6 +50,20 @@ public class JunctionLocationDTO implements ILocation {
                                               getRouteLength(getJunctionRoute(origin,target))));
     }
 
+    public JunctionLocationDTO(JunctionLocationDTO original,
+                               float newDistanceTravelled,
+                               float junctionWidth,
+                               float junctionHeight){
+        this(
+                original.getJunctionLabel(),
+                original.getOrigin(),
+                original.getTarget(),
+                newDistanceTravelled,
+                junctionWidth,
+                junctionHeight
+        );
+    }
+
     public String getJunctionLabel() {
         return junctionLabel;
     }
@@ -265,6 +279,13 @@ public class JunctionLocationDTO implements ILocation {
 
     public float getRouteLength(){
         return getRouteLength(getJunctionRoute());
+    }
+
+    public float getRouteLength(float junctionWidth, float junctionHeight){
+        if(junctionWidth!=junctionHeight){
+            throw new IllegalArgumentException("Non-square junctions not supported yet...");
+        }
+        return getRouteLength()*junctionWidth;
     }
 
     private JunctionMoveResult move(float distance){
