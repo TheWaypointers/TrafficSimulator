@@ -11,6 +11,7 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager;
+import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,11 +28,11 @@ public class Simulation implements ISimulationInputListener {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 15;
+    final int MAX_VEHICLE_NUMBER = 1;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 15;
+    final int TRAFFIC_LIGHT_STEPS = 1000*1000;
     int trafficLightCounter = 0;
 
     /**
@@ -75,6 +76,15 @@ public class Simulation implements ISimulationInputListener {
         //temp
         changeWorldState();
         changeTrafficLightState();
+
+        // DEBUG
+        Car c = (Car)VehicleManager.getVehicleMap().getAll().get(0);
+        if(c.getCurrentRoad()!=null){
+            System.out.println("Current distance on road: " + c.getDistanceTravelled());
+        }else{
+            System.out.println("Current distance on junction: " + c.getJunctionLocation().getDistanceTravelled(50,50));
+        }
+        // DEBUG
 
         clock += timeStep;
     }
