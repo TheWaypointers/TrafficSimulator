@@ -55,16 +55,60 @@ public class GraphFactory {
                 DefaultWeightedEdge edge1 = getRoadGraph().addEdge(road.getFrom().getLabel(), road.getTo().getLabel());
                 getRoadGraph().setEdgeWeight(edge1, road.getLength());
                 vehicleMap.put(edge1, new ArrayList<>());
-                RoadEdge re1 = new RoadEdge(edge1, DirectionFromNode.Down, 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
+                RoadEdge re1 = new RoadEdge(edge1, choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel())), 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
                 getNodeGraphMap().get(node1).add(re1);
 
                 DefaultWeightedEdge edge2 = getRoadGraph().addEdge(road.getTo().getLabel(), road.getFrom().getLabel());
                 getRoadGraph().setEdgeWeight(edge2, road.getLength());
                 vehicleMap.put(edge2, new ArrayList<>());
-                RoadEdge re2 = new RoadEdge(edge2, DirectionFromNode.Up, 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
+                RoadEdge re2 = new RoadEdge(edge2, oppositeDirection(choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel()))), 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
                 getNodeGraphMap().get(node2).add(re2);
             }
         }
+        setNodeDirectionRoads();
+    }
+
+    private void setNodeDirectionRoads() {
+
+        for(Node node : getNodeGraphMap().keySet()){
+            for(RoadEdge road : getNodeGraphMap().get(node)){
+                if(road.getDirection() == DirectionFromNode.Left){
+                    node.setLeftRoad(road);
+                } else if (road.getDirection() == DirectionFromNode.Right){
+                    node.setRightRoad(road);
+                } else if (road.getDirection() == DirectionFromNode.Down){
+                    node.setDownRoad(road);
+                } else{
+                    node.setUpRoad(road);
+                }
+            }
+        }
+
+    }
+
+    private DirectionFromNode oppositeDirection(DirectionFromNode directionFromNode) {
+        if(directionFromNode == DirectionFromNode.Down){
+            return  DirectionFromNode.Up;
+        }
+        else{
+            return  DirectionFromNode.Left;
+        }
+    }
+
+    private DirectionFromNode choseDirection(String direction) {
+        switch (direction){
+            case "Left" :
+                return DirectionFromNode.Left;
+            case "Down" :
+                return DirectionFromNode.Down;
+            case "Up" :
+                return DirectionFromNode.Up;
+            case "Right" :
+                return DirectionFromNode.Right;
+            default :
+                break;
+        }
+        return null;
     }
 
     private Node getNodeFromNodeGraph(Node nodeTemp) {
