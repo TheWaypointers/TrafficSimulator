@@ -171,21 +171,16 @@ public class Car implements IVehicle {
         this.setOriginNode(currentNodeName);
 
         Node currentNode = null;
-        Node nextNode = null;
 
         for (Node node : nodeGraphMap.keySet()) {
             if (node.getNodeName().equals(currentNodeName)) {
                 currentNode = node;
-            } else if (node.getNodeName().equals(nextNodeName)) {
-                nextNode = node;
             }
         }
 
-        for (RoadEdge re : nodeGraphMap.get(currentNode)) {
-            for (RoadEdge re1 : nodeGraphMap.get(nextNode)) {
-                if (re.getRoad() == re1.getRoad()) {
-                    return re;
-                }
+        for(RoadEdge road : nodeGraphMap.get(currentNode)){
+            if(road.getOrigin().equals(currentNodeName) && road.getDestination().equals(nextNodeName)){
+                return road;
             }
         }
 

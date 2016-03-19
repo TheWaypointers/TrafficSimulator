@@ -3,6 +3,7 @@ package thewaypointers.trafficsimulator;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 import thewaypointers.trafficsimulator.simulation.Simulation;
+import thewaypointers.trafficsimulator.simulation.factories.MapWorldStateFactory;
 
 public class TrafficSimulatorManager {
 
@@ -13,16 +14,18 @@ public class TrafficSimulatorManager {
 
     public static void main(String[] args) {
 
-        Simulation simulation = new Simulation();
+        MapWorldStateFactory worldStateFactory = new MapWorldStateFactory("roadmaps\\complex.xml");
+        worldState = worldStateFactory.getWorldState();
+        Simulation simulation = new Simulation(worldState);
         mainFrame = new MainFrame();
 
-        while(true){
-            try{
+        while (true) {
+            try {
                 Thread.sleep(TIME_STEP);
                 worldState = simulation.getNextSimulationStep(SIMULATION_TIME_STEP);
                 MainFrame.mapContainerPanel.mapPanel.NewStateReceived(worldState);
-            }
-            catch(InterruptedException ex){
+
+            } catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
             }
         }

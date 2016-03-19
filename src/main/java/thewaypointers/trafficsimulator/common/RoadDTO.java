@@ -118,20 +118,13 @@ public class RoadDTO {
     }
 
     public boolean equals(RoadDTO other) {
-        return  other!=null &&
-                isConnectedTo(other.getFrom()) &&
+        return  isConnectedTo(other.getFrom()) &&
                 isConnectedTo(other.getTo()) &&
                 getLength() == other.getLength();
     }
 
     public boolean equals(String label){
         return getLabel().equals(label) || getLabelAlternate().equals(label);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return RoadDTO.class.isAssignableFrom(o.getClass()) &&
-                equals((RoadDTO) o);
     }
 
     public String getLabel() {
