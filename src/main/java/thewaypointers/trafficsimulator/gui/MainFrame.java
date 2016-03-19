@@ -6,14 +6,14 @@ import thewaypointers.trafficsimulator.common.WorldStateDTO;
 
 public class MainFrame extends JFrame{
     public static MapContainerPanel mapContainerPanel =null;
-    public static MapPanel mapPanel=null;
-    ControlPanel controlPanel = new ControlPanel();
+    public static ControlPanel controlPanel =  null;
 
     public MainFrame(){
         this(null);
     }
 
     public MainFrame(WorldStateDTO worldStateDTO){
+        controlPanel = new ControlPanel();
         mapContainerPanel =  new MapContainerPanel();
         if (worldStateDTO != null){
             mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
@@ -22,21 +22,17 @@ public class MainFrame extends JFrame{
 
         this.setLayout(null);
         mapContainerPanel.setBounds(0,0,600,600);
-        controlPanel.setBounds(605,0,200,200);
+        controlPanel.setBounds(600,0,200,600);
         this.add(mapContainerPanel);
+        this.add(controlPanel);
         this.setSize(800,600);
 
         this.setTitle("traffic");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(100, 0);
         this.setVisible(true);
-        this.add(controlPanel);
 
-    }
-
-    public void  repaintpanel(WorldStateDTO worldStateDTO) {
-        mapPanel.NewStateReceived(worldStateDTO);
-        mapPanel.repaint();
+        this.addComponentListener(new MainFrameEventHandle());
 
     }
 

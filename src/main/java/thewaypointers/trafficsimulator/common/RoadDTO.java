@@ -96,6 +96,11 @@ public class RoadDTO {
         }
     }
 
+    /**
+     * Replaces one end of the road with the specified node.
+     * @param end the end of the road to replace (current value)
+     * @param value the value to replace with (new value)
+     */
     void setEnd(NodeDTO end, NodeDTO value){
         if(!isConnectedTo(end)){
             throw new IllegalArgumentException("Road is not connected to this node!");
@@ -113,7 +118,8 @@ public class RoadDTO {
     }
 
     public boolean equals(RoadDTO other) {
-        return  isConnectedTo(other.getFrom()) &&
+        return  other!=null &&
+                isConnectedTo(other.getFrom()) &&
                 isConnectedTo(other.getTo()) &&
                 getLength() == other.getLength();
     }
@@ -122,10 +128,11 @@ public class RoadDTO {
         return getLabel().equals(label) || getLabelAlternate().equals(label);
     }
 
-    /*@Override
+    @Override
     public boolean equals(Object o) {
-        return o.getClass() == RoadDTO.class && equals((RoadDTO) o);
-    }*/
+        return RoadDTO.class.isAssignableFrom(o.getClass()) &&
+                equals((RoadDTO) o);
+    }
 
     public String getLabel() {
         return produceLabel(getFrom(), getTo());
