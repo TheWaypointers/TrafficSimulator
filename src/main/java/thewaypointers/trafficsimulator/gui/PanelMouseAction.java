@@ -1,5 +1,6 @@
 package thewaypointers.trafficsimulator.gui;
 
+import thewaypointers.trafficsimulator.common.JunctionDTO;
 import thewaypointers.trafficsimulator.common.SimulationInputListener;
 import thewaypointers.trafficsimulator.common.TrafficLightSystemDTO;
 
@@ -31,8 +32,7 @@ public class PanelMouseAction implements MouseInputListener {
         double y = p.y;
         //System.out.println(x+", "+y);
 
-        TrafficLightSystemDTO trafficLightSystemDTO = MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem();
-        List<String> labels = trafficLightSystemDTO.GetJunctionLabel();
+        List<String> labels = MainFrame.mapContainerPanel.mapPanel.GetAllJunctionLabel();
 
         //System.out.println(labels.size());
 
@@ -44,8 +44,12 @@ public class PanelMouseAction implements MouseInputListener {
             if (((junction_x <= x) && (x <= junction_x + 50)) && ((junction_y <= y) && (y <= junction_y + 50))) {
                 //pass label here
                 //System.out.println("click test, pass label to the simulation");
-                SimulationInputListener s = new SimulationInputListener();
-                s.SimulationParameterChanged("junctionLabel", label);
+                if ( MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().getJunction(label)==null){
+                    JunctionDTO junctionDTO= MainFrame.mapContainerPanel.mapPanel.worldState.getRoadMap().getJunction(label);
+                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().addJunction(junctionDTO);
+                }else {
+                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().removeJunction(label);
+                }
             }
         }
     }

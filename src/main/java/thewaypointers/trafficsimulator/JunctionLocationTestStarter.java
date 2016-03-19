@@ -18,5 +18,17 @@ public class JunctionLocationTestStarter {
         mainFrame=new MainFrame(simulation.getNextState(0),trafficSimulatorManager);
         trafficSimulatorManager.setMainFrame(mainFrame);
         trafficSimulatorManager.setSimulation(simulation);
+
+        while (true){
+
+            MainFrame.mapContainerPanel.mapPanel.NewStateReceived(simulation.getNextState(2));
+
+            try {
+                Thread.sleep(800);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
