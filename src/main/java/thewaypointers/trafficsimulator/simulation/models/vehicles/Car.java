@@ -115,12 +115,10 @@ public class Car implements IVehicle {
         if (getCurrentRoad()!=null){
             // vehicle is leaving road and entering junction
             Node nextNode = calculateNextNode(nodeGraphMap);
-            RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
             if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
                 TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
                 if (tlNode.getColor() == TrafficLightColor.Green) {
-                    VehicleManager.getVehicleMap().remove(this);
-
+                    RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
                     Direction origin = currentRoad.getDirection().opposite();   // opposite because we want the direction from the road's target node, and this direction is from road's origin node
                     Direction target = nextRoadEdge.getDirection();
                     float width = tlNode.getWidth();
@@ -128,6 +126,8 @@ public class Car implements IVehicle {
                     currentRoad = null;
                     currentNode = tlNode;
                     junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
+
+                    VehicleManager.getVehicleMap().remove(this);
                     VehicleManager.getVehicleMap().add(tlNode, this);
 
                     this.setDistanceTravelled(overLap);
@@ -154,6 +154,8 @@ public class Car implements IVehicle {
             setDistanceTravelled(overLap);
             setCurrentNode(null);
             setJunctionLocation(null);
+            VehicleManager.getVehicleMap().remove(this);
+            VehicleManager.getVehicleMap().add(nextRoad.getRoad(), this);
             return;
         }
         throw new AssertionError("All environment checks for calculating new position failed");

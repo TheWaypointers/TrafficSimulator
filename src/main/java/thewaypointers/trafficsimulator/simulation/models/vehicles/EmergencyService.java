@@ -1,6 +1,7 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
+import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
@@ -121,6 +122,11 @@ public class EmergencyService implements IVehicle {
     @Override
     public float getVehiclesDistanceTravelled() {
         return getDistanceTravelled();
+    }
+
+    @Override
+    public JunctionLocationDTO getJunctionLocation() {
+        throw new AssertionError("Not implemented yet!");
     }
 
     @Override

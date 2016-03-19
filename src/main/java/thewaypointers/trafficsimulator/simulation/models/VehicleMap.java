@@ -31,9 +31,17 @@ public class VehicleMap {
                 .collect(ArrayList<IVehicle>::new, List::addAll, List::addAll);
     }
 
+    public List<IVehicle> getAllFromRoads(){
+        return getAll(roadMap);
+    }
+
+    public List<IVehicle> getAllFromJunctions(){
+        return getAll(junctionMap);
+    }
+
     public List<IVehicle> getAll(){
-        List<IVehicle> list1 = getAll(roadMap);
-        List<IVehicle> list2 = getAll(junctionMap);
+        List<IVehicle> list1 = getAllFromRoads();
+        List<IVehicle> list2 = getAllFromJunctions();
         list1.addAll(list2);
         return list1;
     }

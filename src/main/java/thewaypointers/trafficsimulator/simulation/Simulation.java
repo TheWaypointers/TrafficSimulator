@@ -95,11 +95,14 @@ public class Simulation implements ISimulationInputListener {
         VehicleListDTO dtoVehicleList = new VehicleListDTO();
         int index = 1;
 
-        for (IVehicle vehicle: VehicleManager.getVehicleMap().getAll()){
+        for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
             RoadDTO roadDTO = findEqualRoad(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode());
             RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
             dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
             index++;
+        }
+        for (IVehicle vehicle:VehicleManager.getVehicleMap().getAllFromJunctions()){
+            dtoVehicleList.addVehicle("" + index, vehicle.getJunctionLocation(), VehicleType.CarNormal);
         }
         worldState.setVehicleList(dtoVehicleList);
 
