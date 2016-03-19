@@ -66,6 +66,7 @@ public class Simulation implements ISimulationInputListener {
             computeNextSimulationStep(RESOLUTION);
         }
         computeNextSimulationStep(timeLeft);
+        getWorldState().setClock(clock);
         return getWorldState();
     }
 
