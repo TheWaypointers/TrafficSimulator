@@ -37,12 +37,12 @@ public class JunctionTestProvider implements IStateProvider {
                 Direction.Right,
                 0f);
         ws.getVehicleList().addVehicle(RIGHT_TURNER_NAME, loc, VehicleType.CarNormal);
-        loc = new JunctionLocationDTO(
-                "C",
-                Direction.Down,
-                Direction.Left,
-                0f);
-        ws.getVehicleList().addVehicle(LEFT_TURNER_NAME, loc, VehicleType.CarNormal);
+//        loc = new JunctionLocationDTO(
+//                "C",
+//                Direction.Down,
+//                Direction.Left,
+//                0f);
+//        ws.getVehicleList().addVehicle(LEFT_TURNER_NAME, loc, VehicleType.CarNormal);
         return ws;
     }
 
