@@ -55,14 +55,12 @@ public class GraphFactory {
 
                 DefaultWeightedEdge edge1 = getRoadGraph().addEdge(road.getFrom().getLabel(), road.getTo().getLabel());
                 getRoadGraph().setEdgeWeight(edge1, road.getLength());
-                vehicleMap.put(edge1, new ArrayList<>());
-                RoadEdge re1 = new RoadEdge(edge1, DirectionFromNode.Down, 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
+                RoadEdge re1 = new RoadEdge(edge1, Direction.Down, 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
                 getNodeGraphMap().get(node1).add(re1);
 
                 DefaultWeightedEdge edge2 = getRoadGraph().addEdge(road.getTo().getLabel(), road.getFrom().getLabel());
                 getRoadGraph().setEdgeWeight(edge2, road.getLength());
-                vehicleMap.put(edge2, new ArrayList<>());
-                RoadEdge re2 = new RoadEdge(edge2, DirectionFromNode.Up, 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
+                RoadEdge re2 = new RoadEdge(edge2, Direction.Up, 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
                 getNodeGraphMap().get(node2).add(re2);
             }
         }
@@ -88,7 +86,7 @@ public class GraphFactory {
 
     private Node createNode(String label) {
         if (worldState.getTrafficLightSystem().getJunction(label) != null) {
-            return new TrafficLightNode(label, NodeType.JunctionTrafficLights);
+            return new TrafficLightNode(label, NodeType.JunctionTrafficLights, ROAD_WIDTH, ROAD_WIDTH);
         } else if (label.startsWith("E")) {
             return new Node(label, NodeType.ExitNode);
         } else {

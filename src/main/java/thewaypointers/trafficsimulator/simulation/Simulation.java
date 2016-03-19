@@ -87,7 +87,7 @@ public class Simulation implements ISimulationInputListener {
         int index = 1;
 
         for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
-            RoadDTO roadDTO = findEqualRoad(vehicle.getVehiclesOriginNode() + vehicle.getVehiclesDestinationNode());
+            RoadDTO roadDTO = findEqualRoad(vehicle);
             RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
             dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
             index++;
