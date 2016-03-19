@@ -1,5 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
+import thewaypointers.trafficsimulator.utils.Pair;
+
 import java.util.*;
 
 public class MapDTO {
@@ -108,6 +110,22 @@ public class MapDTO {
         toJunction.setRoad(direction.opposite(), newRoad);
         newRoad.setFrom(fromJunction);
         newRoad.setTo(toJunction);
+    }
+
+    public String getDirection(String from, String to){
+
+        JunctionDTO junction = null;
+        for(JunctionDTO junctionTemp : getJunctionsUnprocessed()){
+            if(junctionTemp.getLabel().equals(from)){
+                junction = junctionTemp;
+            }
+        }
+        for(Pair p : junction.getRoadsAndDirections()){
+            if(((RoadDTO) p.getItem1()).getTo().getLabel().equals(to)){
+                return p.getItem2().toString();
+            }
+        }
+        return "";
     }
 
     public JunctionDTO getJunction(String label){
