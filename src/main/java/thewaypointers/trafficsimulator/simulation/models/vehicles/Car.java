@@ -112,39 +112,51 @@ public class Car implements IVehicle {
 
         // advance to next road or junction
         float overLap = nextPossiblePosition - currentSectionLength;
-        Node nextNode = calculateNextNode(nodeGraphMap);
-        RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
-        if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
-            TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
-            if (tlNode.getColor() == TrafficLightColor.Green) {
-                VehicleManager.getVehicleMap().remove(this);
+        if (getCurrentRoad()!=null){
+            // vehicle is leaving road and entering junction
+            Node nextNode = calculateNextNode(nodeGraphMap);
+            RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
+            if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
+                TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
+                if (tlNode.getColor() == TrafficLightColor.Green) {
+                    VehicleManager.getVehicleMap().remove(this);
 
-                Direction origin = currentRoad.getDirection().opposite();   // opposite because we want the direction from the road's target node, and this direction is from road's origin node
-                Direction target = nextRoadEdge.getDirection();
-                float width = tlNode.getWidth();
-                float height = tlNode.getHeight();
-                currentRoad = null;
-                currentNode = tlNode;
-                junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
-                VehicleManager.getVehicleMap().add(tlNode, this);
+                    Direction origin = currentRoad.getDirection().opposite();   // opposite because we want the direction from the road's target node, and this direction is from road's origin node
+                    Direction target = nextRoadEdge.getDirection();
+                    float width = tlNode.getWidth();
+                    float height = tlNode.getHeight();
+                    currentRoad = null;
+                    currentNode = tlNode;
+                    junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
+                    VehicleManager.getVehicleMap().add(tlNode, this);
 
-                this.setDistanceTravelled(overLap);
+                    this.setDistanceTravelled(overLap);
 
-                return;
-            } else {
-                if (getDistanceTravelled() < currentRoad.getLength() - 20) {
-                    setDistanceTravelled(currentRoad.getLength() - 20);
+                    return;
+                } else {
+                    if (getDistanceTravelled() < currentRoad.getLength() - 20) {
+                        setDistanceTravelled(currentRoad.getLength() - 20);
+                    }
+                    currentSpeed = 0;
+                    return;
                 }
-                currentSpeed = 0;
+            } else if (nextNode.getNodeType() == NodeType.ExitNode) {
+                VehicleManager.getVehicleMap().remove(this);
                 return;
             }
-        } else if (nextNode.getNodeType() == NodeType.ExitNode) {
-            VehicleManager.getVehicleMap().remove(this);
+        }else{
+            // vehicle is leaving junction and entering road
+            RoadEdge nextRoad = nodeGraphMap.get(getCurrentNode()).stream()
+                    .filter(x->x.getDirection().equals(getJunctionLocation().getTarget()))
+                    .findFirst()
+                    .get();
+            setCurrentRoad(nextRoad);
+            setDistanceTravelled(overLap);
+            setCurrentNode(null);
+            setJunctionLocation(null);
             return;
         }
-
-        this.setDistanceTravelled(nextPossiblePosition);
-        return;
+        throw new AssertionError("All environment checks for calculating new position failed");
     }
 
     private RoadEdge calculateNextRoad(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
