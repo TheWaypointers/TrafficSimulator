@@ -75,6 +75,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
+        MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
     }
 
