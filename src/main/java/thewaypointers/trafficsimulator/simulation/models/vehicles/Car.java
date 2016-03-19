@@ -15,6 +15,7 @@ import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 public class Car implements IVehicle {
@@ -81,12 +82,14 @@ public class Car implements IVehicle {
         float distanceToTravel = calculateDistanceToTravel(currentSpeed, timeStep);
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
 
-//        IVehicle vehicleInFront = checkVehicleWithinDistance(nextPossiblePosition);
-//        if(vehicleInFront != null){
-//            this.setDistanceTravelled(vehicleInFront.getVehiclesDistanceTravelled() - DISTANCE_BETWEEN_VEHICLES);
-//            this.setCurrentSpeed(vehicleInFront.getVehiclesCurrentSpeed());
-//            return;
-//        }
+        if (currentRoad!=null){
+            IVehicle vehicleInFront = checkVehicleWithinDistance(nextPossiblePosition);
+            if(vehicleInFront != null){
+                this.setDistanceTravelled(vehicleInFront.getVehiclesDistanceTravelled() - DISTANCE_BETWEEN_VEHICLES);
+                this.setCurrentSpeed(vehicleInFront.getVehiclesCurrentSpeed());
+                return;
+            }
+        }
 
         float currentSectionLength =
                 currentRoad != null ?

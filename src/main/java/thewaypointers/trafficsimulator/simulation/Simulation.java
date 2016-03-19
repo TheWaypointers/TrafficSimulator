@@ -28,11 +28,11 @@ public class Simulation implements ISimulationInputListener {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 1;
+    final int MAX_VEHICLE_NUMBER = 15;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 1000*1000;
+    final int TRAFFIC_LIGHT_STEPS = 15;
     int trafficLightCounter = 0;
 
     /**
