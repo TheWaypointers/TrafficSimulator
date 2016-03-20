@@ -9,11 +9,16 @@ public class RoadEdge {
     private long speedLimit;
     private float roadLength;
 
-    public RoadEdge(DefaultWeightedEdge road, DirectionFromNode direction, long speedLimit, float roadLength){
+    private String origin;
+    private String destination;
+
+    public RoadEdge(DefaultWeightedEdge road, DirectionFromNode direction, long speedLimit, float roadLength, String origin, String destination){
         this.road = road;
         this.direction = direction;
         this.speedLimit = speedLimit;
         this.roadLength = roadLength;
+        this.origin = origin;
+        this.destination = destination;
     }
 
     public DefaultWeightedEdge getRoad() {
@@ -48,4 +53,19 @@ public class RoadEdge {
         this.roadLength = roadLength;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
 }
