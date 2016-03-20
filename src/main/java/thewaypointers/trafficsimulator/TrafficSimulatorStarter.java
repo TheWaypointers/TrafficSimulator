@@ -11,7 +11,7 @@ public class TrafficSimulatorStarter {
 
     public static void main(String[] args) {
 
-        Simulation simulation = new Simulation();
+        Simulation simulation = new Simulation(worldState);
         mainFrame = new MainFrame();
 
         while(true){
