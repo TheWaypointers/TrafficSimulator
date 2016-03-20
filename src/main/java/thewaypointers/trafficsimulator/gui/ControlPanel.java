@@ -1,9 +1,4 @@
 package thewaypointers.trafficsimulator.gui;
-import thewaypointers.trafficsimulator.JunctionLocationTestStarter;
-import thewaypointers.trafficsimulator.TrafficSimulatorManager;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.simulation.Simulation;
-
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -14,6 +9,7 @@ import java.awt.event.ActionEvent;
 
 
 public class ControlPanel extends JPanel {
+
 
     //private JSplitPane worldControlPanel = new JSplitPane();
     private JLabel worldStateLabel = new JLabel();
@@ -46,8 +42,6 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
-    final TrafficSimulatorManager trafficSimulatorManager;
-
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
         //System.out.println("time step: "+tmp);
@@ -59,21 +53,15 @@ public class ControlPanel extends JPanel {
     };
 
 
-    public ControlPanel(TrafficSimulatorManager trafficSimulatorManager) {
+    public ControlPanel() {
         this.setLayout(null);
         this.setBackground(Color.white);
         this.setVisible(true);
         this.setSize(200, 600);
         this.initComponents();
-        this.trafficSimulatorManager = trafficSimulatorManager;
-        initTrafficSimulatorManager();
     }
 
 
-    private void initTrafficSimulatorManager(){
-        trafficSimulatorManager.setStart_pauseButton(startPauseButton);
-        trafficSimulatorManager.start();
-    }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
@@ -242,15 +230,19 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        //String action = startPauseButton.getText();
-        trafficSimulatorManager.changeState();
+        String action = startPauseButton.getText();
+        if(action.equals("Start")){
+            startPauseButton.setText("Pause");
+            //method for start
+        }
+        if(action.equals("Pause")){
+            startPauseButton.setText("Start");
+            //method for pause
+        }
     }
 
     private void clearPerformed(ActionEvent evt) {
         //method for stop
-        trafficSimulatorManager.stopState();
-        //initTrafficSimulatorManager();
-
     }
 
     private void submitPerformed(ActionEvent evt) {
