@@ -5,6 +5,7 @@ import thewaypointers.trafficsimulator.common.SimulationInputListener;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame extends JFrame{
     public static MapContainerPanel mapContainerPanel =null;
