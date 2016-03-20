@@ -1,10 +1,13 @@
 package thewaypointers.trafficsimulator.gui;
 
+import thewaypointers.trafficsimulator.common.JunctionDTO;
+
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
+
 
 public class PanelMouseAction implements MouseInputListener {
     Point origin;
@@ -42,12 +45,12 @@ public class PanelMouseAction implements MouseInputListener {
                 //System.out.println("click test, pass label to the simulation");
                 MainFrame.simulationInputListener.SimulationParameterChanged("junctionLabel",label);
 
-//                if ( MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().getJunction(label)==null){
-//                    JunctionDTO junctionDTO= MainFrame.mapContainerPanel.mapPanel.worldState.getRoadMap().getJunction(label);
-//                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().addJunction(junctionDTO);
-//                }else {
-//                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().removeJunction(label);
-//                }
+                if ( MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().getJunction(label)==null){
+                    JunctionDTO junctionDTO= MainFrame.mapContainerPanel.mapPanel.worldState.getRoadMap().getJunction(label);
+                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().addJunction(junctionDTO);
+                }else {
+                    MainFrame.mapContainerPanel.mapPanel.worldState.getTrafficLightSystem().removeJunction(label);
+                }
             }
         }
     }
