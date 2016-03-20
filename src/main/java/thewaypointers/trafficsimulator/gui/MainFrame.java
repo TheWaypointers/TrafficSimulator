@@ -1,20 +1,24 @@
 package thewaypointers.trafficsimulator.gui;
-import java.awt.*;
-import javax.swing.*;
 
+import thewaypointers.trafficsimulator.TrafficSimulatorManager;
+import thewaypointers.trafficsimulator.common.SimulationInputListener;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
+
+import javax.swing.*;
 
 public class MainFrame extends JFrame{
     public static MapContainerPanel mapContainerPanel =null;
     public static ControlPanel controlPanel =  null;
     public static  JLabel timeLabelPanel =null;
+    public static SimulationInputListener simulationInputListener;
 
     public MainFrame(){
-        this(null);
+
+        this(null,null);
     }
 
-    public MainFrame(WorldStateDTO worldStateDTO){
-        controlPanel = new ControlPanel();
+    public MainFrame(WorldStateDTO worldStateDTO, TrafficSimulatorManager trafficSimulatorManager){
+        controlPanel = new ControlPanel(trafficSimulatorManager);
         mapContainerPanel =  new MapContainerPanel();
         timeLabelPanel =new JLabel("Simulation time: ");
         timeLabelPanel.setForeground(Color.black);
@@ -23,6 +27,7 @@ public class MainFrame extends JFrame{
         timeLabelPanel.setFont(new Font("Arial",Font.PLAIN,15));
         timeLabelPanel.setSize(600,60);
 
+        simulationInputListener = new SimulationInputListener();
         if (worldStateDTO != null){
             mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
             mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
@@ -44,6 +49,15 @@ public class MainFrame extends JFrame{
 
         this.addComponentListener(new MainFrameEventHandle());
 
+    }
+
+    public void updateMainFrame(WorldStateDTO worldStateDTO, TrafficSimulatorManager trafficSimulatorManager){
+        controlPanel = new ControlPanel(trafficSimulatorManager);
+        mapContainerPanel =  new MapContainerPanel();
+        if (worldStateDTO != null){
+            mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
+            mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
+        }
     }
 
 }

@@ -10,18 +10,18 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class GraphFactory {
 
-    private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  roadGraph;
+    private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> roadGraph;
     private HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
     private HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap;
     private List<RoadDTO> dtoRoads;
+    private WorldStateDTO worldState;
 
-    public GraphFactory(){
+    public GraphFactory(WorldStateDTO worldState) {
+        this.worldState = worldState;
         setRoadGraph(new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class));
         setNodeGraphMap(new HashMap<>());
         setVehicleMap(new HashMap<>());
@@ -31,60 +31,112 @@ public class GraphFactory {
 
     public void prepareRoadGraph() {
 
-        getRoadGraph().addVertex("1");
-        getRoadGraph().addVertex("2");
-        getRoadGraph().addVertex("3");
+        for (RoadDTO road : worldState.getRoadMap().getRoads()) {
+            if (road != null) {
+                getRoadGraph().addVertex(road.getFrom().getLabel());
+                Node node1 = createNode(road.getFrom().getLabel());
 
-        DefaultWeightedEdge e1 = getRoadGraph().addEdge("1", "2");
-        getRoadGraph().setEdgeWeight(e1, 300);
-        getVehicleMap().put(e1, new ArrayList<>());
+                if (!checkIfNodeWasCreated(node1)) {
+                    getNodeGraphMap().put(node1, new ArrayList<>());
+                } else {
+                    node1 = getNodeFromNodeGraph(node1);
+                }
 
-        DefaultWeightedEdge e2 = getRoadGraph().addEdge("2", "3");
-        getRoadGraph().setEdgeWeight(e2, 300);
-        getVehicleMap().put(e2, new ArrayList<>());
 
-        DefaultWeightedEdge e3 = getRoadGraph().addEdge("2", "1");
-        getRoadGraph().setEdgeWeight(e3, 300);
-        getVehicleMap().put(e3, new ArrayList<>());
+                getRoadGraph().addVertex(road.getTo().getLabel());
+                Node node2 = createNode(road.getTo().getLabel());
 
-        DefaultWeightedEdge e4 = getRoadGraph().addEdge("3", "2");
-        getRoadGraph().setEdgeWeight(e4, 300);
-        getVehicleMap().put(e4, new ArrayList<>());
+                if (!checkIfNodeWasCreated(node2)) {
+                    getNodeGraphMap().put(node2, new ArrayList<>());
+                } else {
+                    node2 = getNodeFromNodeGraph(node2);
+                }
 
-        Node node1 = new Node("1", NodeType.ExitNode);
-        RoadEdge re1 = new RoadEdge(e1, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
+                DefaultWeightedEdge edge1 = getRoadGraph().addEdge(road.getFrom().getLabel(), road.getTo().getLabel());
+                getRoadGraph().setEdgeWeight(edge1, road.getLength());
+                vehicleMap.put(edge1, new ArrayList<>());
+                RoadEdge re1 = new RoadEdge(edge1, choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel())), 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
+                getNodeGraphMap().get(node1).add(re1);
 
-        Node node2 = new TrafficLightNode("2", NodeType.JunctionTrafficLights);
-        RoadEdge re21 = new RoadEdge(e1, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e1)));
-        RoadEdge re22 = new RoadEdge(e2, DirectionFromNode.Down, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+                DefaultWeightedEdge edge2 = getRoadGraph().addEdge(road.getTo().getLabel(), road.getFrom().getLabel());
+                getRoadGraph().setEdgeWeight(edge2, road.getLength());
+                vehicleMap.put(edge2, new ArrayList<>());
+                RoadEdge re2 = new RoadEdge(edge2, oppositeDirection(choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel()))), 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
+                getNodeGraphMap().get(node2).add(re2);
+            }
+        }
+        setNodeDirectionRoads();
+    }
 
-        Node node3 = new Node("3", NodeType.ExitNode);
-        RoadEdge re3 = new RoadEdge(e2, DirectionFromNode.Up, 30, ((float) getRoadGraph().getEdgeWeight(e2)));
+    private void setNodeDirectionRoads() {
 
-        getNodeGraphMap().put(node1, new ArrayList<>());
-        getNodeGraphMap().get(node1).add(re1);
-
-        getNodeGraphMap().put(node2, new ArrayList<>());
-        getNodeGraphMap().get(node2).add(re21);
-        getNodeGraphMap().get(node2).add(re22);
-
-        getNodeGraphMap().put(node3, new ArrayList<>());
-        getNodeGraphMap().get(node3).add(re3);
+        for(Node node : getNodeGraphMap().keySet()){
+            for(RoadEdge road : getNodeGraphMap().get(node)){
+                if(road.getDirection() == DirectionFromNode.Left){
+                    node.setLeftRoad(road);
+                } else if (road.getDirection() == DirectionFromNode.Right){
+                    node.setRightRoad(road);
+                } else if (road.getDirection() == DirectionFromNode.Down){
+                    node.setDownRoad(road);
+                } else{
+                    node.setUpRoad(road);
+                }
+            }
+        }
 
     }
 
-    public WorldStateDTO createFirstWorldState() {
-        WorldStateDTO worldState = new WorldStateDTO();
+    private DirectionFromNode oppositeDirection(DirectionFromNode directionFromNode) {
+        if(directionFromNode == DirectionFromNode.Down){
+            return  DirectionFromNode.Up;
+        }
+        else{
+            return  DirectionFromNode.Left;
+        }
+    }
 
-        MapDTO roadMap = worldState.getRoadMap();
-        roadMap.addRoad("1","2", Direction.Down, 300);
-        roadMap.addRoad("2", "3", Direction.Down, 300);
+    private DirectionFromNode choseDirection(String direction) {
+        switch (direction){
+            case "Left" :
+                return DirectionFromNode.Left;
+            case "Down" :
+                return DirectionFromNode.Down;
+            case "Up" :
+                return DirectionFromNode.Up;
+            case "Right" :
+                return DirectionFromNode.Right;
+            default :
+                break;
+        }
+        return null;
+    }
 
+    private Node getNodeFromNodeGraph(Node nodeTemp) {
+        for (Node node : nodeGraphMap.keySet()) {
+            if (node.getNodeName().equals(nodeTemp.getNodeName())) {
+                return node;
+            }
+        }
+        return null;
+    }
 
-        // add traffic lights
-        worldState.getTrafficLightSystem().addJunction(roadMap.getJunction("2"));
+    private boolean checkIfNodeWasCreated(Node nodeTemp) {
+        for (Node node : nodeGraphMap.keySet()) {
+            if (node.getNodeName().equals(nodeTemp.getNodeName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        return worldState;
+    private Node createNode(String label) {
+        if (worldState.getTrafficLightSystem().getJunction(label) != null) {
+            return new TrafficLightNode(label, NodeType.JunctionTrafficLights);
+        } else if (label.startsWith("E")) {
+            return new Node(label, NodeType.ExitNode);
+        } else {
+            return new Node(label, NodeType.JunctionNormal);
+        }
     }
 
     public SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> getRoadGraph() {
