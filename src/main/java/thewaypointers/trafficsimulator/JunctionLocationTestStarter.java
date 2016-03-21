@@ -8,16 +8,15 @@ public class JunctionLocationTestStarter {
 
     public static final float VEHICLE_MOVEMENT_SPEED = 2;
     public static final float STATES_PER_SECOND = 1;
-    public static MainFrame mainFrame;
-
 
     public static void main(String[] args){
 
-        TrafficSimulatorManager trafficSimulatorManager = new TrafficSimulatorManager();
+        SimulationController simulationController = new SimulationController();
         IStateProvider simulation = new JunctionTestProvider();
-        mainFrame=new MainFrame(simulation.getNextState(0),trafficSimulatorManager);
-        trafficSimulatorManager.setMainFrame(mainFrame);
-        trafficSimulatorManager.setSimulation(simulation);
+        MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
+        mainFrame.setSimulationController(simulationController);
+        simulationController.setMainFrame(mainFrame);
+        simulationController.setSimulation(simulation);
 
         while (true){
 
