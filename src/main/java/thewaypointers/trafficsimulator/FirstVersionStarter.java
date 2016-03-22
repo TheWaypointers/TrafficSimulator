@@ -1,11 +1,7 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
-import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
-import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
-import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class FirstVersionStarter {
 
@@ -14,7 +10,7 @@ public class FirstVersionStarter {
     public static final IStateProvider PROVIDER = new FirstVersionProvider();
 
     public static void main(String[] args){
-        new StarterBase(
+        new Bootstrapper(
                 PROVIDER,
                 TIME_STEP,
                 VEHICLE_MOVEMENT_SPEED,

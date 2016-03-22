@@ -1,7 +1,6 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 
 public class RoadNetworkStarter {
@@ -10,7 +9,7 @@ public class RoadNetworkStarter {
     public static final IStateProvider PROVIDER = new RoadNetworkProvider();
 
     public static void main(String[] args){
-        new StarterBase(
+        new Bootstrapper(
                 PROVIDER,
                 TIME_STEP,
                 VEHICLE_MOVEMENT_SPEED,

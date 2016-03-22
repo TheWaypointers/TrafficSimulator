@@ -5,16 +5,16 @@ import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.gui.MainFrame;
 
-public class StarterBase {
+public class Bootstrapper {
     private IStateProvider stateProvider;
     private long timeStep;
     private long simulationTimeStep;
     private WorldStateDTO initialWorldState;
 
-    public StarterBase(IStateProvider stateProvider,
-                       long timeStep,
-                       long simulationTimeStep,
-                       WorldStateDTO initialWorldState){
+    public Bootstrapper(IStateProvider stateProvider,
+                        long timeStep,
+                        long simulationTimeStep,
+                        WorldStateDTO initialWorldState){
         this.stateProvider = stateProvider;
         this.timeStep = timeStep;
         this.simulationTimeStep = simulationTimeStep;

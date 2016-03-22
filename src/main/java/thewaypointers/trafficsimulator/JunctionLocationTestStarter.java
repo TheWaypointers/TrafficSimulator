@@ -2,7 +2,6 @@ package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
-import thewaypointers.trafficsimulator.gui.MainFrame;
 
 public class JunctionLocationTestStarter {
 
@@ -11,7 +10,7 @@ public class JunctionLocationTestStarter {
     public static final IStateProvider PROVIDER = new JunctionTestProvider();
 
     public static void main(String[] args){
-        new StarterBase(
+        new Bootstrapper(
                 PROVIDER,
                 TIME_STEP,
                 VEHICLE_MOVEMENT_SPEED,
