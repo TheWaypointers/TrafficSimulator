@@ -1,16 +1,12 @@
 package thewaypointers.trafficsimulator.gui;
-
-import thewaypointers.trafficsimulator.TrafficSimulatorManager;
+import thewaypointers.trafficsimulator.StateProviderController;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
@@ -58,8 +54,6 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
-    final TrafficSimulatorManager trafficSimulatorManager;
-
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
         //System.out.println("time step: "+tmp);
@@ -88,21 +82,14 @@ public class ControlPanel extends JPanel {
         MainFrame.simulationInputListener.SimulationParameterChanged("timeStepSlider", Integer.toString(tmp));
     };
 
+    private StateProviderController stateProviderController;
 
-    public ControlPanel(TrafficSimulatorManager trafficSimulatorManager) {
+    public ControlPanel() {
         this.setLayout(null);
         this.setBackground(Color.white);
         this.setVisible(true);
         this.setSize(200, 600);
         this.initComponents();
-        this.trafficSimulatorManager = trafficSimulatorManager;
-        initTrafficSimulatorManager();
-    }
-
-
-    private void initTrafficSimulatorManager() {
-        trafficSimulatorManager.setStart_pauseButton(startPauseButton);
-        trafficSimulatorManager.start();
     }
 
     public void paintComponent(Graphics g) {
@@ -155,7 +142,6 @@ public class ControlPanel extends JPanel {
         clearButton.setText("Clear");
         clearButton.setLocation(0, 80);
         clearButton.addActionListener(this::clearPerformed);
-
 
         initLabel(timeStepLabel);
         timeStepLabel.setText("Time step");
@@ -368,8 +354,6 @@ public class ControlPanel extends JPanel {
         slider.setVisible(true);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-
-
     }
 
     private void initTextField(JTextField textField) {
@@ -380,13 +364,22 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        trafficSimulatorManager.changeState();
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
+        }
+        startPauseButton.setText(startPauseButton.getText().equals("Pause")? "Start": "Pause");
+        stateProviderController.pauseSimulation();
     }
 
     private void clearPerformed(ActionEvent evt) {
-        trafficSimulatorManager.stopState();
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
+        }
+        startPauseButton.setText("Start");
+        stateProviderController.clearSimulation();
     }
-
 
     private void submitPerformed(ActionEvent evt) {
 
@@ -425,5 +418,7 @@ public class ControlPanel extends JPanel {
 
     }
 
-
+    public void setStateProviderController(StateProviderController stateProviderController) {
+        this.stateProviderController = stateProviderController;
+    }
 }

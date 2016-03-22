@@ -53,7 +53,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     boolean debug=true;
 
 
-    WorldStateDTO worldState = new WorldStateDTO(null, null, null);
+    WorldStateDTO worldState;
 
     public  static Map<String,Point> junctionlocation;
     private boolean junctionLocationsProcessed = false;
@@ -75,6 +75,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
+        MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
     }
 
@@ -108,9 +109,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         }
         drawLabel(g,vx+rectwidth,vy,label);
 
-        if (vehicle.getLabel()=="straightGoer"){
-            System.out.println("x is "+ vx+" y is "+ vy );
-        }
         Graphics2D g2d = (Graphics2D)g;
         //AffineTransform identify = new AffineTransform();
         rect=new Rectangle2D.Float(vx,vy,rectwidth,rectheiht);
@@ -216,6 +214,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     //draw worldState
     public void paint(Graphics g){
+        if (worldState == null){
+            return;
+        }
         super.paint(g);
         this.draw_road_network(g);
         this.draw_TrafficLightSystem(g);
