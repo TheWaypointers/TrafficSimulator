@@ -5,7 +5,7 @@ import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 
-public class SimulationController extends Thread {
+public class StateProviderController extends Thread {
 
     private IStateChangeListener output;
     private IStateProvider simulation;
@@ -14,7 +14,7 @@ public class SimulationController extends Thread {
     private long timeStep;
     private long simulationTimeStep;
 
-    public SimulationController(long timeStep, long simulationTimeStep) {
+    public StateProviderController(long timeStep, long simulationTimeStep) {
         this.timeStep = timeStep;
         this.simulationTimeStep = simulationTimeStep;
     }
@@ -35,7 +35,7 @@ public class SimulationController extends Thread {
         isSleep = true;
         simulation = new JunctionTestProvider();
 //        mainFrame.setVisible(false);
-//        mainFrame = new MainFrame(simulation.getNextState(0),new SimulationController());
+//        mainFrame = new MainFrame(simulation.getNextState(0),new StateProviderController());
     }
 
     public void run() {

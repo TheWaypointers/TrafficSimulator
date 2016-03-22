@@ -1,5 +1,5 @@
 package thewaypointers.trafficsimulator.gui;
-import thewaypointers.trafficsimulator.SimulationController;
+import thewaypointers.trafficsimulator.StateProviderController;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -51,7 +51,7 @@ public class ControlPanel extends JPanel {
         //System.out.println("traffic light time: "+tmp);
     };
 
-    private SimulationController simulationController;
+    private StateProviderController stateProviderController;
 
     public ControlPanel() {
         this.setLayout(null);
@@ -229,20 +229,20 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        if (simulationController == null){
-            System.out.println("Warning: no SimulationController hooked up");
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
             return;
         }
         startPauseButton.setText(startPauseButton.getText().equals("Pause")? "Start": "Pause");
-        simulationController.pauseSimulation();
+        stateProviderController.pauseSimulation();
     }
 
     private void clearPerformed(ActionEvent evt) {
-        if (simulationController == null){
-            System.out.println("Warning: no SimulationController hooked up");
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
             return;
         }
-        simulationController.clearSimulation();
+        stateProviderController.clearSimulation();
     }
 
     private void submitPerformed(ActionEvent evt) {
@@ -277,7 +277,7 @@ public class ControlPanel extends JPanel {
         ambulanceTextField.setText("0");
     }
 
-    public void setSimulationController(SimulationController simulationController) {
-        this.simulationController = simulationController;
+    public void setStateProviderController(StateProviderController stateProviderController) {
+        this.stateProviderController = stateProviderController;
     }
 }

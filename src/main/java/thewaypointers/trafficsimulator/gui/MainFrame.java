@@ -1,6 +1,6 @@
 package thewaypointers.trafficsimulator.gui;
 
-import thewaypointers.trafficsimulator.SimulationController;
+import thewaypointers.trafficsimulator.StateProviderController;
 import thewaypointers.trafficsimulator.common.ISimulationInputListener;
 import thewaypointers.trafficsimulator.common.SimulationInputListener;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
@@ -53,8 +53,8 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void setSimulationController(SimulationController controller){
-        controlPanel.setSimulationController(controller);
+    public void setSimulationController(StateProviderController controller){
+        controlPanel.setStateProviderController(controller);
     }
 
 }

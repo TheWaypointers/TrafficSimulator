@@ -22,11 +22,11 @@ public class Bootstrapper {
     }
 
     public void bootstrap(String[] args){
-        SimulationController simulationController = new SimulationController(timeStep, simulationTimeStep);
-        simulationController.start();
+        StateProviderController stateProviderController = new StateProviderController(timeStep, simulationTimeStep);
+        stateProviderController.start();
         MainFrame mainFrame=new MainFrame(initialWorldState);
-        mainFrame.setSimulationController(simulationController);
-        simulationController.setOutput(mainFrame.mapContainerPanel.mapPanel);
-        simulationController.setSimulation(stateProvider);
+        mainFrame.setSimulationController(stateProviderController);
+        stateProviderController.setOutput(mainFrame.mapContainerPanel.mapPanel);
+        stateProviderController.setSimulation(stateProvider);
     }
 }
