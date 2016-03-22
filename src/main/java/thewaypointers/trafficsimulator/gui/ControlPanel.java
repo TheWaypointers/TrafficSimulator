@@ -230,7 +230,7 @@ public class ControlPanel extends JPanel {
 
     private void startPausePerformed(ActionEvent evt) {
         if (simulationController == null){
-            System.out.print("Warning: no SimulationController hooked up");
+            System.out.println("Warning: no SimulationController hooked up");
             return;
         }
         startPauseButton.setText(startPauseButton.getText().equals("Pause")? "Start": "Pause");
@@ -239,7 +239,7 @@ public class ControlPanel extends JPanel {
 
     private void clearPerformed(ActionEvent evt) {
         if (simulationController == null){
-            System.out.print("Warning: no SimulationController hooked up");
+            System.out.println("Warning: no SimulationController hooked up");
             return;
         }
         simulationController.clearSimulation();

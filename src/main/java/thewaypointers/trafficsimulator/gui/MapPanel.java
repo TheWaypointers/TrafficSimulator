@@ -53,7 +53,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     boolean debug=true;
 
 
-    WorldStateDTO worldState = new WorldStateDTO(null, null, null);
+    WorldStateDTO worldState;
 
     public  static Map<String,Point> junctionlocation;
     private boolean junctionLocationsProcessed = false;
@@ -217,6 +217,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     //draw worldState
     public void paint(Graphics g){
+        if (worldState == null){
+            return;
+        }
         super.paint(g);
         this.draw_road_network(g);
         this.draw_TrafficLightSystem(g);
