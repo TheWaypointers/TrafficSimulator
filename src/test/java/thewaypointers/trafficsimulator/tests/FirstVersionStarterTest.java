@@ -9,6 +9,6 @@ import static org.junit.Assert.*;
 public class FirstVersionStarterTest {
     @Test
     public void providerTest(){
-        assertTrue(FirstVersionStarter.PROVIDER.getClass().equals(FirstVersionProvider.class));
+        assertTrue(FirstVersionStarter.PROVIDER_SUPPLIER.get().getClass().equals(FirstVersionProvider.class));
     }
 }

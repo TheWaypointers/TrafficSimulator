@@ -5,6 +5,9 @@ import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
 
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 public class StateProviderController extends Thread {
 
     private IStateChangeListener output;
@@ -13,14 +16,16 @@ public class StateProviderController extends Thread {
     private boolean isSleep = true;
     private long timeStep;
     private long simulationTimeStep;
+    private Supplier<IStateProvider> providerSupplier;
 
     public StateProviderController(long timeStep, long simulationTimeStep) {
         this.timeStep = timeStep;
         this.simulationTimeStep = simulationTimeStep;
     }
 
-    public void setSimulation(IStateProvider simulation) {
-        this.simulation = simulation;
+    public void setProviderSupplier(Supplier<IStateProvider> providerSupplier) {
+        this.providerSupplier = providerSupplier;
+        simulation = providerSupplier.get();
     }
 
     public void setOutput(IStateChangeListener output) {
@@ -33,9 +38,7 @@ public class StateProviderController extends Thread {
 
     public synchronized void clearSimulation() {
         isSleep = true;
-        simulation = new JunctionTestProvider();
-//        mainFrame.setVisible(false);
-//        mainFrame = new MainFrame(simulation.getNextState(0),new StateProviderController());
+        simulation = providerSupplier.get();
     }
 
     public void run() {

@@ -9,6 +9,6 @@ import static org.junit.Assert.*;
 public class JunctionLocationTestStarterTest {
     @Test
     public void providerTest(){
-        assertTrue(JunctionLocationTestStarter.PROVIDER.getClass().equals(JunctionTestProvider.class));
+        assertTrue(JunctionLocationTestStarter.PROVIDER_SUPPLIER.get().getClass().equals(JunctionTestProvider.class));
     }
 }

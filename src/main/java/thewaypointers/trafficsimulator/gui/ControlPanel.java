@@ -242,6 +242,7 @@ public class ControlPanel extends JPanel {
             System.out.println("Warning: no StateProviderController hooked up");
             return;
         }
+        startPauseButton.setText("Start");
         stateProviderController.clearSimulation();
     }
 

@@ -9,6 +9,6 @@ import static org.junit.Assert.*;
 public class TrafficSimulatorStarterTest {
     @Test
     public void providerTest(){
-        assertTrue(TrafficSimulatorStarter.simulation.getClass().equals(Simulation.class));
+        assertTrue(TrafficSimulatorStarter.simulationSupplier.get().getClass().equals(Simulation.class));
     }
 }

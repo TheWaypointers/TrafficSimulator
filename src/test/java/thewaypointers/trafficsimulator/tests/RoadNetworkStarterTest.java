@@ -9,6 +9,6 @@ import static org.junit.Assert.*;
 public class RoadNetworkStarterTest {
     @Test
     public void providerTest(){
-        assertTrue(RoadNetworkStarter.PROVIDER.getClass().equals(RoadNetworkProvider.class));
+        assertTrue(RoadNetworkStarter.PROVIDER_SUPPLIER.get().getClass().equals(RoadNetworkProvider.class));
     }
 }
