@@ -1,15 +1,10 @@
 package thewaypointers.trafficsimulator.gui;
-import thewaypointers.trafficsimulator.JunctionLocationTestStarter;
-import thewaypointers.trafficsimulator.TrafficSimulatorManager;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.simulation.Simulation;
+import thewaypointers.trafficsimulator.StateProviderController;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
@@ -46,8 +41,6 @@ public class ControlPanel extends JPanel {
 
     Graphics2D g2;
 
-    final TrafficSimulatorManager trafficSimulatorManager;
-
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
         //System.out.println("time step: "+tmp);
@@ -58,22 +51,16 @@ public class ControlPanel extends JPanel {
         //System.out.println("traffic light time: "+tmp);
     };
 
+    private StateProviderController stateProviderController;
 
-    public ControlPanel(TrafficSimulatorManager trafficSimulatorManager) {
+    public ControlPanel() {
         this.setLayout(null);
         this.setBackground(Color.white);
         this.setVisible(true);
         this.setSize(200, 600);
         this.initComponents();
-        this.trafficSimulatorManager = trafficSimulatorManager;
-        initTrafficSimulatorManager();
     }
 
-
-    private void initTrafficSimulatorManager(){
-        trafficSimulatorManager.setStart_pauseButton(startPauseButton);
-        trafficSimulatorManager.start();
-    }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
@@ -242,15 +229,21 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        //String action = startPauseButton.getText();
-        trafficSimulatorManager.changeState();
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
+        }
+        startPauseButton.setText(startPauseButton.getText().equals("Pause")? "Start": "Pause");
+        stateProviderController.pauseSimulation();
     }
 
     private void clearPerformed(ActionEvent evt) {
-        //method for stop
-        trafficSimulatorManager.stopState();
-        //initTrafficSimulatorManager();
-
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
+        }
+        startPauseButton.setText("Start");
+        stateProviderController.clearSimulation();
     }
 
     private void submitPerformed(ActionEvent evt) {
@@ -285,4 +278,7 @@ public class ControlPanel extends JPanel {
         ambulanceTextField.setText("0");
     }
 
+    public void setStateProviderController(StateProviderController stateProviderController) {
+        this.stateProviderController = stateProviderController;
+    }
 }
