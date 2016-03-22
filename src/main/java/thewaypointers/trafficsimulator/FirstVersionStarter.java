@@ -11,7 +11,7 @@ public class FirstVersionStarter {
 
     static final long VEHICLE_MOVEMENT_SPEED = 500;
     static final long TIME_STEP = 500;
-    static final IStateProvider PROVIDER = new FirstVersionProvider();
+    public static final IStateProvider PROVIDER = new FirstVersionProvider();
 
     public static void main(String[] args){
         new StarterBase(

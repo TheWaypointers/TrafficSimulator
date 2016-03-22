@@ -109,9 +109,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         }
         drawLabel(g,vx+rectwidth,vy,label);
 
-        if (vehicle.getLabel()=="straightGoer"){
-            System.out.println("x is "+ vx+" y is "+ vy );
-        }
         Graphics2D g2d = (Graphics2D)g;
         //AffineTransform identify = new AffineTransform();
         rect=new Rectangle2D.Float(vx,vy,rectwidth,rectheiht);

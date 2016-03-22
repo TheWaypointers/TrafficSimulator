@@ -41,9 +41,7 @@ public class SimulationController extends Thread {
     public void run() {
         while (true) {
             if (!isSleep) {
-                System.out.println("New State, timestep "+ simulationTimeStep);
                 worldState = simulation.getNextState(simulationTimeStep);
-                System.out.println("Current simulation time "+ worldState.getClock());
                 output.NewStateReceived(worldState);
             }
             try {
