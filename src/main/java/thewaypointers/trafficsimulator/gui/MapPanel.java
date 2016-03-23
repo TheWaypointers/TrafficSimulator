@@ -110,12 +110,12 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         drawLabel(g,vx+rectwidth,vy,label);
 
         Graphics2D g2d = (Graphics2D)g;
-        //AffineTransform identify = new AffineTransform();
+        AffineTransform identify = g2d.getTransform();
         rect=new Rectangle2D.Float(vx,vy,rectwidth,rectheiht);
-        //g2d.setTransform(identify);
         g2d.setColor(this.GetVehicleColor(vehicle.getType()));
         g2d.rotate(rotate, junlocationx, junlocationy);
         g2d.fill(rect);
+        g2d.setTransform(identify);
     }
 
     //draw vehicles on the road
