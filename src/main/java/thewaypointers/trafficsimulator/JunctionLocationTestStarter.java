@@ -1,32 +1,23 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
-import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
-import thewaypointers.trafficsimulator.gui.MainFrame;
-import thewaypointers.trafficsimulator.utils.FloatPoint;
+
+import java.util.function.Supplier;
 
 public class JunctionLocationTestStarter {
 
-    public static final float VEHICLE_MOVEMENT_SPEED = 2;
-    public static final float STATES_PER_SECOND = 1;
-    public static MainFrame mainFrame=null;
+    static final long VEHICLE_MOVEMENT_SPEED = 2;
+    static final long TIME_STEP = 800;
+    public static final Supplier<IStateProvider> PROVIDER_SUPPLIER = () -> new JunctionTestProvider();
+
     public static void main(String[] args){
-
-        IStateProvider simulation = new JunctionTestProvider();
-        mainFrame=new MainFrame(simulation.getNextState(0));
-
-        //noinspection InfiniteLoopStatement
-        while(true){
-            WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
-            try {
-                Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        new Bootstrapper(
+                PROVIDER_SUPPLIER,
+                TIME_STEP,
+                VEHICLE_MOVEMENT_SPEED,
+                null
+                )
+                .bootstrap(args);
     }
 }

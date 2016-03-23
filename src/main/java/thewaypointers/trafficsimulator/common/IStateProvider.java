@@ -1,5 +1,5 @@
 package thewaypointers.trafficsimulator.common;
 
 public interface IStateProvider {
-    WorldStateDTO getNextState(float vehicleMovement);
+    WorldStateDTO getNextState(long timeStep);
 }

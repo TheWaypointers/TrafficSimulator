@@ -48,7 +48,7 @@ public class JunctionTestProvider implements IStateProvider {
 
     @SuppressWarnings("SuspiciousNameCombination")
     @Override
-    public WorldStateDTO getNextState(float vehicleMovement) {
+    public WorldStateDTO getNextState(long vehicleMovement) {
         for (VehicleDTO v : worldState.getVehicleList().getAll()){
             JunctionLocationDTO loc = (JunctionLocationDTO) v.getLocation();
             JunctionMoveResult result = loc.move(vehicleMovement, ROAD_WIDTH, ROAD_WIDTH);

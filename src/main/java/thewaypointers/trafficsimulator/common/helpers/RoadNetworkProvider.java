@@ -52,7 +52,7 @@ public class RoadNetworkProvider implements IStateProvider {
         return ws;
     }
 
-    public WorldStateDTO getNextState(float vehicleMovement){
+    public WorldStateDTO getNextState(long vehicleMovement){
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
