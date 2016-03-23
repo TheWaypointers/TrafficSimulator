@@ -1,15 +1,14 @@
 package thewaypointers.trafficsimulator;
 
 import thewaypointers.trafficsimulator.common.IStateProvider;
-import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
+import thewaypointers.trafficsimulator.common.helpers.RoadNetworkProvider;
 
 import java.util.function.Supplier;
 
-public class FirstVersionStarter {
-
-    static final long VEHICLE_MOVEMENT_SPEED = 500;
-    static final long TIME_STEP = 500;
-    public static final Supplier<IStateProvider> PROVIDER_SUPPLIER = () -> new FirstVersionProvider();
+public class RoadNetworkStarter {
+    static final long VEHICLE_MOVEMENT_SPEED = 15;
+    static final long TIME_STEP = 800;
+    public static final Supplier<IStateProvider> PROVIDER_SUPPLIER = () -> new RoadNetworkProvider();
 
     public static void main(String[] args){
         new Bootstrapper(
@@ -21,4 +20,3 @@ public class FirstVersionStarter {
                 .bootstrap(args);
     }
 }
-

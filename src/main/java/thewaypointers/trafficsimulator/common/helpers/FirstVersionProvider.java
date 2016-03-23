@@ -1,11 +1,13 @@
 package thewaypointers.trafficsimulator.common.helpers;
 
 import thewaypointers.trafficsimulator.common.*;
+import thewaypointers.trafficsimulator.utils.SpeedConvert;
 
 public class FirstVersionProvider implements IStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final int CHANGE_LIGHTS_EVERY_N_STATES = 1;
     public static final float ROAD_WIDTH = 20;
+    public static final float VEHICLE_SPEED = 15;  // units per 1000ms
 
     WorldStateDTO worldState;
 
@@ -32,7 +34,8 @@ public class FirstVersionProvider implements IStateProvider {
         return ws;
     }
 
-    public WorldStateDTO getNextState(float vehicleMovement){
+    public WorldStateDTO getNextState(long timeStep){
+        float vehicleMovement = SpeedConvert.getDistance(VEHICLE_SPEED, timeStep);
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
@@ -42,7 +45,7 @@ public class FirstVersionProvider implements IStateProvider {
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
-        worldState.setClock(worldState.getClock()+(long)vehicleMovement);
+        worldState.setClock(worldState.getClock()+timeStep);
 
         RoadLocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {
