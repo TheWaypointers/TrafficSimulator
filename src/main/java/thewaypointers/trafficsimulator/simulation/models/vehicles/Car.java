@@ -26,6 +26,7 @@ public class Car implements IVehicle {
     private Lane lane;
     private DefaultWeightedEdge currentRoad;
     private float roadLength;
+    private int label;
 
     private final long SPEED_DIFFERENCE = 10;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
@@ -256,6 +257,16 @@ public class Car implements IVehicle {
         return decisionPath.peek();
     }
 
+    @Override
+    public void setVehicleLabel(int label) {
+        this.label = label;
+    }
+
+    @Override
+    public int getVehicleLabel() {
+        return label;
+    }
+
     public DefaultWeightedEdge getCurrentRoad() {
         return currentRoad;
     }
@@ -270,5 +281,13 @@ public class Car implements IVehicle {
 
     public void setRoadLength(float roadLength) {
         this.roadLength = roadLength;
+    }
+
+    public int getLabel() {
+        return label;
+    }
+
+    public void setLabel(int label) {
+        this.label = label;
     }
 }
