@@ -90,10 +90,10 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
         for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
             RoadDTO roadDTO = findEqualRoad(vehicle);
             RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
-            dtoVehicleList.addVehicle(vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
         }
         for (IVehicle vehicle:VehicleManager.getVehicleMap().getAllFromJunctions()){
-            dtoVehicleList.addVehicle(vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), VehicleType.CarNormal);
         }
         worldState.setVehicleList(dtoVehicleList);
 
