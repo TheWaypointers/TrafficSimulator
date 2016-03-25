@@ -40,17 +40,13 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final Color VEHICLE_CarReckless_COLOR = Color.red;
 
     // computable parameters
-    public static final int ROAD_LEFT_LANE_X = ROAD_Y1 + (ROAD_WIDTH/4);
-    public static final int ROAD_MIDDLE_LINE = ROAD_Y1 + (ROAD_WIDTH/2);
-    public static final int ROAD_RIGHT_LANE_X = ROAD_Y1 + (ROAD_WIDTH*3/4);
-    public static final int ROAD_Y2 = ROAD_Y1 + ROAD_WIDTH;
     public static final int HALF_ROAD_WIDTH = ROAD_WIDTH/2;
     public static final int HALF_VEHICLE_HEIGHT = VEHICLE_HEIGHT/2;
     public static final int HALF_VEHICLE_WIDTH = VEHICLE_WIDTH/2;
     public static final int LABEL_SIZE=16;
 
-    // set whether display debug or not
-    boolean debug=true;
+    // set whether display debug or not, default state: don't display
+    boolean debug=false;
 
 
     WorldStateDTO worldState;
@@ -528,43 +524,26 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         Point junctionpoint = junctionlocation.get(junction);
         switch (direction)
         {
-            case Up:
-                if (lane == Lane.Right)
-                {
-                    trafficlightX = (int) junctionpoint.getX();
-                    trafficlightY = (int) (junctionpoint.getY()-TRAFFIC_LIGHT_SIZE);}
-                else {
-                    trafficlightX = (int) (junctionpoint.getX()+TRAFFICLIGHTS_DISTANCE);
-                    trafficlightY = (int) (junctionpoint.getY()-TRAFFIC_LIGHT_SIZE);
-                }
-                break;
-            case Down:
-                if (lane == Lane.Right)
-                {   trafficlightX = (int) (junctionpoint.getX()+TRAFFICLIGHTS_DISTANCE);
-                    trafficlightY = (int) (junctionpoint.getY()+ROAD_WIDTH);}
-                else {
-                    trafficlightX = (int) junctionpoint.getX();
-                    trafficlightY = (int) junctionpoint.getY()+ROAD_WIDTH;
-                }
-                break;
-            case Left:
-                if (lane == Lane.Right)
-                {   trafficlightX = (int) (junctionpoint.getX()-TRAFFIC_LIGHT_SIZE);
-                    trafficlightY = (int) (junctionpoint.getY()+TRAFFICLIGHTS_DISTANCE);}
-                else {
-                    trafficlightX = (int) (junctionpoint.getX()-TRAFFIC_LIGHT_SIZE);
-                    trafficlightY = (int) junctionpoint.getY();
-                }
-                break;
-            case Right:
-                if (lane == Lane.Right)
-                {   trafficlightX = (int) (junctionpoint.getX()+ROAD_WIDTH);
-                    trafficlightY = (int) junctionpoint.getY();}
-                else {
-                    trafficlightX = (int) junctionpoint.getX()+ROAD_WIDTH;
-                    trafficlightY = (int) (junctionpoint.getY()+TRAFFICLIGHTS_DISTANCE);
-                }
-                break;
+            case Up: {
+                trafficlightX = (int) junctionpoint.getX();
+                trafficlightY = (int) (junctionpoint.getY()-TRAFFIC_LIGHT_SIZE);
+            }
+            break;
+            case Down: {
+                trafficlightX = (int) (junctionpoint.getX()+TRAFFICLIGHTS_DISTANCE);
+                trafficlightY = (int) (junctionpoint.getY()+ROAD_WIDTH);
+            }
+            break;
+            case Left: {
+                trafficlightX = (int) (junctionpoint.getX()-TRAFFIC_LIGHT_SIZE);
+                trafficlightY = (int) (junctionpoint.getY()+TRAFFICLIGHTS_DISTANCE);
+            }
+            break;
+            case Right: {
+                trafficlightX = (int) (junctionpoint.getX()+ROAD_WIDTH);
+                trafficlightY = (int) junctionpoint.getY();
+            }
+            break;
         }
         point.setLocation(trafficlightX, trafficlightY);
 
