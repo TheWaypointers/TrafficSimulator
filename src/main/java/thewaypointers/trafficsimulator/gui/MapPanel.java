@@ -35,7 +35,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     // set color of different kinds of vehicles
     public static final Color VEHICLE_CarNormal_COLOR = Color.blue;
     public static final Color VEHICLE_CarCautious_COLOR = Color.yellow;
-    public static final Color VEHICLE_EmergencyService_COLOR = Color.white;
+    public static final Color VEHICLE_EmergencyService_COLOR = Color.black;
     public static final Color VEHICLE_Bus_COLOR = Color.cyan;
     public static final Color VEHICLE_CarReckless_COLOR = Color.red;
 
