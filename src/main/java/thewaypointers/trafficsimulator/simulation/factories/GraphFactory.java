@@ -4,19 +4,20 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
-import thewaypointers.trafficsimulator.simulation.models.graph.helper.DirectionFromNode;
+import thewaypointers.trafficsimulator.simulation.models.VehicleMap;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
-import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 
 import java.util.*;
 
 public class GraphFactory {
 
-    private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> roadGraph;
+    private final float ROAD_WIDTH = 50;
+
+    private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  roadGraph;
     private HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
-    private HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap;
+    private VehicleMap vehicleMap;
     private List<RoadDTO> dtoRoads;
     private WorldStateDTO worldState;
 
@@ -24,7 +25,7 @@ public class GraphFactory {
         this.worldState = worldState;
         setRoadGraph(new SimpleDirectedWeightedGraph<>(DefaultWeightedEdge.class));
         setNodeGraphMap(new HashMap<>());
-        setVehicleMap(new HashMap<>());
+        setVehicleMap(new VehicleMap());
 
         prepareRoadGraph();
     }
@@ -54,14 +55,12 @@ public class GraphFactory {
 
                 DefaultWeightedEdge edge1 = getRoadGraph().addEdge(road.getFrom().getLabel(), road.getTo().getLabel());
                 getRoadGraph().setEdgeWeight(edge1, road.getLength());
-                vehicleMap.put(edge1, new ArrayList<>());
-                RoadEdge re1 = new RoadEdge(edge1, choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel())), 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
+                RoadEdge re1 = new RoadEdge(edge1, Direction.fromString(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel())), 30, road.getLength(), road.getFrom().getLabel(), road.getTo().getLabel());
                 getNodeGraphMap().get(node1).add(re1);
 
                 DefaultWeightedEdge edge2 = getRoadGraph().addEdge(road.getTo().getLabel(), road.getFrom().getLabel());
                 getRoadGraph().setEdgeWeight(edge2, road.getLength());
-                vehicleMap.put(edge2, new ArrayList<>());
-                RoadEdge re2 = new RoadEdge(edge2, oppositeDirection(choseDirection(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel()))), 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
+                RoadEdge re2 = new RoadEdge(edge2, Direction.fromString(worldState.getRoadMap().getDirection(road.getFrom().getLabel(),road.getTo().getLabel())).opposite(), 30, road.getLength(), road.getTo().getLabel(), road.getFrom().getLabel());
                 getNodeGraphMap().get(node2).add(re2);
             }
         }
@@ -72,11 +71,11 @@ public class GraphFactory {
 
         for(Node node : getNodeGraphMap().keySet()){
             for(RoadEdge road : getNodeGraphMap().get(node)){
-                if(road.getDirection() == DirectionFromNode.Left){
+                if(road.getDirection() == Direction.Left){
                     node.setLeftRoad(road);
-                } else if (road.getDirection() == DirectionFromNode.Right){
+                } else if (road.getDirection() == Direction.Right){
                     node.setRightRoad(road);
-                } else if (road.getDirection() == DirectionFromNode.Down){
+                } else if (road.getDirection() == Direction.Down){
                     node.setDownRoad(road);
                 } else{
                     node.setUpRoad(road);
@@ -84,31 +83,6 @@ public class GraphFactory {
             }
         }
 
-    }
-
-    private DirectionFromNode oppositeDirection(DirectionFromNode directionFromNode) {
-        if(directionFromNode == DirectionFromNode.Down){
-            return  DirectionFromNode.Up;
-        }
-        else{
-            return  DirectionFromNode.Left;
-        }
-    }
-
-    private DirectionFromNode choseDirection(String direction) {
-        switch (direction){
-            case "Left" :
-                return DirectionFromNode.Left;
-            case "Down" :
-                return DirectionFromNode.Down;
-            case "Up" :
-                return DirectionFromNode.Up;
-            case "Right" :
-                return DirectionFromNode.Right;
-            default :
-                break;
-        }
-        return null;
     }
 
     private Node getNodeFromNodeGraph(Node nodeTemp) {
@@ -131,7 +105,7 @@ public class GraphFactory {
 
     private Node createNode(String label) {
         if (worldState.getTrafficLightSystem().getJunction(label) != null) {
-            return new TrafficLightNode(label, NodeType.JunctionTrafficLights);
+            return new TrafficLightNode(label, NodeType.JunctionTrafficLights, ROAD_WIDTH, ROAD_WIDTH);
         } else if (label.startsWith("E")) {
             return new Node(label, NodeType.ExitNode);
         } else {
@@ -155,11 +129,11 @@ public class GraphFactory {
         this.nodeGraphMap = nodeGraphMap;
     }
 
-    public HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> getVehicleMap() {
+    public VehicleMap getVehicleMap() {
         return vehicleMap;
     }
 
-    public void setVehicleMap(HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap) {
+    public void setVehicleMap(VehicleMap vehicleMap) {
         this.vehicleMap = vehicleMap;
     }
 

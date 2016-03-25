@@ -6,9 +6,13 @@ import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 public class TrafficLightNode extends Node {
 
     private TrafficLightColor color;
+    private float width;
+    private float height;
 
-    public TrafficLightNode(String nodeName, NodeType nodeType) {
+    public TrafficLightNode(String nodeName, NodeType nodeType, float width, float height) {
         super(nodeName, nodeType);
+        this.width = width;
+        this.height = height;
         setColor(TrafficLightColor.Green);
     }
 
@@ -27,5 +31,21 @@ public class TrafficLightNode extends Node {
 
     public void setColor(TrafficLightColor color) {
         this.color = color;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }
