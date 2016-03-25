@@ -1,31 +1,24 @@
 package thewaypointers.trafficsimulator;
 
-import thewaypointers.trafficsimulator.common.WorldStateDTO;
-import thewaypointers.trafficsimulator.common.helpers.SimpleWorldStateProvider;
-import thewaypointers.trafficsimulator.gui.MainFrame;
+import thewaypointers.trafficsimulator.common.IStateProvider;
+import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
+
+import java.util.function.Supplier;
 
 public class FirstVersionStarter {
 
-    public static final float VEHICLE_MOVEMENT_SPEED = 15;
-    public static final float STATES_PER_SECOND = 2;
+    static final long VEHICLE_MOVEMENT_SPEED = 500;
+    static final long TIME_STEP = 500;
+    public static final Supplier<IStateProvider> PROVIDER_SUPPLIER = () -> new FirstVersionProvider();
 
     public static void main(String[] args){
-
-        SimpleWorldStateProvider simulation = new SimpleWorldStateProvider();   // this will be simulation
-        //IStateChangeListener gui = new SimpleStateChangeListener();   // put your GUI here
-        MainFrame mainFrame=new MainFrame(simulation.getNextState(0));
-
-
-        while(true){
-            WorldStateDTO newWorldState = simulation.getNextState(VEHICLE_MOVEMENT_SPEED);
-            //gui.NewStateReceived(newWorldState);   // in this method the GUI draws the new world state
-            MainFrame.mapContainerPanel.mapPanel.NewStateReceived(newWorldState);
-            try {
-                Thread.sleep((long)(1f/STATES_PER_SECOND * 1000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        new Bootstrapper(
+                PROVIDER_SUPPLIER,
+                TIME_STEP,
+                VEHICLE_MOVEMENT_SPEED,
+                null
+        )
+                .bootstrap(args);
     }
 }
 

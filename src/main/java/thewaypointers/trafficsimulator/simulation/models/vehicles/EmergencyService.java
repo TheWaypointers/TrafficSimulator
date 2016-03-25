@@ -1,6 +1,7 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
+import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
@@ -21,7 +22,8 @@ public class EmergencyService implements IVehicle {
     private String originNode;
     private Lane lane;
     private boolean onExit;
-    private DefaultWeightedEdge currentRoad;
+    private RoadEdge currentRoad;
+    private int label;
 
     //Emergency Service drives 20% faster than cars
     private final long SPEED_DIFFERENCE = 20;
@@ -114,13 +116,18 @@ public class EmergencyService implements IVehicle {
     }
 
     @Override
-    public DefaultWeightedEdge getCurrentRoadEdge() {
+    public RoadEdge getCurrentRoadEdge() {
         return getCurrentRoad();
     }
 
     @Override
     public float getVehiclesDistanceTravelled() {
         return getDistanceTravelled();
+    }
+
+    @Override
+    public JunctionLocationDTO getJunctionLocation() {
+        throw new AssertionError("Not implemented yet!");
     }
 
     @Override
@@ -137,6 +144,16 @@ public class EmergencyService implements IVehicle {
         return decisionPath.peek();
     }
 
+    @Override
+    public void setVehicleLabel(int label) {
+        this.label = label;
+    }
+
+    @Override
+    public int getVehicleLabel() {
+        return label;
+    }
+
     public boolean isOnExit() {
         return onExit;
     }
@@ -145,11 +162,11 @@ public class EmergencyService implements IVehicle {
         this.onExit = onExit;
     }
 
-    public DefaultWeightedEdge getCurrentRoad() {
+    public RoadEdge getCurrentRoad() {
         return currentRoad;
     }
 
-    public void setCurrentRoad(DefaultWeightedEdge currentRoad) {
+    public void setCurrentRoad(RoadEdge currentRoad) {
         this.currentRoad = currentRoad;
     }
 }

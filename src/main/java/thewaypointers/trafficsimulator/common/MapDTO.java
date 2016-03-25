@@ -1,5 +1,7 @@
 package thewaypointers.trafficsimulator.common;
 
+import thewaypointers.trafficsimulator.utils.Pair;
+
 import java.util.*;
 
 public class MapDTO {
@@ -28,7 +30,7 @@ public class MapDTO {
             for (Direction d : Direction.values()){
                 RoadDTO road = junction.getRoad(d);
                 //TODO check if contains() works well for road
-                if(!roads.contains(road)){
+                if(road != null && !roads.contains(road)){
                     roads.add(road);
                 }
             }
@@ -53,12 +55,30 @@ public class MapDTO {
         return newJunctions;
     }
 
+    private List<RoadDTO> processRoads(List<RoadDTO> roads){
+        List<RoadDTO> newRoads = new ArrayList<>();
+        for(RoadDTO road : roads){
+            NodeDTO newFrom = road.getFrom(), newTo=road.getTo();
+            if(road.getFrom().getClass().equals(JunctionDTO.class) &&
+                    ((JunctionDTO)road.getFrom()).getConnectedRoadsCount() == 1){
+                newFrom = new ExitNodeDTO(road.getFrom().getLabel());
+            }
+            if(road.getTo().getClass().equals(JunctionDTO.class) &&
+                    ((JunctionDTO)road.getTo()).getConnectedRoadsCount() == 1){
+                newTo = new ExitNodeDTO(road.getTo().getLabel());
+            }
+            newRoads.add(new RoadDTO(newFrom, newTo, road.getLength()));
+        }
+        return newRoads;
+    }
+
     public List<JunctionDTO> getJunctions(){
         return process(getJunctionsUnprocessed());
     }
 
     public List<RoadDTO> getRoads(){
-        return getRoads(getJunctions());
+        List<RoadDTO> roads = getRoads(getJunctionsUnprocessed());
+        return processRoads(roads);
     }
 
     public RoadDTO getRoad(String label){
@@ -92,8 +112,26 @@ public class MapDTO {
         newRoad.setTo(toJunction);
     }
 
+    public String getDirection(String from, String to){
+
+        JunctionDTO junction = null;
+        for(JunctionDTO junctionTemp : getJunctionsUnprocessed()){
+            if(junctionTemp.getLabel().equals(from)){
+                junction = junctionTemp;
+            }
+        }
+        for(Pair p : junction.getRoadsAndDirections()){
+            if(((RoadDTO) p.getItem1()).getTo().getLabel().equals(to)){
+                return p.getItem2().toString();
+            }
+        }
+        return "";
+    }
+
     public JunctionDTO getJunction(String label){
         //TODO rewrite processing so this can use the dictionary again
         return getJunctions().stream().filter(x->x.getLabel().equals(label)).findFirst().get();
     }
+
+
 }
