@@ -67,6 +67,7 @@ public class Car implements IVehicle {
 
 
         Node nextNode = calculateNextNode(nodeGraphMap);
+        //check if a node is coming up
         if (nextPossiblePosition >= roadLength) {
             //get the upcoming node
 

@@ -1,11 +1,14 @@
 package thewaypointers.trafficsimulator.tests.common.helpers;
 
 import static org.fest.assertions.api.Assertions.*;
+
+import org.fest.assertions.data.Offset;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.*;
 import thewaypointers.trafficsimulator.common.helpers.FirstVersionProvider;
+import thewaypointers.trafficsimulator.utils.SpeedConvert;
 
-public class FirstVersionWorldStateProviderTest {
+public class FirstVersionProviderTest {
     @Test
     public void Provider_generates_correct_world_state() {
         // arrange
@@ -54,17 +57,19 @@ public class FirstVersionWorldStateProviderTest {
         // arrange
         FirstVersionProvider provider = new FirstVersionProvider();
         final float moveDistance = FirstVersionProvider.ROAD_LENGTH/30;
+        final long timeStep = SpeedConvert.getTime(FirstVersionProvider.VEHICLE_SPEED, moveDistance);
 
         // act
-        WorldStateDTO ws1 = provider.getNextState(moveDistance);
+        WorldStateDTO ws1 = provider.getNextState(timeStep);
         RoadLocationDTO loc1 = (RoadLocationDTO) ws1.getVehicleList().getAll().get(0).getLocation();
-        WorldStateDTO ws2 = provider.getNextState(moveDistance);
+        WorldStateDTO ws2 = provider.getNextState(timeStep);
         RoadLocationDTO loc2 = (RoadLocationDTO) ws2.getVehicleList().getAll().get(0).getLocation();
 
         // assert
         assertThat(loc1 != loc2).isTrue();
         assertThat(ws1 == ws2).isTrue();
-        assertThat(loc2.getDistanceTravelled()).isEqualTo(loc1.getDistanceTravelled() + moveDistance);
+        assertThat(loc2.getDistanceTravelled()>loc1.getDistanceTravelled());
+        assertThat(loc2.getDistanceTravelled()).isEqualTo(loc1.getDistanceTravelled() + moveDistance, Offset.offset(0.1f));
     }
 
     @Test
@@ -73,10 +78,11 @@ public class FirstVersionWorldStateProviderTest {
         // arrange
         FirstVersionProvider provider = new FirstVersionProvider();
         final float moveDistance = FirstVersionProvider.ROAD_LENGTH/2;
+        final long timeStep = SpeedConvert.getTime(FirstVersionProvider.VEHICLE_SPEED, moveDistance);
 
         // act
-        provider.getNextState(moveDistance);
-        WorldStateDTO worldState = provider.getNextState(moveDistance);
+        provider.getNextState(timeStep);
+        WorldStateDTO worldState = provider.getNextState(timeStep);
 
         // assert
         RoadLocationDTO loc = (RoadLocationDTO)worldState.getVehicleList().getAll().get(0).getLocation();
@@ -90,12 +96,13 @@ public class FirstVersionWorldStateProviderTest {
         // arrange
         FirstVersionProvider provider = new FirstVersionProvider();
         final float moveDistance = FirstVersionProvider.ROAD_LENGTH/2;
+        final long timeStep = SpeedConvert.getTime(FirstVersionProvider.VEHICLE_SPEED, moveDistance);
 
         // act
-        provider.getNextState(moveDistance);
-        provider.getNextState(moveDistance);
-        provider.getNextState(moveDistance);
-        WorldStateDTO worldState = provider.getNextState(moveDistance);
+        provider.getNextState(timeStep);
+        provider.getNextState(timeStep);
+        provider.getNextState(timeStep);
+        WorldStateDTO worldState = provider.getNextState(timeStep);
 
         // assert
         RoadLocationDTO loc = (RoadLocationDTO) worldState.getVehicleList().getAll().get(0).getLocation();
@@ -131,5 +138,20 @@ public class FirstVersionWorldStateProviderTest {
         assertThat(upColor).isEqualTo(downColor);
         assertThat(upColor).isNotEqualTo(upStartColor);
         assertThat(downColor).isNotEqualTo(downStartColor);
+    }
+
+    @Test
+    public void Provider_increments_simulation_time(){
+        // arrange
+        FirstVersionProvider provider = new FirstVersionProvider();
+        final float moveDistance = FirstVersionProvider.ROAD_LENGTH/6;
+        final long timeStep = SpeedConvert.getTime(FirstVersionProvider.VEHICLE_SPEED, moveDistance);
+
+        // act and assert
+        WorldStateDTO result;
+        result = provider.getNextState(timeStep);
+        assertThat(result.getClock()).isEqualTo(timeStep);
+        result = provider.getNextState(timeStep);
+        assertThat(result.getClock()).isEqualTo(timeStep*2);
     }
 }

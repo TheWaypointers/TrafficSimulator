@@ -4,11 +4,11 @@ import javax.swing.*;
 import thewaypointers.trafficsimulator.common.*;
 
 import java.awt.*;
+import java.awt.List;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MapPanel extends JPanel implements IStateChangeListener{
 
@@ -53,7 +53,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     boolean debug=true;
 
 
-    WorldStateDTO worldState = new WorldStateDTO(null, null, null);
+    WorldStateDTO worldState;
 
     public  static Map<String,Point> junctionlocation;
     private boolean junctionLocationsProcessed = false;
@@ -63,7 +63,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         this.setVisible(true);
         this.setSize(MAP_PANEL_WIDTH,MAP_PANEL_HEIGHT);
         this.setBackground(BACKGROUND_COLOR);
-        PanelMouseDragger mouseDragger= new PanelMouseDragger(this);
+        PanelMouseAction mouseDragger= new PanelMouseAction(this);
         this.addMouseListener(mouseDragger);
         this.addMouseMotionListener(mouseDragger);
 
@@ -75,6 +75,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
+        MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
     }
 
@@ -82,6 +83,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     private  void drawVehicleInJunction(Graphics g, VehicleDTO vehicle){
         int junlocationx, junlocationy, vx, vy, rectwidth, rectheiht;
         double rotate=0;
+        String label=vehicle.getLabel();
         Rectangle2D rect;
         JunctionLocationDTO junctionLocationDTO=(JunctionLocationDTO)vehicle.getLocation();
         Point junctionPoint = junctionlocation.get( junctionLocationDTO.getJunctionLabel());
@@ -105,12 +107,13 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             if (junctionLocationDTO.getTarget()==Direction.Up||junctionLocationDTO.getTarget()==Direction.Down)
                 rotate=2*Math.PI-junLocationAngle;
         }
+        drawLabel(g,vx+rectwidth,vy,label);
+
         Graphics2D g2d = (Graphics2D)g;
-        AffineTransform identify = new AffineTransform();
+        //AffineTransform identify = new AffineTransform();
         rect=new Rectangle2D.Float(vx,vy,rectwidth,rectheiht);
-        g2d.setTransform(identify);
+        //g2d.setTransform(identify);
         g2d.setColor(this.GetVehicleColor(vehicle.getType()));
-        g2d.setTransform(identify);
         g2d.rotate(rotate, junlocationx, junlocationy);
         g2d.fill(rect);
     }
@@ -211,6 +214,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     //draw worldState
     public void paint(Graphics g){
+        if (worldState == null){
+            return;
+        }
         super.paint(g);
         this.draw_road_network(g);
         this.draw_TrafficLightSystem(g);
@@ -568,17 +574,16 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     //draw label on vehicles and junctions
     public void drawLabel(Graphics g,int x,int y,String label){
-        if (!debug){
-            return;
+        if (debug){
+            g.setFont(new Font("Arial",Font.PLAIN,LABEL_SIZE));
+            g.setColor(Color.black);
+            g.drawString(label,x,y);
         }
-        g.setFont(new Font("Arial",Font.PLAIN,LABEL_SIZE));
-        g.setColor(Color.black);
-        g.drawString(label,x,y);
     }
 
     //display labels or not
-    public void SetDebug(boolean debug){
-        this.debug=debug;
+    public void SetDebug(boolean debugornot){
+        this.debug=debugornot;
     }
 
     //store junction location - the top left coordinate
@@ -588,5 +593,11 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             point = junctionlocation.get(junctionLabel);
         }
         return point;
+    }
+
+    public java.util.List<String> GetAllJunctionLabel(){
+        java.util.List<String> JunctionLabels=new ArrayList<>();
+        JunctionLabels.addAll(junctionlocation.keySet());
+        return JunctionLabels;
     }
 }

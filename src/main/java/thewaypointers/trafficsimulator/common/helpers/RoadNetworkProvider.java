@@ -52,7 +52,7 @@ public class RoadNetworkProvider implements IStateProvider {
         return ws;
     }
 
-    public WorldStateDTO getNextState(float vehicleMovement){
+    public WorldStateDTO getNextState(long vehicleMovement){
         JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
         RoadDTO downRoad = junction.getRoad(Direction.Down);
         RoadDTO upRoad = junction.getRoad(Direction.Up);
@@ -62,6 +62,7 @@ public class RoadNetworkProvider implements IStateProvider {
             throw new IllegalArgumentException("Cannot pass vehicleMovement bigger than the length of the road");
 
         stateNo++;
+        worldState.setClock(worldState.getClock()+(long)vehicleMovement);
 
         RoadLocationDTO newLocation;
         if (loc.getDistanceTravelled() + vehicleMovement < loc.getRoad().getLength()) {

@@ -1,15 +1,14 @@
 package thewaypointers.trafficsimulator.gui;
+import thewaypointers.trafficsimulator.StateProviderController;
+
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 
 public class ControlPanel extends JPanel {
-
 
     //private JSplitPane worldControlPanel = new JSplitPane();
     private JLabel worldStateLabel = new JLabel();
@@ -52,6 +51,7 @@ public class ControlPanel extends JPanel {
         //System.out.println("traffic light time: "+tmp);
     };
 
+    private StateProviderController stateProviderController;
 
     public ControlPanel() {
         this.setLayout(null);
@@ -60,7 +60,6 @@ public class ControlPanel extends JPanel {
         this.setSize(200, 600);
         this.initComponents();
     }
-
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -230,19 +229,21 @@ public class ControlPanel extends JPanel {
     }
 
     private void startPausePerformed(ActionEvent evt) {
-        String action = startPauseButton.getText();
-        if(action.equals("Start")){
-            startPauseButton.setText("Pause");
-            //method for start
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
         }
-        if(action.equals("Pause")){
-            startPauseButton.setText("Start");
-            //method for pause
-        }
+        startPauseButton.setText(startPauseButton.getText().equals("Pause")? "Start": "Pause");
+        stateProviderController.pauseSimulation();
     }
 
     private void clearPerformed(ActionEvent evt) {
-        //method for stop
+        if (stateProviderController == null){
+            System.out.println("Warning: no StateProviderController hooked up");
+            return;
+        }
+        startPauseButton.setText("Start");
+        stateProviderController.clearSimulation();
     }
 
     private void submitPerformed(ActionEvent evt) {
@@ -277,4 +278,7 @@ public class ControlPanel extends JPanel {
         ambulanceTextField.setText("0");
     }
 
+    public void setStateProviderController(StateProviderController stateProviderController) {
+        this.stateProviderController = stateProviderController;
+    }
 }

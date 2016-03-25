@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class Simulation implements ISimulationInputListener {
+public class Simulation implements ISimulationInputListener, IStateProvider {
 
     SimpleDirectedWeightedGraph<String, DefaultWeightedEdge> roadGraph;
     HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
@@ -56,7 +56,7 @@ public class Simulation implements ISimulationInputListener {
         // set new value for the parameter in the simulation
     }
 
-    public WorldStateDTO getNextSimulationStep(long timeStep) {
+    public WorldStateDTO getNextState(long timeStep) {
 
         long timeLeft = timeStep;
         while (timeLeft > RESOLUTION) {
@@ -64,6 +64,7 @@ public class Simulation implements ISimulationInputListener {
             computeNextSimulationStep(RESOLUTION);
         }
         computeNextSimulationStep(timeLeft);
+        getWorldState().setClock(clock);
         return getWorldState();
     }
 
