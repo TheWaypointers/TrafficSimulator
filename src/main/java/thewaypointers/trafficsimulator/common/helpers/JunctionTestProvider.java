@@ -6,9 +6,9 @@ public class JunctionTestProvider implements IStateProvider {
     public static final float ROAD_LENGTH = 300;
     public static final float ROAD_WIDTH = 20;
 
-    public static final String STRAIGHT_GOER_NAME = "straightGoer";
-    public static final String RIGHT_TURNER_NAME = "rightTurner";
-    public static final String LEFT_TURNER_NAME = "leftTurner";
+    public static final String STRAIGHT_GOER_NAME = "straight";
+    public static final String RIGHT_TURNER_NAME = "rightTurn";
+    public static final String LEFT_TURNER_NAME = "leftTurn";
 
     WorldStateDTO worldState;
 
