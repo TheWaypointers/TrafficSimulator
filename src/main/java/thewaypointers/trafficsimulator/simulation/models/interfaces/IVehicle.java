@@ -18,4 +18,6 @@ public interface IVehicle {
     String getVehiclesDestinationNode();
     String getVehiclesNextDestinationNode();
     float getVehiclesCurrentRoadLength();
+    void setVehicleLabel(int label);
+    int getVehicleLabel();
 }
