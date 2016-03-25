@@ -22,6 +22,7 @@ public class EmergencyService implements IVehicle {
     private Lane lane;
     private boolean onExit;
     private DefaultWeightedEdge currentRoad;
+    private int label;
 
     //Emergency Service drives 20% faster than cars
     private final long SPEED_DIFFERENCE = 20;
@@ -135,6 +136,16 @@ public class EmergencyService implements IVehicle {
     @Override
     public String getVehiclesDestinationNode() {
         return decisionPath.peek();
+    }
+
+    @Override
+    public void setVehicleLabel(int label) {
+        this.label = label;
+    }
+
+    @Override
+    public int getVehicleLabel() {
+        return label;
     }
 
     public boolean isOnExit() {

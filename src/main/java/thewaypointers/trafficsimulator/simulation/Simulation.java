@@ -12,7 +12,6 @@ import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +31,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     final int TRAFFIC_LIGHT_STEPS = 15;
     int trafficLightCounter = 0;
+    int vehicleLabelCounter = 1;
 
     /**
      * The maximum internal clock time interval at which computation occurs.
@@ -90,8 +90,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
             for (IVehicle vehicle : VehicleManager.getVehicleMap().get(road)) {
                 RoadDTO roadDTO = findEqualRoad(vehicle);
                 RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
-                dtoVehicleList.addVehicle("" + index, loc, VehicleType.CarNormal);
-                index++;
+                dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
             }
         }
         worldState.setVehicleList(dtoVehicleList);
@@ -182,6 +181,8 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap);
         IVehicle vehicle = vehicleFactory.buildVehicle(roadGraph, nodeGraphMap);
+        vehicle.setVehicleLabel(vehicleLabelCounter);
+        vehicleLabelCounter++;
         VehicleManager.getVehicleMap().get(vehicle.getCurrentRoadEdge()).add(vehicle);
 
     }
