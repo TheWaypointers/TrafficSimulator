@@ -23,6 +23,7 @@ public class Bus implements IVehicle {
     private Lane lane;
     private boolean onExit;
     private RoadEdge currentRoad;
+    int label;
 
     private final long SPEED_DIFFERENCE = 10;
 
@@ -140,6 +141,16 @@ public class Bus implements IVehicle {
     @Override
     public String getVehiclesDestinationNode() {
         return decisionPath.peek();
+    }
+
+    @Override
+    public void setVehicleLabel(int label) {
+        this.label = label;
+    }
+
+    @Override
+    public int getVehicleLabel() {
+        return label;
     }
 
     public boolean isOnExit() {

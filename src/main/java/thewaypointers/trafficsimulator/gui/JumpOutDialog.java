@@ -34,9 +34,10 @@ public class JumpOutDialog extends JDialog {
                     infoLable = new JLabel();
                     panel.add(infoLable);
                     infoLable.setLocation(20, 40);
-                    infoLable.setSize(260, 60);
+                    infoLable.setSize(360, 60);
                     infoLable.setText(context);
-                    infoLable.setFont(new java.awt.Font("Avial", 0, 16));
+                    infoLable.setFont(new java.awt.Font("Avial", 0, 14));
+                    infoLable.setHorizontalAlignment(SwingConstants.CENTER);
                     infoLable.setLocale(new java.util.Locale("zh"));
                 }
                 {
@@ -44,13 +45,14 @@ public class JumpOutDialog extends JDialog {
                     panel.add(confirmButton);
                     confirmButton.setVisible(true);
                     confirmButton.setText("OK");
-                    confirmButton.setLocation(100,120);
+                    confirmButton.setLocation(150,120);
                     confirmButton.setSize(100,30);
                     confirmButton.setFont(new java.awt.Font("Avial", 0, 14));
                     confirmButton.addActionListener(new CloseListener());
                 }
             }
-            this.setSize(300, 200);
+            this.setSize(400, 200);
+            this.setLocation(200, 200);
 
         } catch (Exception e) {
             e.printStackTrace();
