@@ -3,6 +3,7 @@ package thewaypointers.trafficsimulator.simulation.models.vehicles;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.Lane;
+import thewaypointers.trafficsimulator.common.RoadLocationDTO;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
@@ -91,7 +92,6 @@ public class Car implements IVehicle {
 
                         return;
                     }
-                    System.out.println("propustam suprotnog" );
                     if (getDistanceTravelled() < roadLength - 20) {
                         setDistanceTravelled(roadLength - 20);
                     }
@@ -133,8 +133,7 @@ public class Car implements IVehicle {
         if (!isVehicleIsTurningLeft(tlNode, direciton)) {
             return true;
         }
-
-        RoadEdge oppositeRoad = getOppositeRoad(tlNode, direciton);
+        RoadEdge oppositeRoad = getOppositeRoad(tlNode, direciton, nodeGraphMap);
 
         if (oppositeRoad != null) {
             List<IVehicle> carsFromTheOppositeRoad = VehicleManager.getVehicleMap().get(oppositeRoad.getRoad());
@@ -154,18 +153,32 @@ public class Car implements IVehicle {
         return true;
     }
 
-    private RoadEdge getOppositeRoad(TrafficLightNode tlNode, DirectionFromNode direciton) {
+    private RoadEdge getOppositeRoad(TrafficLightNode tlNode, DirectionFromNode direciton, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
         switch (direciton) {
             case Left:
-                return tlNode.getRightRoad();
+                return otherSideOfTheRoad(tlNode.getRightRoad(), nodeGraphMap);
             case Up:
-                return tlNode.getDownRoad();
+                return otherSideOfTheRoad(tlNode.getDownRoad(), nodeGraphMap);
             case Right:
-                return tlNode.getLeftRoad();
+                return otherSideOfTheRoad(tlNode.getLeftRoad(), nodeGraphMap);
             case Down:
-                return tlNode.getUpRoad();
+                return otherSideOfTheRoad(tlNode.getUpRoad(), nodeGraphMap);
             default:
                 break;
+        }
+        return null;
+    }
+
+    private RoadEdge otherSideOfTheRoad(RoadEdge road, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
+
+        if(road != null){
+            for(Node node : nodeGraphMap.keySet()){
+                for(RoadEdge re : nodeGraphMap.get(node)){
+                    if(re.getDestination().equals(road.getOrigin()) && re.getOrigin().equals(road.getDestination())){
+                        return re;
+                    }
+                }
+            }
         }
         return null;
     }
