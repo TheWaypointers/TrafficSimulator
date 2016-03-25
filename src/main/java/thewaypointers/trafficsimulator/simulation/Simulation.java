@@ -124,16 +124,30 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         if (trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
 
-            JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
+            JunctionDTO junction;;
 
             for (Node node : nodeGraphMap.keySet()) {
                 if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                     TrafficLightNode tfNode = ((TrafficLightNode) node);
                     tfNode.changeLightColor();
+
+                    if(tfNode.getLeftRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Left, Lane.Right, tfNode.getLeft());
+                    }
+                    if(tfNode.getRightRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Right, Lane.Right, tfNode.getRight());
+                    }
+                    if(tfNode.getDownRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right, tfNode.getDown());
+                    }
+                    if(tfNode.getUpRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right, tfNode.getUp());
+                    }
+
                 }
             }
 
