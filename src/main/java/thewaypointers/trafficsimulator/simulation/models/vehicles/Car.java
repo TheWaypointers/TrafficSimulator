@@ -195,12 +195,14 @@ public class Car implements IVehicle {
         if (oppositeRoad != null) {
             List<IVehicle> carsFromTheOppositeRoad = VehicleManager.getVehicleMap().getFromRoad((oppositeRoad.getRoad()));
 
-            if (carsFromTheOppositeRoad.size() > 0) {
+            if(carsFromTheOppositeRoad != null){
+                if (carsFromTheOppositeRoad.size() > 0) {
 
-                for (IVehicle vehicle : carsFromTheOppositeRoad) {
-                    if (vehicle.getVehiclesDistanceTravelled() >= 260) {
-                        if (vehicle.getVehiclesNextDestinationNode().equals(this.getOriginNode())) {
-                            return false;
+                    for (IVehicle vehicle : carsFromTheOppositeRoad) {
+                        if (vehicle.getVehiclesDistanceTravelled() >= 260) {
+                            if (vehicle.getVehiclesNextDestinationNode().equals(this.getOriginNode())) {
+                                return false;
+                            }
                         }
                     }
                 }
