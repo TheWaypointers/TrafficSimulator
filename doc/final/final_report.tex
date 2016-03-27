@@ -1,5 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{float}
+\usepackage{hyperref}
 
 \title{Final report}
 \author{The Waypointers}
@@ -86,6 +87,41 @@ Minghao Zhu\\[3cm]
 \section{Implementation}
 
 \section{Teamwork}
+
+\subsection{Tools and libraries used}
+
+\subsubsection*{Tools and applications}
+
+\begin{itemize}
+	\item Git\footnote{\url{https://git-scm.com/}} - version control
+	\item GitHub\footnote{\url{https://github.com/}} - Git repository management, task assignment, teamwork
+	\item \LaTeX\footnote{\url{https://www.latex-project.org/}} - typesetting system, for creating documentation
+	\item Gliffy\footnote{\url{https://www.gliffy.com/}} - a Chrome app for creating diagrams
+	\item Apache Maven\footnote{\url{https://maven.apache.org/}} - a build tool for building the project easily and for dependency management
+	\item Travis CI\footnote{\url{https://travis-ci.org/}} - a continuous integration tool that integrates into GitHub and builds every commit pushed to the repository (in our case - using Maven), also checking if the tests pass
+	\item IntelliJ IDEA\footnote{\url{https://www.jetbrains.com/idea/}} - a cross-platform IDE for development in Java (and more). To minimize potential hassles with different development environments, we all agreed on using the same IDE.
+\end{itemize}
+
+
+A significant fact to note that is our team used all the major operating systems (Windows, OS X, Linux), so we focused on choosing cross-platform tools. The only troubles that arised from that were minor layout differences in the Swing GUI of our system.
+
+\subsubsection*{Libraries}
+
+\begin{itemize}
+	\item JDK 1.8\footnote{\url{http://www.oracle.com/technetwork/java/javase/downloads/index.html}} - We had several reasons for choosing Java: \begin{itemize}
+		\item Familiarity of team members with it
+		\item Available on all platforms
+		\item Good capabilities of cross-platform GUI
+		\item Strong typing allowing for easier maintaining of code integrity
+	\end{itemize}
+	We chose version 8 because it introduces many much-needed improvements for the language like lambda functions or the Stream API.
+	\item JUnit 4.12\footnote{\url{http://junit.org/junit4/}} - The ``de facto'' unit testing library for Java. Good integration with IntelliJ IDEA and Maven.
+	\item FEST-Assert 2.0M5\footnote{\url{https://github.com/alexruiz/fest-assert-2.x}} - A library to make assertions in unit tests more readable and easier to compose.
+	\item JGraphT 0.7.3 \footnote{\url{http://jgrapht.org/}} - A graph library to take advantage of graph representation of the road network, mainly pathfinding for vehicles.
+	\item XStream 1.2.2 \footnote{\url{http://x-stream.github.io/}} - An XML serialization library to bring reading and writing XML road maps to life.
+\end{itemize}
+
+
 
 \section{Evaluation}
 
