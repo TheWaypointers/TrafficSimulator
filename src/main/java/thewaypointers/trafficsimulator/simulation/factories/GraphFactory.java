@@ -108,7 +108,7 @@ public class GraphFactory {
     private Node createNode(String label) {
         if (worldState.getTrafficLightSystem().getJunction(label) != null) {
             return new TrafficLightNode(label, NodeType.JunctionTrafficLights, ROAD_WIDTH, ROAD_WIDTH);
-        } else if (label.startsWith("E")) {
+        } else if (label.toLowerCase().startsWith("e")) {
             return new Node(label, NodeType.ExitNode);
         } else {
             return new Node(label, NodeType.JunctionNormal);

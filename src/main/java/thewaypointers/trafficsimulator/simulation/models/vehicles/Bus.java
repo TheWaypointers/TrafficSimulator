@@ -154,6 +154,11 @@ public class Bus implements IVehicle {
     }
 
     @Override
+    public JunctionLocationDTO getVehiclesJunctionLocation() {
+        return null;
+    }
+
+    @Override
     public String getVehiclesNextDestinationNode() {
         return null;
     }

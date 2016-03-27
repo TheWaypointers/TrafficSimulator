@@ -22,4 +22,5 @@ public interface IVehicle {
     float getVehiclesCurrentRoadLength();
     void setVehicleLabel(int label);
     int getVehicleLabel();
+    JunctionLocationDTO getVehiclesJunctionLocation();
 }

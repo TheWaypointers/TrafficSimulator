@@ -155,6 +155,11 @@ public class EmergencyService implements IVehicle {
     }
 
     @Override
+    public JunctionLocationDTO getVehiclesJunctionLocation() {
+        return null;
+    }
+
+    @Override
     public String getVehiclesNextDestinationNode() {
         return null;
     }

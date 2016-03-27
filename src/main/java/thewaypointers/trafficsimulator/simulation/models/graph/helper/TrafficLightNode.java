@@ -21,7 +21,6 @@ public class TrafficLightNode extends Node {
         setDown(TrafficLightColor.Red);
         this.width = width;
         this.height = height;
-        setColor(TrafficLightColor.Green);
     }
 
     public void  changeLightColor(){
