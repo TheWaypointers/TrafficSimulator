@@ -5,6 +5,7 @@ import org.jgrapht.graph.*;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.factories.GraphFactory;
 import thewaypointers.trafficsimulator.simulation.factories.VehicleFactory;
+import thewaypointers.trafficsimulator.simulation.models.VehicleMap;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
@@ -86,12 +87,13 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
         VehicleListDTO dtoVehicleList = new VehicleListDTO();
         int index = 1;
 
-        for (DefaultWeightedEdge road : VehicleManager.getVehicleMap().keySet()) {
-            for (IVehicle vehicle : VehicleManager.getVehicleMap().get(road)) {
-                RoadDTO roadDTO = findEqualRoad(vehicle);
-                RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
-                dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
-            }
+        for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
+            RoadDTO roadDTO = findEqualRoad(vehicle);
+            RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
+        }
+        for (IVehicle vehicle:VehicleManager.getVehicleMap().getAllFromJunctions()){
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), VehicleType.CarNormal);
         }
         worldState.setVehicleList(dtoVehicleList);
 
@@ -159,13 +161,10 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     //move vehicles
     private boolean moveVehicles(long timeStep) {
 
-        HashMap<DefaultWeightedEdge, ArrayList<IVehicle>> vehicleMap = VehicleManager.getVehicleMap();
+        VehicleMap vehicleMap = VehicleManager.getVehicleMap();
 
         //create list of cars to iterate on
-        List<IVehicle> currentVehicleList = new ArrayList<>();
-        for (DefaultWeightedEdge road : vehicleMap.keySet()) {
-            currentVehicleList.addAll(vehicleMap.get(road));
-        }
+        List<IVehicle> currentVehicleList = vehicleMap.getAll();
 
         //move each car
         for (IVehicle vehicle : currentVehicleList) {
@@ -178,7 +177,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     private void createVehicles() {
 
         if (vehicleSpawnCounter >= VEHICLE_SPAWN_STEPS) {
-            int currentVehicleNumber = VehicleManager.getVehicleCount();
+            int currentVehicleNumber = VehicleManager.getVehicleMap().count();
 
             if (currentVehicleNumber < MAX_VEHICLE_NUMBER) {
 
@@ -197,7 +196,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
         IVehicle vehicle = vehicleFactory.buildVehicle(roadGraph, nodeGraphMap);
         vehicle.setVehicleLabel(vehicleLabelCounter);
         vehicleLabelCounter++;
-        VehicleManager.getVehicleMap().get(vehicle.getCurrentRoadEdge()).add(vehicle);
+        VehicleManager.getVehicleMap().add(vehicle.getCurrentRoadEdge().getRoad(), vehicle);
 
     }
 

@@ -1,6 +1,7 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
+import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
@@ -21,7 +22,7 @@ public class Bus implements IVehicle {
     private String originNode;
     private Lane lane;
     private boolean onExit;
-    private DefaultWeightedEdge currentRoad;
+    private RoadEdge currentRoad;
     int label;
 
     private final long SPEED_DIFFERENCE = 10;
@@ -119,11 +120,16 @@ public class Bus implements IVehicle {
     }
 
     @Override
+    public JunctionLocationDTO getJunctionLocation() {
+        throw new AssertionError("Not implemented yet!");
+    }
+
+    @Override
     public void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
     }
 
     @Override
-    public DefaultWeightedEdge getCurrentRoadEdge() {
+    public RoadEdge getCurrentRoadEdge() {
         return getCurrentRoad();
     }
 
@@ -165,11 +171,11 @@ public class Bus implements IVehicle {
         this.onExit = onExit;
     }
 
-    public DefaultWeightedEdge getCurrentRoad() {
+    public RoadEdge getCurrentRoad() {
         return currentRoad;
     }
 
-    public void setCurrentRoad(DefaultWeightedEdge currentRoad) {
+    public void setCurrentRoad(RoadEdge currentRoad) {
         this.currentRoad = currentRoad;
     }
 }

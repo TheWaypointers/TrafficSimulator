@@ -15,7 +15,10 @@ public enum Direction {
 
     private static final List<Pair<Direction, Direction>> oppositePairs;
     private static final Map<Direction, Direction> oppositeMap;
+    private static final Map<String, Direction> nameMap;
+
     static {
+        // initialize opposites
         oppositePairs = new ArrayList<>();
         oppositePairs.add(new Pair<>(Direction.Up, Direction.Down));
         oppositePairs.add(new Pair<>(Direction.Left, Direction.Right));
@@ -24,6 +27,12 @@ public enum Direction {
         for(Pair<Direction, Direction> pair : oppositePairs){
             oppositeMap.put(pair.getItem1(), pair.getItem2());
             oppositeMap.put(pair.getItem2(), pair.getItem1());
+        }
+
+        // initialize names
+        nameMap = new HashMap<>();
+        for (Direction d : Direction.values()){
+            nameMap.put(d.toString(), d);
         }
     }
 
@@ -51,6 +60,10 @@ public enum Direction {
                 return Down;
         }
         throw new AssertionError("Unexpected enum value");
+    }
+
+    public static Direction fromString(String direction){
+        return nameMap.get(direction);
     }
 
     public Direction toRight(){
