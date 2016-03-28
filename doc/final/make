@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+./git2latex 50
 ./code2latex main
 ./code2latex test
 pdflatex final_report.tex
