@@ -117,14 +117,66 @@ A significant fact to note that is our team used all the major operating systems
 	We chose version 8 because it introduces many much-needed improvements for the language like lambda functions or the Stream API.
 	\item JUnit 4.12\footnote{\url{http://junit.org/junit4/}} - The ``de facto'' unit testing library for Java. Good integration with IntelliJ IDEA and Maven.
 	\item FEST-Assert 2.0M5\footnote{\url{https://github.com/alexruiz/fest-assert-2.x}} - A library to make assertions in unit tests more readable and easier to compose.
-	\item JGraphT 0.7.3 \footnote{\url{http://jgrapht.org/}} - A graph library to take advantage of graph representation of the road network, mainly pathfinding for vehicles.
+	\item JGraphT 0.7.3 \footnote{\url{http://jgrapht.org/}} - A graph library to take advantage of graph representation of the road network, mainly implementing pathfinding for vehicles.
 	\item XStream 1.2.2 \footnote{\url{http://x-stream.github.io/}} - An XML serialization library to bring reading and writing XML road maps to life.
 \end{itemize}
 
+\subsection{Process}
+We used an Agile method to manage out project. We divided project time into 8 week-long iterations, which started with a meeting every Thursday. Every team member was present every Thursday, barring some serious circumstances. During every meeting, we established the goals to achieve in the next iteration and every team member was assigned tasks to complete within the timeframe of the iteration. If any tasks were leftover from the previous iteration, they were reassigned. The tasks were recorded as GitHub Issues, which allowed us to set labels, current iteration (as ``milestone'') and assignee.
 
+We maintained three levels of branches in the Git repository:
+\begin{itemize}
+    \item \emph{master} - this branch was the top-level branch, intended for releasing working snapshots of the system. We ended up not using it, because the system was not very usable until we implemented the control panel and statstics in full, which was late in the project cycle.
+    \item \emph{dev} - the development branch. Here, the team members merged their new features. If there were merge conflicts, they were resolved on the feature branches so pull requests could be managed from the website easily. All code had to build and pass its tests on Travis.
+    \item Feature branches - active development branches. Normally, there was one branch per task belonging to one team member. They were merged into dev when the task was finished (or when the task achieved a stable, partially completed state).
+\end{itemize}
+
+There was also a fourth kind of branch, created ad hoc for urgent matters - mostly bugfix branches. Those operated similarly to feature branches, but were not created at the start of the iteration.
+
+When a team member started working on task, they created a new feature branch with the following name format: 
+$$\verb|feat-{name_of_issue}-{number_of_issue}|$$ This proved very useful for quickly finding an issue associated with a branch and vice versa.
+
+When the work was done, the author submitted a pull request closing the issue. At this point, another team member reviewed the code, checking the Travis build and tests status and potentially making suggestions about improvements.
+
+When the reviewer and the submitter were both satisfied with the state of the pull request, the reviewer closed the pull request and the task by merging the changes into \emph{dev}. We didn't encounter any problems with unresolvable disagreements, but if they occured, we would resolve them by assigning a mediator, and if that failed, a team-wide vote.
 
 \section{Evaluation}
 
+Although we achieved a usable version of the system, we did not have time to implement all features we wanted to - namely, multi-lane roads and buses. This was simply due to the fact that each other's abilities were unknown to us at the start, and the tasks ended up taking more time than planned.
+
+On per-iteration basis, it was also visible that issues were oftes still open after deadlines. That was to be expected, though - since we did not know about each others' cababilities and experience, it was better to assign a considerable amount of work and close it a couple of days after the deadline than to assign little and make a person not contribute much during an iteration.
+
+On the other hand, we have also implemented features we have not planned in the original requirements document. The most prominent example is the capability of reading roadmaps from XML files, which we created in order to store different road map configurations in a manageable way.
+
+\subsubsection*{What went well}
+\begin{itemize}
+	\item The architecture - Dividing the system into clearly delimited components with defined interfaces was certainly a good idea that reduced complexity in the project and allowed for the simulation and the display part to be developed almost independently. Because we defined the GUI to refresh when accepting a new simulation state, and the simulation to be a state machine which can be asked to produce a new state occuring after N miliseconds, those two components could be easily connected and controlled together.
+	\item GitHub Issues - Ideal task assignment system for our use case. We never needed anything more complicated than Issues, and thanks to it being a part of GitHub we managed a very close integration of our tasks with pull requests and the code. It even allowed us to close associated issues while merging pull requests automatically.
+	\item Continuous Integration - Setting up Travis was easy, it integrated into GitHub automatically, and it allowed us to catch many broken tests and compilation errors which we would miss otherwise.
+	\item Graph representation of the road network - Representing the road network as a graph instead of a 2-dimensional matrix allowed us to focus on what happens on the roads and not where the roads and vehicles are located in two-dimensional space. This also allowed us to pass only the essential world information to the GUI, which could freely display it in the most convenient way. The only disadvantage was that we had to represent junctions in two-dimensional form anyway for the purpose of implementing turning and collision detection on the junction, but since each junction uses its own local coordinates, it is still a clearer representation than full 2D.
+\end{itemize}
+
+\subsubsection*{What went less well}
+\begin{itemize}
+	\item Testing - We have extensively unit-tested several complex areas of code and created several test startup configurations for the system, but in general testing should have been encouraged or enforced more, especially in the simulation component. Both code and the produced effects quickly grew in complexity, which led to debugging by hand taking hours. Total debugging time was probably greater than the amount of time writing tests would have taken, and it would also increase flexibility of the code.
+\end{itemize}
+
 \section{Peer assessment}
+
+Peer assessment results are shown in table \ref{table:assessment}.
+
+\begin{table}[!htb]
+\centering
+\caption{Peer assessment}
+\label{table:assessment}
+\begin{tabular}{|l|l|}
+\hline
+Haipei Liu      & 20.75 \\ \hline
+Karlo Santini   & 20.25 \\ \hline
+Michal Szewczak & 26.00 \\ \hline
+Mengzhu Wang    & 21.25 \\ \hline
+Minghao Zhu     & 11.75 \\ \hline
+\end{tabular}
+\end{table}
 
 \end{document}
