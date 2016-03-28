@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+./code2latex main
+./code2latex test
+pdflatex final_report.tex
+pdflatex final_report.tex
