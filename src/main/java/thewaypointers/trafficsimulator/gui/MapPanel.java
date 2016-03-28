@@ -96,9 +96,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             //normalCarTotalNum = normalCarTotalNum++;
             if(s.getTime()!=0) {
                 normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime();
-                System.out.println("normal car total speed: " + normalCarTotalSpeed);
+                //System.out.println("normal car total speed: " + normalCarTotalSpeed);
 
-                System.out.println("normal car total num: " + normalCarTotalNum);
+                //System.out.println("normal car total num: " + normalCarTotalNum);
             }
             //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
@@ -701,19 +701,19 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             if (((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH,ROAD_WIDTH) == ENTERJUNCTION)
                 statistics_info.setTmp(statistics_info.getTmp() + ROAD_LENGTH);
             if (statistics_info!=null) {
-                statistics_info.setDistance(((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH)+statistics_info.getTmp());
+                statistics_info.setDistance((float) (((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH)+statistics_info.getTmp()-ENTERJUNCTION));
             }
             if (((JunctionLocationDTO)vehicle.getLocation()).getProgress() == EXISTJUNCTION){
                 statistics_info.setTmp(statistics_info.getTmp() + ((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH,ROAD_WIDTH));
             }
             if (((JunctionLocationDTO)vehicle.getLocation()).getProgress() > EXISTJUNCTION_LEFTTURN_1 &&((JunctionLocationDTO)vehicle.getLocation()).getProgress() < EXISTJUNCTION_LEFTTURN_2){
                 statistics_info.setTmp( statistics_info.getTmp() + ((JunctionLocationDTO)vehicle.getLocation()).getLeftTurnDistance(ROAD_WIDTH,ROAD_WIDTH));
-                statistics_info.setDistance(statistics_info.getTmp());
+                statistics_info.setDistance((float) (statistics_info.getTmp()-ENTERJUNCTION));
             }
         }
         if (vehicle.getLocation().getClass() == RoadLocationDTO.class) {
             if (statistics_info!=null) {
-                statistics_info.setDistance(((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled()+statistics_info.getTmp());
+                statistics_info.setDistance((float) (((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled()+statistics_info.getTmp()-ENTERJUNCTION));
             }
         }
         if (statistics_info!=null) {
