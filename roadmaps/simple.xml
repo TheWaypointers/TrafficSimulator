@@ -27,9 +27,5 @@
 		</road>
 	</roads>
 	<junctions>
-		<junction>
-			<name>A</name>
-			<type>JunctionTrafficLights</type>
-		</junction>
 	</junctions>
 </simulation>
