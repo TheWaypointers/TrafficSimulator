@@ -29,7 +29,7 @@ public class MainFrame extends JFrame{
         timeLabelPanel.setFont(new Font("Arial",Font.PLAIN,15));
         timeLabelPanel.setSize(600,60);
 
-        simulationInputListener = new SimulationInputListener();
+        simulationInputListener = null;
         if (worldStateDTO != null){
             mapContainerPanel.mapPanel.processjunctionlocation(worldStateDTO);
             mapContainerPanel.mapPanel.NewStateReceived(worldStateDTO);
@@ -55,6 +55,10 @@ public class MainFrame extends JFrame{
 
     public void setSimulationController(StateProviderController controller){
         controlPanel.setStateProviderController(controller);
+    }
+
+    public void setSimulationInputListener(ISimulationInputListener listener){
+        simulationInputListener = listener;
     }
 
 }
