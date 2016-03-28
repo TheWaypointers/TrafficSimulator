@@ -84,13 +84,63 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
-        MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
+        //MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
+        MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
 
-        //print out/check out
+
+        double normalCarTotalSpeed = 0;
+        int normalCarTotalNum = GetALLStatistics(VehicleType.CarNormal).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarNormal)){
-            System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
+
+            //normalCarTotalNum = normalCarTotalNum++;
+            if(s.getTime()!=0) {
+                normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime();
+                System.out.println("normal car total speed: " + normalCarTotalSpeed);
+
+                System.out.println("normal car total num: " + normalCarTotalNum);
+            }
+            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
+
+
+
+        double cautionCarTotalSpeed = 0;
+        int cautionCarTotalNum = GetALLStatistics(VehicleType.CarCautious).size();
+        for (Statistics s : GetALLStatistics(VehicleType.CarCautious)){
+            if(s.getTime()!=0) {
+                cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
+                cautionCarTotalNum = cautionCarTotalNum++;
+            }
+            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
+        }
+
+        double recklessCarTotalSpeed = 0;
+        int recklessCarTotalNum = GetALLStatistics(VehicleType.CarReckless).size();
+        for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
+            if(s.getTime()!=0) {
+                recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
+                recklessCarTotalNum = cautionCarTotalNum++;
+            }
+            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
+        }
+
+
+
+        double cautionCarSpeed = 0;
+        double normalCarSpeed = 0;
+        double recklessCarSpeed = 0;
+        if(cautionCarTotalNum!=0){
+           cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
+        }
+        if(normalCarTotalNum!=0){
+            normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum;
+        }
+        if(recklessCarTotalNum!=0){
+            recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum;
+        }
+
+        MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed);
     }
 
     //draw worldState
@@ -253,7 +303,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
         g.setColor(this.GetVehicleColor(type));
         g.fillRect((int) point.getX(), (int) point.getY(), wide, length);
-        drawLabel(g,(int) point.getX()+wide,(int) point.getY(),label);
+        drawLabel(g, (int) point.getX() + wide, (int) point.getY(), label);
     }
 
     //paint vehicles in the junction
@@ -348,7 +398,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         MapDTO mapDTO=worldStateDTO.getRoadMap();
         String junction= mapDTO.getJunctions().get(0).getLabel();
         Point point =new Point(JUNCTION_STARTPOINT_X,JUNCTION_STARTPOINT_Y);
-        junctionlocation.put(junction,point);
+        junctionlocation.put(junction, point);
         for (int i = 0;i < mapDTO.getJunctionCount();i++){
             JunctionDTO junctionDTO = mapDTO.getJunctions().get(i);
             Point projunction;
