@@ -158,8 +158,16 @@ On the other hand, we have also implemented features we have not planned in the 
 
 \subsubsection*{What went less well}
 \begin{itemize}
-	\item Testing - We have extensively unit-tested several complex areas of code and created several test startup configurations for the system, but in general testing should have been encouraged or enforced more, especially in the simulation component. Both code and the produced effects quickly grew in complexity, which led to debugging by hand taking hours. Total debugging time was probably greater than the amount of time writing tests would have taken, and it would also increase flexibility of the code.
+	\item Testing - We have extensively unit-tested several complex areas of code and created several test startup configurations for the system, but in general testing should have been encouraged or enforced more, especially in the simulation component. Both code and the produced effects quickly grew in complexity, which led to manual debugging taking hours. Total debugging time was probably greater than the amount of time writing tests would have taken, and it would also increase flexibility of the code.
 \end{itemize}
+
+\subsubsection*{Further improvements for the future}
+
+An obvious way to continue the project in the future is to make the simulation more complex, adding multi-lane roads, different road kinds like main roads and small (rural) roads, roundabouts, buses. It would make the system more realisting and the configurations more interesting to manipulate.
+
+GUI could be made more beautiful: images instead of vector graphics could be added.
+
+Because we have implemented an XML format for road networks, loading arbitrary maps from outside is easy. A map editor can be created to graphically create new maps which could be used in the system.
 
 \section{Peer assessment}
 
