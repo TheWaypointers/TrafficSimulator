@@ -11,12 +11,12 @@
 		</road>
 		<road>
 			<origin>A</origin>
-			<destination>C</destination>
+			<destination>B</destination>
 			<length>500</length>
 			<direction>Down</direction>
 		</road>
 		<road>
-			<origin>C</origin>
+			<origin>B</origin>
 			<destination>E2</destination>
 			<length>500</length>
 			<direction>Right</direction>
@@ -28,7 +28,7 @@
 			<type>JunctionTrafficLights</type>
 		</junction>
 		<junction>
-			<name>C</name>
+			<name>B</name>
 			<type>JunctionTrafficLights</type>
 		</junction>
 	</junctions>
