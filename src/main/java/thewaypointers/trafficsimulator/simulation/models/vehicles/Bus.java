@@ -153,6 +153,21 @@ public class Bus implements IVehicle {
         return label;
     }
 
+    @Override
+    public JunctionLocationDTO getVehiclesJunctionLocation() {
+        return null;
+    }
+
+    @Override
+    public String getVehiclesNextDestinationNode() {
+        return null;
+    }
+
+    @Override
+    public float getVehiclesCurrentRoadLength() {
+        return 0;
+    }
+
     public boolean isOnExit() {
         return onExit;
     }

@@ -18,6 +18,9 @@ public interface IVehicle {
     RoadEdge getCurrentRoadEdge();
     String getVehiclesOriginNode();
     String getVehiclesDestinationNode();
+    String getVehiclesNextDestinationNode();
+    float getVehiclesCurrentRoadLength();
     void setVehicleLabel(int label);
     int getVehicleLabel();
+    JunctionLocationDTO getVehiclesJunctionLocation();
 }

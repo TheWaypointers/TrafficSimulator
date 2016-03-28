@@ -26,11 +26,11 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 15;
+    final int MAX_VEHICLE_NUMBER = 70;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 15;
+    final int TRAFFIC_LIGHT_STEPS = 30;
     int trafficLightCounter = 0;
     int vehicleLabelCounter = 1;
 
@@ -126,16 +126,30 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         if (trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
 
-            JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
+            JunctionDTO junction;;
 
             for (Node node : nodeGraphMap.keySet()) {
                 if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                     TrafficLightNode tfNode = ((TrafficLightNode) node);
                     tfNode.changeLightColor();
+
+                    if(tfNode.getLeftRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Left, Lane.Right, tfNode.getLeft());
+                    }
+                    if(tfNode.getRightRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Right, Lane.Right, tfNode.getRight());
+                    }
+                    if(tfNode.getDownRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right, tfNode.getDown());
+                    }
+                    if(tfNode.getUpRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right, tfNode.getUp());
+                    }
+
                 }
             }
 
