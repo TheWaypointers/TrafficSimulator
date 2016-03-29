@@ -21,7 +21,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     public static final int VEHICLE_WIDTH = 8;
     public static final int VEHICLE_HEIGHT = 16;
-    public static final int LANE_DISTANCE =8;
+    public static final int LANE_DISTANCE = 8;
     public static final int TRAFFIC_LIGHT_SIZE = 5;
 
     public static final int JUNCTION_STARTPOINT_X = 300;
@@ -30,10 +30,9 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public static final int LABEL_SIZE=16;
 
     //statistics
-    public static final double ENTERJUNCTION = 2.5;
-    public static final double EXISTJUNCTION = 1.0;
-    public static final double EXISTJUNCTION_LEFTTURN_1 = 0.966;
-    public static final double EXISTJUNCTION_LEFTTURN_2 = 0.97;
+    public static final float LEFTTURNDISTANCE =(float) 1.5 *ROAD_WIDTH;
+    public static final float RIGHTTURNDISTANCE = (float) 0.5 *ROAD_WIDTH;
+    public static final float STRAIGHTDISTANCE =(float) 1.0 *ROAD_WIDTH;
 
     public static final Color BACKGROUND_COLOR = Color.white;
     public static final Color ROAD_COLOR = Color.GRAY;
@@ -84,7 +83,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
-        //MainFrame.timeLabelPanel.setText("Simulation Time: "+worldState.getClock()+"s");
         MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
 
@@ -131,7 +129,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         double normalCarSpeed = 0;
         double recklessCarSpeed = 0;
         if(cautionCarTotalNum!=0){
-           cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
+            cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
         }
         if(normalCarTotalNum!=0){
             normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum;
@@ -662,14 +660,18 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     public void RecordStatistics(VehicleDTO vehicle){
         Statistics statistics = null;
         Statistics statistics_info = null;
+        float temp=0;
         if ((!STATISTICS_Cautious_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Normal_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))) {
+            statistics = new Statistics();
+            statistics.setLabel(vehicle.getLabel());
+            statistics.setDistance(0);
+            statistics.setStart_time((int) this.worldState.getClock());
             if (vehicle.getLocation().getClass() == RoadLocationDTO.class) {
-                statistics = new Statistics();
-                statistics.setLabel(vehicle.getLabel());
-                statistics.setStart_time((int) this.worldState.getClock());
-                statistics.setTime(0);
-                statistics.setDistance(((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled());
-                statistics.setTmp(0);
+                statistics.setPredistance(((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled());
+                statistics.setFlag(false);
+            }else {
+                statistics.setPredistance(((JunctionLocationDTO) vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH,ROAD_WIDTH));
+                statistics.setFlag(true);
             }
         }
         VehicleType type = vehicle.getType();
@@ -697,26 +699,53 @@ public class MapPanel extends JPanel implements IStateChangeListener{
                 }
                 break;
         }
-        if (vehicle.getLocation().getClass() == JunctionLocationDTO.class) {
-            if (((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH,ROAD_WIDTH) == ENTERJUNCTION)
-                statistics_info.setTmp(statistics_info.getTmp() + ROAD_LENGTH);
-            if (statistics_info!=null) {
-                statistics_info.setDistance((float) (((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH)+statistics_info.getTmp()-ENTERJUNCTION));
+        if (vehicle.getLocation().getClass() == JunctionLocationDTO.class &&statistics_info!=null) {
+            if (!statistics_info.isFlag()){
+                temp = ROAD_LENGTH-statistics_info.getPredistance();
+                temp += ((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH);
+                statistics_info.setFlag(true);
+            }else {
+                if ((((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH) >= statistics_info.getPredistance()))
+                {
+                    temp = ((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH) - statistics_info.getPredistance();
+                } else{
+                    if (statistics_info.getPredistance() <= RIGHTTURNDISTANCE){
+                        temp = RIGHTTURNDISTANCE-statistics_info.getPredistance();
+                    }else if (statistics_info.getPredistance() <= STRAIGHTDISTANCE){
+                        temp = STRAIGHTDISTANCE-statistics_info.getPredistance();
+                    }else{
+                        temp = LEFTTURNDISTANCE-statistics_info.getPredistance();
+                    }
+                    temp += ((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH);
+                }
             }
-            if (((JunctionLocationDTO)vehicle.getLocation()).getProgress() == EXISTJUNCTION){
-                statistics_info.setTmp(statistics_info.getTmp() + ((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH,ROAD_WIDTH));
-            }
-            if (((JunctionLocationDTO)vehicle.getLocation()).getProgress() > EXISTJUNCTION_LEFTTURN_1 &&((JunctionLocationDTO)vehicle.getLocation()).getProgress() < EXISTJUNCTION_LEFTTURN_2){
-                statistics_info.setTmp( statistics_info.getTmp() + ((JunctionLocationDTO)vehicle.getLocation()).getLeftTurnDistance(ROAD_WIDTH,ROAD_WIDTH));
-                statistics_info.setDistance((float) (statistics_info.getTmp()-ENTERJUNCTION));
-            }
+            statistics_info.setPredistance(((JunctionLocationDTO)vehicle.getLocation()).getDistanceTravelled(ROAD_WIDTH, ROAD_WIDTH));
         }
-        if (vehicle.getLocation().getClass() == RoadLocationDTO.class) {
-            if (statistics_info!=null) {
-                statistics_info.setDistance((float) (((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled()+statistics_info.getTmp()-ENTERJUNCTION));
+        if (vehicle.getLocation().getClass() == RoadLocationDTO.class && statistics_info!=null) {
+
+            if (((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled() >= statistics_info.getPredistance()){
+                temp = ((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled() - statistics_info.getPredistance();
+            }else {
+                if (statistics_info.isFlag()){
+                    if (statistics_info.getPredistance() <= RIGHTTURNDISTANCE){
+                        temp = RIGHTTURNDISTANCE - statistics_info.getPredistance();
+                    }else if (statistics_info.getPredistance() <= STRAIGHTDISTANCE){
+                        temp = STRAIGHTDISTANCE-statistics_info.getPredistance();
+                    }else{
+                        temp = LEFTTURNDISTANCE-statistics_info.getPredistance();
+                    }
+
+                    temp+=((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled();
+                    statistics_info.setFlag(false);
+                }else {
+                    temp = ROAD_LENGTH - statistics_info.getPredistance();
+                    temp += ((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled();
+                }
             }
+            statistics_info.setPredistance(((RoadLocationDTO) vehicle.getLocation()).getDistanceTravelled());
         }
         if (statistics_info!=null) {
+            statistics_info.setDistance(statistics_info.getDistance() + temp);
             statistics_info.setTime((int) this.worldState.getClock() - statistics_info.getStart_time());
         }
     }
@@ -726,25 +755,30 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         java.util.List<Statistics> statisticsList=new ArrayList<>();
         switch (type){
             case CarCautious :
-                for (Statistics statistic:STATISTICS_Cautious_INFORMATION.values()){
-                    if (CAR.contains(statistic.getLabel()))
-                        statisticsList.add(statistic);
+                if (STATISTICS_Cautious_INFORMATION.size()>0){
+                    for (Statistics statistic:STATISTICS_Cautious_INFORMATION.values()){
+                        if (CAR.contains(statistic.getLabel()))
+                            statisticsList.add(statistic);
+                    }
                 }
                 break;
             case CarNormal:
-                for (Statistics statistic:STATISTICS_Normal_INFORMATION.values()){
-                    if (CAR.contains(statistic.getLabel()))
-                        statisticsList.add(statistic);
+                if (STATISTICS_Normal_INFORMATION.size()>0) {
+                    for (Statistics statistic : STATISTICS_Normal_INFORMATION.values()) {
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
+                            statisticsList.add(statistic);
+                    }
                 }
                 break;
             case CarReckless:
-                for (Statistics statistic:STATISTICS_Reckless_INFORMATION.values()){
-                    if (CAR.contains(statistic.getLabel()))
-                        statisticsList.add(statistic);
+                if (STATISTICS_Reckless_INFORMATION.size()>0) {
+                    for (Statistics statistic : STATISTICS_Reckless_INFORMATION.values()) {
+                        if (CAR.contains(statistic.getLabel()))
+                            statisticsList.add(statistic);
+                    }
                 }
                 break;
         }
-
         return  statisticsList;
     }
 }

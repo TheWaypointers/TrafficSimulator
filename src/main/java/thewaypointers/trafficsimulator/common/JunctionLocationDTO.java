@@ -350,7 +350,4 @@ public class JunctionLocationDTO implements ILocation {
         return distanceTravelledFromProgress(getProgress(), junctionWidth, junctionHeight, getRouteLength());
     }
 
-    public  float getLeftTurnDistance(float junctionWidth, float junctionHeight){
-        return distanceTravelledFromProgress(1.0f, junctionWidth, junctionHeight, getRouteLength());
-    }
 }

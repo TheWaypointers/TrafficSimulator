@@ -3,10 +3,27 @@ package thewaypointers.trafficsimulator.gui;
 public class Statistics {
 
     private float distance=0;
-    private float tmp=0;
     private int time=0;
     private int start_time=0;
     private String label;
+    private boolean flag=false;
+    private float predistance=0;
+
+    public float getPredistance() {
+        return predistance;
+    }
+
+    public void setPredistance(float predistance) {
+        this.predistance = predistance;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
 
     public String getLabel() {
         return label;
@@ -22,14 +39,6 @@ public class Statistics {
 
     public void setStart_time(int start_time) {
         this.start_time = start_time;
-    }
-
-    public float getTmp() {
-        return tmp;
-    }
-
-    public void setTmp(float tmp) {
-        this.tmp = tmp;
     }
 
     public float getDistance() {

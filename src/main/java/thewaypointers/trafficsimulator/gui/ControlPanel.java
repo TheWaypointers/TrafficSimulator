@@ -42,10 +42,6 @@ public class ControlPanel extends JPanel {
     public JTextField normalCarsNumberTextField = new JTextField();
     private JLabel recklessCarLabel = new JLabel();
     public JTextField reckCarsNumberTextField = new JTextField();
-    //    private JLabel busLabel = new JLabel();
-//    public JTextField busNumberTextField = new JTextField();
-//    private JLabel ambulanceLabel = new JLabel();
-//    public JTextField ambulanceTextField = new JTextField();
     private JButton submitButton = new JButton();
 
 
@@ -59,14 +55,12 @@ public class ControlPanel extends JPanel {
 
     ChangeListener timeStepChange = e -> {
         int tmp = timeStepSlider.getValue();
-        //System.out.println("time step: "+tmp);
         MainFrame.simulationInputListener.SimulationParameterChanged("timeStepSlider", Integer.toString(tmp));
     };
 
     ChangeListener simulationSpeedChange = e -> {
         double tmp = simulationSpeedSlider.getValue();
 
-        //System.out.println("traffic light time: "+tmp);
         MainFrame.simulationInputListener.SimulationParameterChanged("simulationSpeed", Double.toString(tmp / 100));
     };
 
@@ -123,14 +117,6 @@ public class ControlPanel extends JPanel {
         Rectangle2D.Float reckCar = new Rectangle2D.Float(3, 415, VEHICLE_HEIGHT, VEHICLE_WIDTH);
         g2.setColor(VEHICLE_CarReckless_COLOR);
         g2.fill(reckCar);
-
-//        Rectangle2D.Float bus =new Rectangle2D.Float(3,455,VEHICLE_HEIGHT,VEHICLE_WIDTH);
-//        g2.setColor(VEHICLE_Bus_COLOR);
-//        g2.fill(bus);
-//
-//        Rectangle2D.Float ambulance =new Rectangle2D.Float(3,495,VEHICLE_HEIGHT,VEHICLE_WIDTH);
-//        g2.setColor(VEHICLE_EmergencyService_COLOR);
-//        g2.fill(ambulance);
     }
 
     private void initComponents() {
@@ -173,7 +159,6 @@ public class ControlPanel extends JPanel {
         simulationSpeedSlider.setMajorTickSpacing(100);
         statesPerSecondsSlider.setMinorTickSpacing(25);
         simulationSpeedSlider.addChangeListener(simulationSpeedChange);
-        //simulationSpeedSlider.setSnapToTicks(true);
 
         initLabel(statesPerSecondsLabel);
         statesPerSecondsLabel.setText("States/s");
@@ -231,24 +216,6 @@ public class ControlPanel extends JPanel {
         Document reckCars = reckCarsNumberTextField.getDocument();
         reckCars.addDocumentListener(new ControlPanelDocumentListener(reckCarsNumberTextField, this));
 
-//        initLabel(busLabel);
-//        busLabel.setText("Bus");
-//        busLabel.setLocation(22, 440);
-//
-//        initTextField(busNumberTextField);
-//        busNumberTextField.setLocation(120, 440);
-//        Document buses = busNumberTextField.getDocument();
-//        buses.addDocumentListener(new ControlPanelDocumentListener(busNumberTextField, this));
-//
-//        initLabel(ambulanceLabel);
-//        ambulanceLabel.setText("Ambulance");
-//        ambulanceLabel.setLocation(22, 480);
-//
-//        initTextField(ambulanceTextField);
-//        ambulanceTextField.setLocation(120, 480);
-//        Document ambulances = ambulanceTextField.getDocument();
-//        ambulances.addDocumentListener(new ControlPanelDocumentListener(ambulanceTextField, this));
-
         initButton(submitButton);
         submitButton.setText("Set percentage");
         submitButton.setLocation(0, 440);
@@ -293,10 +260,6 @@ public class ControlPanel extends JPanel {
         this.add(normalCarsNumberTextField);
         this.add(recklessCarLabel);
         this.add(reckCarsNumberTextField);
-//        this.add(busLabel);
-//        this.add(busNumberTextField);
-//        this.add(ambulanceLabel);
-//        this.add(ambulanceTextField);
         this.add(submitButton);
         this.add(trafficLightLabel);
         this.add(trafficLightTimeLabel);
@@ -354,7 +317,6 @@ public class ControlPanel extends JPanel {
         title.setVisible(true);
         title.setSize(200, 38);
         title.setFont(new Font("Arial", 0, 16));
-        //title.setVerticalAlignment(SwingConstants.LEFT);
     }
 
     private void initSlider(JSlider slider) {
@@ -387,6 +349,15 @@ public class ControlPanel extends JPanel {
         }
         startPauseButton.setText("Start");
         stateProviderController.clearSimulation();
+        if (MapPanel.STATISTICS_Normal_INFORMATION.size()>0){
+            MapPanel.STATISTICS_Normal_INFORMATION.clear();
+        }
+        if (MapPanel.STATISTICS_Reckless_INFORMATION.size()>0){
+            MapPanel.STATISTICS_Reckless_INFORMATION.clear();
+        }
+        if (MapPanel.STATISTICS_Cautious_INFORMATION.size()>0){
+            MapPanel.STATISTICS_Cautious_INFORMATION.clear();
+        }
     }
 
     private void submitPerformed(ActionEvent evt) {
@@ -394,23 +365,16 @@ public class ControlPanel extends JPanel {
         String cautionCarPercentage = cautionCarsNumberTextField.getText();
         String normalCarPercentage = normalCarsNumberTextField.getText();
         String recklessCarPercentage = reckCarsNumberTextField.getText();
-        //String busPercentage = busNumberTextField.getText();
-        //String ambulancePercentage = ambulanceTextField.getText();
 
         if (cautionCarPercentage.equals("")
                 || normalCarPercentage.equals("")
                 || recklessCarPercentage.equals("")) {
-//                || busPercentage.equals("")
-//                || ambulancePercentage.equals("")) {
             new JumpOutDialog("Textfeild can't be empty!");
         } else {
             int cautionCar = Integer.parseInt(cautionCarPercentage);
             int normalCar = Integer.parseInt(normalCarPercentage);
             int reckCar = Integer.parseInt(recklessCarPercentage);
-//            int bus = Integer.parseInt(busPercentage);
-//            int ambulance = Integer.parseInt(ambulancePercentage);
             int total = cautionCar + normalCar + reckCar;
-            //+ bus + ambulance;
 
             if (total < 100) {
                 new JumpOutDialog("The total percentage is smaller than 100!");
@@ -420,8 +384,6 @@ public class ControlPanel extends JPanel {
                 MainFrame.simulationInputListener.SimulationParameterChanged("cautionCarPercentage", cautionCarPercentage);
                 MainFrame.simulationInputListener.SimulationParameterChanged("normalCarPercentage", normalCarPercentage);
                 MainFrame.simulationInputListener.SimulationParameterChanged("recklessCarPercentage", recklessCarPercentage);
-                //MainFrame.simulationInputListener.SimulationParameterChanged("busPercentage", busPercentage);
-                //MainFrame.simulationInputListener.SimulationParameterChanged("ambulancePercentage", ambulancePercentage);
             }
         }
 
