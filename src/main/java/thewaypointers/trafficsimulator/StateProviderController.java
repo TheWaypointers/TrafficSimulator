@@ -4,6 +4,7 @@ import thewaypointers.trafficsimulator.common.IStateChangeListener;
 import thewaypointers.trafficsimulator.common.IStateProvider;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.common.helpers.JunctionTestProvider;
+import thewaypointers.trafficsimulator.simulation.Simulation;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

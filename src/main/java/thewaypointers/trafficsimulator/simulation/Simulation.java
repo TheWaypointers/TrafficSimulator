@@ -55,7 +55,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
-        // set new value for the parameter in the simulation
+        System.out.println(parameterName);
     }
 
     public WorldStateDTO getNextState(long timeStep) {
