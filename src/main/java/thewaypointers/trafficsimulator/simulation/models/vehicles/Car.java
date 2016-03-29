@@ -206,6 +206,13 @@ public class Car implements IVehicle {
         Direction direction = DirectionVehicleIsApproachingJunction(nodeGraphMap, node);
         List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(node);
 
+        //check if an emergency vehicle is approaching
+
+        if (emergencyVehicleCheck(nodeGraphMap, node)){
+            return false;
+        }
+
+
         //check for blocked junction
         if (vehicleList == null) {
             return true;
@@ -281,6 +288,51 @@ public class Car implements IVehicle {
         }
 
         return true;
+    }
+
+    private boolean emergencyVehicleCheck(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node node) {
+        RoadEdge leftRoad = getOppositeRoad(node, Direction.Left, nodeGraphMap);
+        RoadEdge upRoad = getOppositeRoad(node, Direction.Up, nodeGraphMap);
+        RoadEdge rightRoad = getOppositeRoad(node, Direction.Right, nodeGraphMap);
+        RoadEdge downRoad = getOppositeRoad(node, Direction.Down, nodeGraphMap);
+
+        List<IVehicle> vehiclesFromAllRoadsApproaching = new ArrayList<>();
+
+        List<IVehicle> vehiclesFromRoad;
+
+        if(leftRoad != null){
+            vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(leftRoad.getRoad());
+            if(vehiclesFromRoad != null){
+                vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
+            }
+        }
+        if(rightRoad != null){
+            vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
+            if(vehiclesFromRoad != null){
+                vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
+            }
+        }
+        if(upRoad != null){
+            vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(upRoad.getRoad());
+            if(vehiclesFromRoad != null){
+                vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
+            }
+        }
+        if(downRoad != null){
+            vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(downRoad.getRoad());
+            if(vehiclesFromRoad != null){
+                vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
+            }
+        }
+
+        for(IVehicle vehicle : vehiclesFromAllRoadsApproaching){
+            if(vehicle.getVehiclesType() == thewaypointers.trafficsimulator.common.VehicleType.EmergencyService){
+                if(vehicle.getVehiclesDistanceTravelled() > vehicle.getVehiclesCurrentRoadLength() - 20){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private RoadEdge getOppositeRoad(Node tlNode, Direction direction, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {

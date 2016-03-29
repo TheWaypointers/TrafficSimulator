@@ -11,6 +11,7 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.vehicles.Car;
+import thewaypointers.trafficsimulator.simulation.models.vehicles.EmergencyService;
 import thewaypointers.trafficsimulator.utils.VehicleSpawnRatio;
 
 import java.util.*;
@@ -56,7 +57,7 @@ public class VehicleFactory {
             case 3 :
                 return new Car(VehicleType.CarReckless, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
             case 4 :
-                return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
+                return new EmergencyService(VehicleType.EmergencyService, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
             case 5 :
                 return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
             default :
