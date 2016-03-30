@@ -90,6 +90,16 @@ public class Car implements IVehicle {
     @Override
     public void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
         currentSpeed = topSpeed;
+        if (currentRoad == null) {
+            List<IVehicle> vehicleListInsideJunction = VehicleManager.getVehicleMap().getFromJunction(currentNode);
+
+            if (vehicleListInsideJunction != null) {
+                if (vehicleListInsideJunction.size() > 1) {
+                    float speed = returnSlowestSpeedInJunction(vehicleListInsideJunction);
+                    currentSpeed = speed;
+                }
+            }
+        }
         float distanceTravelled = getCurrentRoad() != null ? getDistanceTravelled() : getJunctionLocation().getDistanceTravelled(getCurrentNode().getWidth(), getCurrentNode().getHeight());
         float distanceToTravel = calculateDistanceToTravel(currentSpeed, timeStep);
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
@@ -142,6 +152,7 @@ public class Car implements IVehicle {
                         currentNode = tlNode;
                         junctionBlocked = 0;
                         junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
+
 
                         VehicleManager.getVehicleMap().remove(this);
                         VehicleManager.getVehicleMap().add(tlNode, this);
@@ -204,10 +215,24 @@ public class Car implements IVehicle {
         }
     }
 
+    private float returnSlowestSpeedInJunction(List<IVehicle> vehicleListInsideJunction) {
+        float speed = 0;
+
+        for (IVehicle vehicle : vehicleListInsideJunction) {
+            if (speed == 0) {
+                speed = vehicle.getVehiclesCurrentSpeed();
+            } else if (speed > vehicle.getVehiclesCurrentSpeed()) {
+                speed = vehicle.getVehiclesCurrentSpeed();
+            }
+        }
+        return speed;
+
+    }
+
 
     private boolean canGoTroughJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node node) {
         Direction direction = DirectionVehicleIsApproachingJunction(nodeGraphMap, node);
-        List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(node);
+        List<IVehicle> vehicleListInsideJunction = VehicleManager.getVehicleMap().getFromJunction(node);
 
         //check if an emergency vehicle is approaching
 
@@ -220,18 +245,18 @@ public class Car implements IVehicle {
         List<IVehicle> vehicleListForNextRoad = VehicleManager.getVehicleMap().getFromRoad(nextRoad.getRoad());
         float maxNumberOfVehiclesOnRoad = nextRoad.getLength() / (VEHICLE_LENGTH + DISTANCE_BETWEEN_VEHICLES);
 
-        if(vehicleListForNextRoad != null){
-            if(vehicleListForNextRoad.size() >= maxNumberOfVehiclesOnRoad){
+        if (vehicleListForNextRoad != null) {
+            if (vehicleListForNextRoad.size() >= maxNumberOfVehiclesOnRoad) {
                 return false;
             }
         }
 
 
         //check for blocked junction
-        if (vehicleList == null) {
+        if (vehicleListInsideJunction == null) {
             return true;
         } else {
-            if (vehicleList.size() == 0) {
+            if (vehicleListInsideJunction.size() == 0) {
                 junctionBlocked++;
             }
         }
@@ -242,10 +267,10 @@ public class Car implements IVehicle {
 
 
         //check for vehicles inside junction
-        if (vehicleList != null) {
+        if (vehicleListInsideJunction != null) {
 
-            if (vehicleList.size() > 0) {
-                for (IVehicle vehicle : vehicleList) {
+            if (vehicleListInsideJunction.size() > 0) {
+                for (IVehicle vehicle : vehicleListInsideJunction) {
                     if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
@@ -266,7 +291,7 @@ public class Car implements IVehicle {
         //special junction rules when there are no traffic lights (let the car on the right pass first)
         if (node.getNodeType() == NodeType.JunctionNormal) {
             RoadEdge rightRoad = roadRightFromThis(node, direction, nodeGraphMap);
-            if(rightRoad != null){
+            if (rightRoad != null) {
                 List<IVehicle> vehiclesFromRightSide = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
                 if (vehiclesFromRightSide != null) {
                     if (vehiclesFromRightSide.size() > 0) {
@@ -277,10 +302,10 @@ public class Car implements IVehicle {
                         }
                     }
                 }
-            }else{
-                if(vehicleList == null){
+            } else {
+                if (vehicleListInsideJunction == null) {
                     return true;
-                }else if(vehicleList.size() == 0){
+                } else if (vehicleListInsideJunction.size() == 0) {
                     return true;
                 }
             }
