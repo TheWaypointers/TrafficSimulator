@@ -90,18 +90,10 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         double normalCarTotalSpeed = 0;
         int normalCarTotalNum = GetALLStatistics(VehicleType.CarNormal).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarNormal)){
-
-            //normalCarTotalNum = normalCarTotalNum++;
             if(s.getTime()!=0) {
                 normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime();
-                //System.out.println("normal car total speed: " + normalCarTotalSpeed);
-
-                //System.out.println("normal car total num: " + normalCarTotalNum);
             }
-            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
-
-
 
         double cautionCarTotalSpeed = 0;
         int cautionCarTotalNum = GetALLStatistics(VehicleType.CarCautious).size();
@@ -109,7 +101,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             if(s.getTime()!=0) {
                 cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
             }
-            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
 
         double recklessCarTotalSpeed = 0;
@@ -118,14 +109,21 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             if(s.getTime()!=0) {
                 recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
             }
-            //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
 
+        double ambulanceTotalSpeed = 0;
+        int ambulanceTotalNum = GetALLStatistics(VehicleType.EmergencyService).size();
+        for (Statistics s : GetALLStatistics(VehicleType.EmergencyService)){
+            if(s.getTime()!=0) {
+                ambulanceTotalSpeed = ambulanceTotalSpeed + s.getDistance() / s.getTime();
+            }
+        }
 
 
         double cautionCarSpeed = 0;
         double normalCarSpeed = 0;
         double recklessCarSpeed = 0;
+        double ambulanceSpeed =0;
         if(cautionCarTotalNum!=0){
             cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
         }
@@ -135,8 +133,11 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         if(recklessCarTotalNum!=0){
             recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum;
         }
+        if(ambulanceTotalNum!=0){
+            ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum;
+        }
 
-        MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed);
+        MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed,ambulanceSpeed);
     }
 
     //draw worldState
