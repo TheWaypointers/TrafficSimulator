@@ -36,10 +36,10 @@ public class Car implements IVehicle {
     private boolean vehicleIsTurningLeft;
     private int junctionBlocked;
 
-    private final long SPEED_DIFFERENCE = 10;
-    private final long DISTANCE_BETWEEN_VEHICLES = 22;
+    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.5f;
+    private final long DISTANCE_BETWEEN_VEHICLES = 20;
     private final long VEHICLE_LENGTH = 8;
-    private long BLOCKED_JUNCTION_COUNTER;
+    private final int BLOCKED_JUNCTION_COUNTER = 25;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
@@ -152,7 +152,6 @@ public class Car implements IVehicle {
                         currentNode = tlNode;
                         junctionBlocked = 0;
                         junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
-
 
                         VehicleManager.getVehicleMap().remove(this);
                         VehicleManager.getVehicleMap().add(tlNode, this);
@@ -634,11 +633,11 @@ public class Car implements IVehicle {
                     break;
                 case CarReckless:
                     //reckless cars drive 10% faster than the speed limit
-                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 case CarCautious:
                     //cautious drivers drive 10% slower than the speed limit
-                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 default:
                     break;
@@ -713,11 +712,6 @@ public class Car implements IVehicle {
             default:
                 return thewaypointers.trafficsimulator.common.VehicleType.CarNormal;
         }
-    }
-
-    @Override
-    public boolean isVehicleTurningLeft() {
-        return vehicleIsTurningLeft;
     }
 
     public RoadEdge getCurrentRoad() {

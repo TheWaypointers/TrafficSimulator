@@ -1,0 +1,275 @@
+cc160aa Sun Jan 31 14:57:21 2016              user add initial project files                         
+fa38292 Sun Jan 31 14:58:24 2016              user add vcs.xml                                       
+922c87c Sun Jan 31 15:07:23 2016              user add sketch of initial report and architecture di..
+ec42578 Sun Jan 31 16:51:03 2016   Michał Szewczak add another version of architecture               
+f4dca79 Sun Jan 31 18:25:41 2016              user new version of architecture                       
+7c06e2f Sun Jan 31 18:50:15 2016         liuhaipei add draft files for classes from architecture     
+2afb03c Sun Jan 31 19:36:44 2016   Michał Szewczak Merge branch 'master' of https://github.com/TheW..
+15adcd3 Sun Jan 31 20:32:14 2016              user some renaming                                     
+aa20bd2 Sun Jan 31 20:33:29 2016   Michał Szewczak Merge branch 'architecture-michal' of https://gi..
+09224a6 Sun Jan 31 20:50:44 2016   Michał Szewczak add some comments to architecture and code        
+945cc34 Sun Jan 31 20:59:43 2016   Michał Szewczak finish TrafficLightDTO                            
+668e37f  Mon Feb 1 16:00:12 2016              user restructure project for Maven and add Maven supp..
+b2926cf  Mon Feb 1 17:13:11 2016              user add junit                                         
+24e147d  Mon Feb 1 22:01:00 2016              user update to architecture after Monday meeting       
+28b88d8  Mon Feb 1 22:21:04 2016              user add ignoring /target/ directory to gitignore      
+dbd8395  Mon Feb 1 23:00:49 2016              user add sample junit test                             
+1a9a9b1  Mon Feb 1 23:47:51 2016   Michał Szewczak Merge branch 'maven-support'                      
+0fc7939  Tue Feb 2 00:12:56 2016   Michał Szewczak add .idea/libraries/ to git                       
+05d9268  Tue Feb 2 01:14:22 2016              user make building from maven possible, add travis     
+44c64c1  Tue Feb 2 01:19:40 2016              user Merge branch 'maven-support'                      
+d0036fe  Tue Feb 2 01:25:38 2016              user add jdk version to .travis.yml                    
+d234afb  Tue Feb 2 01:29:20 2016              user deliberately break test to see if build on Travi..
+c69648e  Tue Feb 2 01:35:29 2016              user change name of test so build on Travis can pick ..
+59afd27  Tue Feb 2 03:10:22 2016              user rename the class instead of the method            
+44d4693  Tue Feb 2 03:36:15 2016              user clean up dependencies in intellij                 
+9f6552a  Tue Feb 2 03:45:57 2016              user fix duplication arising from automatic merge      
+6b7a1b5  Tue Feb 2 13:50:01 2016              iroq create README.md                                  
+5db9550  Tue Feb 2 14:47:40 2016              user correct the common package according to architec..
+4b896d0  Tue Feb 2 14:48:34 2016              user Merge remote-tracking branch 'origin/master'      
+0a50549  Thu Feb 4 11:08:53 2016           vezer93 ->grapht import in maven ->vehicle class ->Simul..
+816d130  Thu Feb 4 14:08:34 2016           vezer93 ->Interface for vehicle -> Hashmap for mapping n..
+0509a82  Thu Feb 4 14:14:34 2016           vezer93 -> changes to TimeStep -> changed new graph line  
+e1ab7bd  Thu Feb 4 14:29:12 2016       mengzhuwang first gui                                         
+605c2f8  Thu Feb 4 14:43:48 2016       mengzhuwang first gui road                                    
+e4c18a8  Thu Feb 4 15:42:18 2016   Michal Szewczak add nice assertion library                        
+bd8e574  Fri Feb 5 11:25:24 2016              user public modifiers for DTOs                         
+41842fd  Fri Feb 5 11:56:48 2016              user add SimpleWorldStateProvider with initializing o..
+2b31aed  Fri Feb 5 12:48:09 2016              user implementing getNextState() in simple state prov..
+29da89e  Fri Feb 5 13:13:43 2016   Michal Szewczak move simple state provider to main package        
+392b217  Fri Feb 5 13:21:25 2016   Michal Szewczak Merge branch 'master' into firstgui-worldstatepr..
+c5ccc77  Fri Feb 5 14:00:25 2016   Michal Szewczak test for correctness of generated world state     
+4831fd4  Fri Feb 5 15:20:25 2016   Michal Szewczak make LocationDTO immutable, add more tests        
+496e8cc  Fri Feb 5 15:41:03 2016   Michal Szewczak add first version starter and simple state chang..
+a04ff9a  Sat Feb 6 15:48:12 2016          yzzmh123 Merge pull request #5 from TheWaypointers/firstg..
+e801bba  Sat Feb 6 22:51:22 2016         liuhaipei initial_report 'project description' part         
+65b892f  Sat Feb 6 22:52:15 2016         liuhaipei initial_report 'project description' part         
+b1d0580  Sat Feb 6 23:30:27 2016         liuhaipei edit initial_report                               
+a6b27d9  Sat Feb 6 23:31:30 2016         liuhaipei initial_report.pdf                                
+09d82d5  Sun Feb 7 15:53:10 2016           vezer93 -> classes to help car mapping                    
+c0d8c9f  Mon Feb 8 01:28:39 2016   Michal Szewczak new version of initial report                     
+22320ab  Mon Feb 8 01:30:47 2016   Michal Szewczak add gitignore for latex                           
+8c78276  Mon Feb 8 03:52:17 2016   Michal Szewczak add title page to initial report                  
+94eeab3  Mon Feb 8 10:53:15 2016       mengzhuwang  e1_a, a_e2, change the order of variation a      
+f510615  Mon Feb 8 10:57:00 2016       mengzhuwang version1 GUI_final                                
+742cb8a  Mon Feb 8 11:04:18 2016       mengzhuwang I change the car color into white as it looks mo..
+cda8e23  Mon Feb 8 14:45:55 2016       mengzhuwang Merge branch 'master' into firstgui               
+15fba59  Mon Feb 8 16:52:56 2016   Michal Szewczak fix tests to comply with entry node label change  
+44c634b  Mon Feb 8 17:42:17 2016       mengzhuwang Merge branch 'firstgui' of https://github.com/Th..
+9132305  Mon Feb 8 20:15:51 2016           vezer93 -> Simulation for one car -> simple traffic ligh..
+2e69eb0  Mon Feb 8 22:48:11 2016           vezer93 Merge branches 'master' and 'simulation' of http..
+b4b535e  Mon Feb 8 22:50:27 2016           vezer93 change to simulation outpot                       
+95c6ec8  Tue Feb 9 02:18:48 2016   Michal Szewczak extract drawing vehicles to a separate function   
+d190b55  Tue Feb 9 03:06:09 2016   Michal Szewczak extract hardcoded values to constants             
+65921d5  Tue Feb 9 03:13:40 2016   Michal Szewczak make MapPanel implement IStateChangeListener and..
+072d0de  Tue Feb 9 03:17:00 2016   Michal Szewczak Merge remote-tracking branch 'origin/firstgui-re..
+5b05bbd  Tue Feb 9 03:20:25 2016   Michal Szewczak Merge branch 'master' into firstgui               
+e52c25e  Tue Feb 9 03:31:16 2016   Michal Szewczak fix VehicleDTO referencing simulation instead of..
+57fca20  Tue Feb 9 03:31:34 2016   Michal Szewczak Merge branch 'master' into firstgui               
+4d6f5ed  Tue Feb 9 03:32:20 2016   Michal Szewczak remove packages that were removed in master       
+6ad1b61  Tue Feb 9 03:32:47 2016   Michal Szewczak fix reference                                     
+af4ddc1  Tue Feb 9 15:46:07 2016   Michal Szewczak add traffic light change to SimpleWorldStateProv..
+20af3e5  Tue Feb 9 16:11:09 2016   Michal Szewczak add drawing of correct traffic light color form ..
+1498b12  Tue Feb 9 16:15:24 2016   Michal Szewczak remove unnecessary checks in test                 
+9d17494  Tue Feb 9 16:24:13 2016              iroq Merge pull request #6 from TheWaypointers/firstgui
+c1807a1  Tue Feb 9 23:12:20 2016           vezer93 Simulation worldstate first version               
+a974c87 Wed Feb 10 00:09:39 2016   Michal Szewczak fix snapping back to waiting position before tra..
+7cd41ef Fri Feb 12 18:37:06 2016   Michal Szewczak move traffic lights outside of road network to m..
+5ad61d2 Sat Feb 13 21:13:40 2016   Michal Szewczak rework of MapDTO and associated classes (test do..
+1ea65c8 Sat Feb 13 22:22:40 2016         liuhaipei mapdragging: Dragging the simulation map          
+d8a6543 Sun Feb 14 03:00:37 2016         liuhaipei Fixed layout problem                              
+d245384 Sun Feb 14 03:20:00 2016   Michal Szewczak rework of TrafficLightDTO, add TrafficLightSyste..
+bd290a8 Sun Feb 14 03:22:22 2016         liuhaipei Fix layout problem                                
+c051343 Sun Feb 14 17:25:39 2016   Michal Szewczak rework of VehicleDTO, add label and speed, add V..
+1c86ef1 Sun Feb 14 17:53:37 2016   Michal Szewczak fix tests                                         
+84d945d Sun Feb 14 18:17:05 2016   Michal Szewczak fix orientation of up road, change comparing wit..
+cff3965 Mon Feb 15 21:17:25 2016         liuhaipei Fix map jumping problem                           
+6362875 Mon Feb 15 23:55:09 2016   Michał Szewczak Merge pull request #15 from TheWaypointers/feat-..
+8e96ba3 Wed Feb 17 08:56:28 2016       mengzhuwang since the size of map exceed my screen, JScrollP..
+b2fd1b9 Wed Feb 17 08:56:48 2016       mengzhuwang code for draw a new traffic map                   
+10350d9 Wed Feb 17 08:57:12 2016       mengzhuwang add more road                                     
+941be31 Wed Feb 17 08:58:29 2016       mengzhuwang roads with 3 junctions                            
+8164e25 Wed Feb 17 15:35:01 2016       mengzhuwang Merge branch 'dev' into feat-drawnetwork-7        
+88130a6 Wed Feb 17 15:45:27 2016       mengzhuwang fix merge                                         
+68ced1f Wed Feb 17 15:56:20 2016   Michał Szewczak Merge pull request #14 from TheWaypointers/feat-..
+11c2cff Wed Feb 17 15:58:51 2016   Michal Szewczak Merge branch 'dev' into feat-drawnetwork-7        
+2e4ca8d Thu Feb 18 10:00:51 2016           vezer93 refactored code for setGraph and spawnVehicle ->..
+5e862cc Thu Feb 18 10:26:00 2016           vezer93 created the state machine -> moved the output to..
+24dc999 Thu Feb 18 13:57:17 2016           vezer93 Merge branch 'dev' of https://github.com/TheWayp..
+9d64a6f Thu Feb 18 14:04:19 2016   Michal Szewczak fix various warnings, including all "Possible Bu..
+0df0372 Thu Feb 18 14:07:16 2016           vezer93 TrafficLight fix                                  
+f193439 Thu Feb 18 14:16:40 2016           vezer93 exception on start fix                            
+95c06d0 Thu Feb 18 14:24:36 2016           vezer93 small change                                      
+d27cb89 Tue Feb 23 16:21:05 2016   Michał Szewczak Merge pull request #18 from TheWaypointers/feat-..
+0ab5e64 Wed Feb 24 21:14:55 2016       mengzhuwang gui - draw vehicles at random position            
+dd97340 Thu Feb 25 01:05:08 2016   Michal Szewczak Revert "gui - draw vehicles at random position"   
+992e2c7 Thu Feb 25 00:45:41 2016   Michal Szewczak remove threading code and add internal clock to ..
+afc90be Thu Feb 25 01:39:28 2016   Michal Szewczak add build status of dev to README                 
+016d761 Thu Feb 25 01:40:41 2016   Michał Szewczak fix README formatting                             
+84cbe11 Thu Feb 25 01:52:33 2016   Michal Szewczak Merge branch 'dev' into feat-clearwarnings-22     
+a728f02 Thu Feb 25 11:40:50 2016   Michal Szewczak gui - draw vehicles at random position            
+dbb7764 Thu Feb 25 16:24:52 2016       mengzhuwang improve the start point of vehicles               
+d285e8a Thu Feb 25 16:40:16 2016       mengzhuwang improvement                                       
+36e4b1a Fri Feb 26 12:40:01 2016       mengzhuwang recover simulation                                
+6c43a10 Fri Feb 26 12:41:47 2016       mengzhuwang recover simulation                                
+e658688 Fri Feb 26 12:50:14 2016       mengzhuwang Merge branch 'dev' into feat-drawvehicles-24      
+a33fb22 Fri Feb 26 12:55:04 2016       mengzhuwang remove import                                     
+eda646e Fri Feb 26 13:10:26 2016       mengzhuwang changing SimpleWorldStateProvider                 
+bd7085b Fri Feb 26 13:14:39 2016       mengzhuwang added switch to SimpleWorldStateProvider to choo..
+c8e1af3 Fri Feb 26 14:16:51 2016   Michal Szewczak refactor draw_road()                              
+3a27df3 Fri Feb 26 14:19:51 2016   Michał Szewczak Merge pull request #31 from TheWaypointers/feat-..
+a27ff5f  Tue Mar 1 23:18:56 2016       mengzhuwang refactor MapPanel                                 
+c44df1a  Tue Mar 1 23:29:39 2016       mengzhuwang Merge branch 'feat-drawvehicles-24' and solve Co..
+38497fc  Tue Mar 1 23:42:49 2016   Michał Szewczak Merge pull request #29 from TheWaypointers/feat-..
+66d7f65  Wed Mar 2 00:06:51 2016         vezer1993 Merge pull request #25 from TheWaypointers/threa..
+7a6cd7a  Wed Mar 2 21:06:10 2016   Michal Szewczak add getting road by label from MapDTO             
+5bf333a  Wed Mar 2 21:39:58 2016           vezer93 -> fixed bug with the itaration of the leaving c..
+0dea712  Wed Mar 2 21:43:53 2016         vezer1993 Merge pull request #33 from TheWaypointers/mapdt..
+bd75b7e  Wed Mar 2 21:54:09 2016           vezer93 -> fixed bug with the itaration of the leaving c..
+68845ed  Wed Mar 2 22:36:21 2016   Michal Szewczak add parameterless constructor to MainFrame and r..
+0a7a663  Thu Mar 3 00:10:05 2016   Michal Szewczak remove logging                                    
+d2eba1c  Thu Mar 3 00:12:45 2016   Michał Szewczak Merge pull request #34 from TheWaypointers/feat-..
+20e7702  Thu Mar 3 09:24:39 2016       mengzhuwang add a general way to draw traffic lights          
+26e7e6c  Thu Mar 3 12:31:59 2016          yzzmh123 Add MapDTOTest                                    
+a79cb94  Thu Mar 3 12:39:40 2016   Michal Szewczak add peer assessment 1                             
+186b570  Thu Mar 3 14:38:39 2016       mengzhuwang data standardization                              
+a2c2b6f  Thu Mar 3 14:47:22 2016       mengzhuwang data standardization_2                            
+ae0308e  Thu Mar 3 14:50:56 2016   Michał Szewczak Merge pull request #37 from TheWaypointers/feat-..
+644124b  Thu Mar 3 16:58:58 2016   Michal Szewczak Merge branch 'dev' into feat-clearwarnings-22     
+ae8ca8a  Thu Mar 3 17:35:59 2016   Michal Szewczak introduce ILocation and change LocationDTO to Ro..
+297269d  Thu Mar 3 21:59:06 2016   Michal Szewczak first version of JunctionLocationDTO              
+3e24133  Fri Mar 4 00:33:36 2016   Michal Szewczak add simple JunctionLocationDTO tests              
+35ea8bd  Fri Mar 4 10:30:18 2016   Michal Szewczak getJunctionCoordinates() tests                    
+9769372  Fri Mar 4 18:37:32 2016   Michal Szewczak getAngle() in JunctionLocationDTO and tests       
+9422632  Fri Mar 4 18:52:10 2016   Michal Szewczak add enum for choosing simple world state in prov..
+90d527b  Fri Mar 4 19:56:28 2016   Michal Szewczak add move() to JunctionLocationDTO and tests       
+c72ebfa  Fri Mar 4 20:32:24 2016   Michal Szewczak add JunctionLocationTestStarter                   
+aae845c  Fri Mar 4 20:51:41 2016   Michal Szewczak add docs                                          
+c21d0e6  Sat Mar 5 16:44:35 2016        Haipei Liu Merge pull request #23 from TheWaypointers/feat-..
+c930a07  Sat Mar 5 17:35:37 2016   Michal Szewczak Merge branch 'dev' into feat-junctionlocation-21  
+0407d55  Sat Mar 5 17:36:36 2016   Michal Szewczak merge fix                                         
+645aed0  Sat Mar 5 17:37:28 2016        Haipei Liu Merge pull request #42 from TheWaypointers/feat-..
+0696679  Tue Mar 8 17:03:52 2016   Michał Szewczak create pull request template                      
+1ff0e21  Tue Mar 8 17:39:44 2016          yzzmh123 Add MapDTOTest Finish the tests and wrote some c..
+c25ff22  Tue Mar 8 22:20:11 2016       mengzhuwang draw vehicles on junction                         
+765612f  Tue Mar 8 22:20:36 2016       mengzhuwang Merge remote-tracking branch 'origin/feat-juncti..
+a82690a  Wed Mar 9 07:30:38 2016       mengzhuwang modify drawVehichelInJunction                     
+637c856  Wed Mar 9 17:44:28 2016        Haipei Liu Update Control Panel                              
+f4f520a  Wed Mar 9 19:10:04 2016   Michal Szewczak split SimpleWorldStateProvider into separate pro..
+15b0e65  Wed Mar 9 19:47:09 2016   Michal Szewczak delete obsolete enum                              
+54f224a  Wed Mar 9 19:47:21 2016   Michal Szewczak follow-up commit                                  
+4a259a6  Wed Mar 9 20:02:01 2016   Michal Szewczak add more complete test of JunctionLocation drawing
+b607c26  Wed Mar 9 20:06:43 2016   Michal Szewczak Merge branch 'feat-junctionlocation-21' into ref..
+5e12972  Wed Mar 9 20:43:24 2016   Michał Szewczak Merge pull request #43 from TheWaypointers/feat-..
+ffae1ff Thu Mar 10 11:23:22 2016   Michal Szewczak fix spelling error                                
+e159417 Thu Mar 10 11:30:42 2016   Michal Szewczak change string null comparison to == instead of e..
+588978f Thu Mar 10 12:07:24 2016          yzzmh123 Merge branch 'dev' into feat-testcommon-20        
+e9e0a58 Thu Mar 10 12:27:34 2016          yzzmh123 Add MapDTOTest Finish the tests and wrote some c..
+c40aa24 Thu Mar 10 12:47:04 2016   Michał Szewczak Merge pull request #44 from TheWaypointers/feat-..
+45e3d34 Thu Mar 10 13:28:22 2016          yzzmh123 fix tests                                         
+6e90186 Thu Mar 10 13:34:49 2016           vezer93 ->added xml handler -> added a folder with simpl..
+d0c5617 Thu Mar 10 13:36:25 2016           vezer93 changed traffic simulator to read xml from insid..
+3ac30da Thu Mar 10 17:47:03 2016   Michał Szewczak Merge pull request #45 from TheWaypointers/feat-..
+b44ee18 Sat Mar 12 00:07:14 2016       mengzhuwang add labels on vehicles and junctions based on Ro..
+96f1a97 Sat Mar 12 18:04:43 2016       mengzhuwang revert JunctionTestProvider                       
+2f8a3e4 Sat Mar 12 19:45:32 2016              iroq small refactor                                    
+c0a4f04 Sat Mar 12 19:46:48 2016              iroq Merge branch 'feat-junctionlocation-21' of https..
+08273d3 Sun Mar 13 13:26:36 2016   Michał Szewczak Merge pull request #62 from TheWaypointers/feat-..
+4703b3f Mon Mar 14 00:14:42 2016              iroq add clock to WorldStateDTO and make providers in..
+bec5462 Mon Mar 14 00:21:16 2016              iroq change clock to long, make simulation pass its c..
+887e695 Mon Mar 14 02:10:05 2016              iroq fix for vehicle speeds while turning on junction  
+8d15a74 Mon Mar 14 02:47:24 2016              iroq add helper methods operating on distance and jun..
+f62c617 Tue Mar 15 01:39:23 2016              iroq add VehicleMap to enable adding vehicles to junc..
+caea1fe Tue Mar 15 01:43:59 2016              iroq fix bug                                           
+def7a61 Tue Mar 15 03:11:53 2016              iroq add current node to Car, change the road represe..
+65599a1 Tue Mar 15 04:00:25 2016              iroq refactoring Car's calculateNextPosition()         
+4e156c5 Tue Mar 15 20:05:04 2016        Haipei Liu Simulation control: Start/pause (with bugs)       
+0b363dc Tue Mar 15 20:18:19 2016        Haipei Liu Simulation control: Start/pause (with bugs)       
+e905f64 Wed Mar 16 02:05:58 2016       mengzhuwang gui resizable show on RoadNetworkProvider beside..
+e6f3e7b Wed Mar 16 10:34:01 2016         liuhaipei Simulation control: Start/pause                   
+1d0a488 Wed Mar 16 20:08:25 2016   Michał Szewczak Merge pull request #66 from TheWaypointers/feat-..
+d127c15 Wed Mar 16 20:22:30 2016        Haipei Liu Simulation control: Start/pause                   
+7b80fa0 Wed Mar 16 20:35:22 2016         liuhaipei Merge branch 'dev' of https://github.com/TheWayp..
+295e9c8 Wed Mar 16 21:13:32 2016   Michal Szewczak fix JunctionLocationTestStarter to start with co..
+824f7f0 Thu Mar 17 08:58:07 2016           vezer93 changed the mistakes                              
+8303258 Thu Mar 17 13:13:36 2016        Haipei Liu Feat 47, start/pause update                       
+94712af Thu Mar 17 14:06:36 2016       mengzhuwang Merge remote-tracking branch 'origin/feat-worlds..
+54cc4f2 Thu Mar 17 21:07:02 2016        Haipei Liu change to Junction test provider                  
+8932231 Thu Mar 17 21:07:42 2016        Haipei Liu change to Junction test provider                  
+c82d0f3 Thu Mar 17 21:12:01 2016        Haipei Liu Add new Starter                                   
+792a98d Thu Mar 17 21:40:44 2016        Haipei Liu Pass parameters by SimulationInputListener        
+416a6d7 Fri Mar 18 20:33:40 2016              iroq modifying Car's behaviour in progress             
+c7dc7a0 Fri Mar 18 20:39:43 2016              iroq add base of final report, move initial report to..
+53b7b2f Fri Mar 18 20:42:16 2016              iroq remove old initial report                         
+03aeadf Fri Mar 18 23:09:56 2016           vezer93 analyser                                          
+b5c01d1 Fri Mar 18 23:11:46 2016           vezer93 deleted the commented function                    
+e9c412f Fri Mar 18 23:19:42 2016           vezer93 Revert "changed the mistakes"                     
+414b024 Fri Mar 18 23:24:19 2016              iroq jumping from road to junction working (without c..
+58422e8 Fri Mar 18 23:25:12 2016              iroq debug for vehicle movement                        
+936fd5c Fri Mar 18 23:37:14 2016           vezer93 Merge remote-tracking branch 'remotes/origin/dev..
+2b5074b Fri Mar 18 23:37:30 2016           vezer93 Merge remote-tracking branch 'origin/feat-xmlloa..
+91113e8 Fri Mar 18 23:37:57 2016         vezer1993 Merge pull request #46 from TheWaypointers/feat-..
+6a2f406 Sat Mar 19 03:10:30 2016              iroq add leaving junction and entering road            
+983e694 Sat Mar 19 03:10:43 2016              iroq Merge branch 'feat-junctiontravel-54' into feat-..
+95047e9 Sat Mar 19 04:06:29 2016              iroq add passing junction location to WorldStateDTO    
+28e0bfe Sat Mar 19 04:18:48 2016              iroq bring back vehicles stopping before each other i..
+88f4eb0 Sat Mar 19 04:20:31 2016              iroq Revert "debug for vehicle movement"               
+4c2697c Sat Mar 19 15:21:11 2016              iroq Merge branch 'dev' into feat-junctiontravel-54    
+36233ab Sat Mar 19 15:31:55 2016              iroq some merge fixes                                  
+99c7d0a Sat Mar 19 15:35:03 2016              iroq change windows path to universal path             
+78f4433 Sat Mar 19 15:46:04 2016              iroq fix compilation error                             
+1a96248 Sat Mar 19 15:59:33 2016       mengzhuwang fix problems: 1.get labels 2.cars follow the map..
+926be25 Sat Mar 19 16:04:01 2016           vezer93 Merge remote-tracking branch 'remotes/origin/dev..
+5577074 Sat Mar 19 16:40:58 2016         vezer1993 Merge pull request #71 from TheWaypointers/bugfi..
+f94c896 Sat Mar 19 16:42:51 2016       mengzhuwang temporary solution for vehicles on junctions      
+978780e Sat Mar 19 17:54:04 2016       mengzhuwang add a panel in mainframe called timeLabelPanel t..
+e08d3bf Sat Mar 19 19:00:10 2016           vezer93 simulation                                        
+8c89ba6 Sat Mar 19 19:06:49 2016           vezer93 Correct directions in the nodegraph               
+60b175b Sat Mar 19 19:10:30 2016           vezer93 Correct directions in the nodegraph               
+789492a Sat Mar 19 19:13:22 2016           vezer93 Merge branch 'dev' into feat-xmlloader-last       
+b61f29a Sat Mar 19 19:20:06 2016       mengzhuwang Merge pull request #64 from TheWaypointers/feat-..
+86243cd Sat Mar 19 19:35:14 2016   Michał Szewczak Merge pull request #74 from TheWaypointers/feat-..
+0e41ace Sat Mar 19 20:11:40 2016              iroq Merge branch 'dev' into feat-junctiontravel-54    
+5b365e5 Sat Mar 19 20:14:08 2016              iroq Merge branch 'dev' into feat-junctiontravel-54    
+3c72ca4 Sun Mar 20 14:37:27 2016        Haipei Liu Change method for passing the clicked junction    
+91fbaf1 Sun Mar 20 15:00:09 2016         liuhaipei Change method for passing the clicked junction    
+cbb6373 Sun Mar 20 15:12:39 2016         liuhaipei Merge remote-tracking branch 'origin/dev' into f..
+4abf0c0 Sun Mar 20 15:20:18 2016        Haipei Liu fix bugs                                          
+14f4df5 Sun Mar 20 18:50:23 2016       mengzhuwang Merge branch 'feat-start/stopSimulation-47' into..
+da3e3af Sun Mar 20 18:54:30 2016       mengzhuwang merge branch 47 and 52                            
+2f997b8 Sun Mar 20 19:48:19 2016       mengzhuwang Merge pull request #72 from TheWaypointers/feat-..
+7667011 Mon Mar 21 19:25:43 2016              iroq untangle some dependencies and remove statics     
+74008d7 Tue Mar 22 04:12:57 2016              iroq refactoring of starter classes                    
+43e5459 Tue Mar 22 14:01:09 2016   Michal Szewczak finishing touches, tests for correct providers    
+971cdc6 Tue Mar 22 14:31:01 2016              iroq test for main starter                             
+ccdf06e Tue Mar 22 14:41:10 2016              iroq rename SimulationController to StateProviderCont..
+627a556 Tue Mar 22 15:03:22 2016              iroq fix clear button                                  
+752c57f Tue Mar 22 16:41:51 2016        Haipei Liu Update Control Panel:    -add slider button for ..
+047e66c Tue Mar 22 17:49:43 2016        Haipei Liu Merge pull request #76 from TheWaypointers/feat-..
+fdef3a3 Tue Mar 22 18:01:32 2016        Haipei Liu Merge branch 'dev' of https://github.com/TheWayp..
+a9de820 Wed Mar 23 02:14:07 2016              iroq Merge branch 'dev' into feat-junctiontravel-54    
+8c47102 Wed Mar 23 02:15:16 2016              iroq Merge branch 'dev' into feat-junctiontravel-54    
+98e72c8 Wed Mar 23 11:45:49 2016       mengzhuwang Merge branch 'dev' into feat-junctiondug-75       
+77f7b7c Wed Mar 23 11:56:22 2016       mengzhuwang fix vehicles on junctions turning problem         
+375d097 Fri Mar 25 17:05:34 2016           vezer93 Correct vehicle labels                            
+0a635ae Fri Mar 25 17:11:08 2016       mengzhuwang Merge pull request #77 from TheWaypointers/feat-..
+91951a2 Fri Mar 25 17:13:23 2016           vezer93 merge with dev                                    
+3ebc74d Fri Mar 25 17:22:35 2016   Michał Szewczak Merge pull request #79 from TheWaypointers/corre..
+dbe0e74 Fri Mar 25 17:31:19 2016   Michal Szewczak Merge branch 'dev' into feat-junctiontravel-54    
+b7eca84 Fri Mar 25 17:33:52 2016   Michal Szewczak fix labels                                        
+6c1c993 Fri Mar 25 17:45:20 2016           vezer93 fixed traffic lights traffic lights now show cor..
+eefcb42 Fri Mar 25 17:49:36 2016         vezer1993 Merge pull request #69 from TheWaypointers/feat-..
+5cbc359 Fri Mar 25 17:58:52 2016           vezer93 fixed traffic lights traffic lights now show cor..
+e56175b Fri Mar 25 18:02:50 2016   Michal Szewczak Merge branch 'dev' into feat-junctiondug-75       
+7707bca Fri Mar 25 18:08:42 2016   Michał Szewczak Merge pull request #78 from TheWaypointers/feat-..
+1f749f8 Fri Mar 25 18:59:30 2016       mengzhuwang 1. delete traffic lights on left road 2. modify ..
+7af5afe Fri Mar 25 19:05:25 2016           vezer93 traffic light junction anyliser working cars tha..
+20dd324 Sun Mar 27 04:47:19 2016              iroq add tools to final report                         
+d88998c Sun Mar 27 10:21:40 2016       mengzhuwang fix traffic lights problem issue83                
+d6904dc Sun Mar 27 12:19:08 2016   Michał Szewczak Merge pull request #81 from TheWaypointers/feat-..
+68a8d29 Sun Mar 27 19:25:53 2016           vezer93 merge with dev analyser now works with the vehic..
+3af8a9d Sun Mar 27 19:32:43 2016           vezer93 merge with dev analyser now works with the vehic..
+0a4947e Sun Mar 27 19:37:35 2016           vezer93 fixed a small bug to chek if opposite road exists 
+30e8b54 Mon Mar 28 01:03:47 2016   Michał Szewczak Merge pull request #84 from TheWaypointers/junct..
+820a977 Mon Mar 28 03:02:37 2016              iroq add start of appendix                             
+7ef0331 Mon Mar 28 20:18:54 2016              iroq add source code appendix and scripts for its gen..
