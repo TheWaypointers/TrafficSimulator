@@ -129,8 +129,14 @@ public class MapDTO {
     }
 
     public JunctionDTO getJunction(String label){
-        //TODO rewrite processing so this can use the dictionary again
-        return getJunctions().stream().filter(x->x.getLabel().equals(label)).findFirst().get();
+        JunctionDTO junction = null;
+        for(JunctionDTO junctionTemp : getJunctionsUnprocessed()){
+            if(junctionTemp.getLabel().equals(label)){
+                junction = junctionTemp;
+                return junction;
+            }
+        }
+        return junction;
     }
 
 

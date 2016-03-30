@@ -21,11 +21,12 @@ public class ControlPanelDocumentListener implements DocumentListener {
         int cautionCar = Integer.parseInt(controlPanel.cautionCarsNumberTextField.getText());
         int normalCar = Integer.parseInt(controlPanel.normalCarsNumberTextField.getText());
         int reckCar = Integer.parseInt(controlPanel.reckCarsNumberTextField.getText());
-        int bus = Integer.parseInt(controlPanel.busNumberTextField.getText());
-        int ambulance = Integer.parseInt(controlPanel.ambulanceTextField.getText());
+        //int bus = Integer.parseInt(controlPanel.busNumberTextField.getText());
+        //int ambulance = Integer.parseInt(controlPanel.ambulanceTextField.getText());
 
         //int input = Integer.parseInt(textField.getText());
-        int total = cautionCar + normalCar + reckCar + bus + ambulance;
+        int total = cautionCar + normalCar + reckCar;
+        //+ bus + ambulance;
         //int diffrence = 100 - total;
 
         if(total > 100){

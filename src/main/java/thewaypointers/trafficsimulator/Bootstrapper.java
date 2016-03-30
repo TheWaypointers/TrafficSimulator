@@ -28,6 +28,7 @@ public class Bootstrapper {
         stateProviderController.start();
         MainFrame mainFrame=new MainFrame(initialWorldState);
         mainFrame.setSimulationController(stateProviderController);
+        mainFrame.setSimulationInputListener(stateProviderController);
         stateProviderController.setOutput(mainFrame.mapContainerPanel.mapPanel);
         stateProviderController.setProviderSupplier(providerSupplier);
     }

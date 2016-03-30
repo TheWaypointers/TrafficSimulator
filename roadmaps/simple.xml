@@ -2,22 +2,30 @@
 <simulation>
 	<roads>
 		<road>
-			<origin>E1</origin>
-			<destination>A</destination>
-			<length>500</length>
-			<direction>Up</direction>
+			<origin>A</origin>
+			<destination>E1</destination>
+			<length>300</length>
+			<direction>Left</direction>
 		</road>
 		<road>
 			<origin>A</origin>
 			<destination>E2</destination>
-			<length>500</length>
+			<length>300</length>
+			<direction>Up</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>E3</destination>
+			<length>300</length>
+			<direction>Right</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>E4</destination>
+			<length>300</length>
 			<direction>Down</direction>
 		</road>
 	</roads>
 	<junctions>
-		<junction>
-			<name>A</name>
-			<type>JunctionTrafficLights</type>
-		</junction>
 	</junctions>
 </simulation>

@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+git log --reverse --date=local --pretty=format:"%h %>(24)%ad %>(17)%an %<($1,trunc)%s" > gitlog.txt
