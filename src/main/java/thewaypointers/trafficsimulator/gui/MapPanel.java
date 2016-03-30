@@ -108,7 +108,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         for (Statistics s : GetALLStatistics(VehicleType.CarCautious)){
             if(s.getTime()!=0) {
                 cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
-                cautionCarTotalNum = cautionCarTotalNum++;
             }
             //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
@@ -118,7 +117,6 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
             if(s.getTime()!=0) {
                 recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
-                recklessCarTotalNum = cautionCarTotalNum++;
             }
             //System.out.println(s.getLabel() +" start_time is "+s.getStart_time() + "s. "+"Running time is " +s.getTime()+"s. "+" tmp is "+ s.getTmp()+". "+" Distance is "+s.getDistance()+".");
         }
