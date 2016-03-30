@@ -83,6 +83,7 @@ public class EmergencyService implements IVehicle {
     @Override
     public void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
         currentSpeed = topSpeed;
+        checkVehicleSpeedsInJunction();
         float distanceTravelled = getCurrentRoad() != null ? getDistanceTravelled() : getJunctionLocation().getDistanceTravelled(getCurrentNode().getWidth(), getCurrentNode().getHeight());
         float distanceToTravel = calculateDistanceToTravel(currentSpeed, timeStep);
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
@@ -101,21 +102,7 @@ public class EmergencyService implements IVehicle {
                         currentRoad.getLength() :
                         junctionLocation.getRouteLength(currentNode.getWidth(), currentNode.getWidth());
 
-
-        if (nextPossiblePosition <= currentSectionLength) {
-            // can move freely inside current section
-            if (currentRoad != null) {
-                this.setDistanceTravelled(nextPossiblePosition);
-            } else {
-                this.setJunctionLocation(new JunctionLocationDTO(
-                        getJunctionLocation(),
-                        nextPossiblePosition,
-                        getCurrentNode().getWidth(),
-                        getCurrentNode().getHeight()
-                ));
-            }
-            return;
-        }
+        if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
 
         // advance to next road or junction
         float overLap = nextPossiblePosition - currentSectionLength;
@@ -131,6 +118,8 @@ public class EmergencyService implements IVehicle {
                     float height = nextNode.getHeight();
                     currentRoad = null;
                     currentNode = nextNode;
+                    checkVehicleSpeedsInJunction();
+                    if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
                     junctionLocation = new JunctionLocationDTO(nextNode.getNodeName(), origin, target, overLap, width, height);
 
                     VehicleManager.getVehicleMap().remove(this);
@@ -164,6 +153,51 @@ public class EmergencyService implements IVehicle {
             VehicleManager.getVehicleMap().add(nextRoad.getRoad(), this);
             return;
         }
+    }
+
+    private boolean calculateNextPossiblePosition(float nextPossiblePosition, float currentSectionLength) {
+        if (nextPossiblePosition <= currentSectionLength) {
+            // can move freely inside current section
+            if (currentRoad != null) {
+                this.setDistanceTravelled(nextPossiblePosition);
+            } else {
+                this.setJunctionLocation(new JunctionLocationDTO(
+                        getJunctionLocation(),
+                        nextPossiblePosition,
+                        getCurrentNode().getWidth(),
+                        getCurrentNode().getHeight()
+                ));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void checkVehicleSpeedsInJunction() {
+        if (currentRoad == null) {
+            List<IVehicle> vehicleListInsideJunction = VehicleManager.getVehicleMap().getFromJunction(currentNode);
+
+            if (vehicleListInsideJunction != null) {
+                if (vehicleListInsideJunction.size() > 0) {
+                    float speed = returnSlowestSpeedInJunction(vehicleListInsideJunction);
+                    currentSpeed = speed;
+                }
+            }
+        }
+    }
+
+    private float returnSlowestSpeedInJunction(List<IVehicle> vehicleListInsideJunction) {
+        float speed = 0;
+
+        for (IVehicle vehicle : vehicleListInsideJunction) {
+            if (speed == 0) {
+                speed = vehicle.getVehiclesCurrentSpeed();
+            } else if (speed > vehicle.getVehiclesCurrentSpeed()) {
+                speed = vehicle.getVehiclesCurrentSpeed();
+            }
+        }
+        return speed;
+
     }
 
 

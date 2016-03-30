@@ -45,7 +45,6 @@ public class Car implements IVehicle {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
         this.currentRoad = currentRoad;
         this.roadLength = roadLength;
-        BLOCKED_JUNCTION_COUNTER = SPEED_DIFFERENCE * 4;
     }
 
     public Car(VehicleType type,
@@ -90,16 +89,7 @@ public class Car implements IVehicle {
     @Override
     public void calculateNextPosition(long timeStep, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
         currentSpeed = topSpeed;
-        if (currentRoad == null) {
-            List<IVehicle> vehicleListInsideJunction = VehicleManager.getVehicleMap().getFromJunction(currentNode);
-
-            if (vehicleListInsideJunction != null) {
-                if (vehicleListInsideJunction.size() > 1) {
-                    float speed = returnSlowestSpeedInJunction(vehicleListInsideJunction);
-                    currentSpeed = speed;
-                }
-            }
-        }
+        checkVehicleSpeedsInJunction();
         float distanceTravelled = getCurrentRoad() != null ? getDistanceTravelled() : getJunctionLocation().getDistanceTravelled(getCurrentNode().getWidth(), getCurrentNode().getHeight());
         float distanceToTravel = calculateDistanceToTravel(currentSpeed, timeStep);
         float nextPossiblePosition = distanceTravelled + distanceToTravel;
@@ -119,20 +109,7 @@ public class Car implements IVehicle {
                         junctionLocation.getRouteLength(currentNode.getWidth(), currentNode.getWidth());
 
 
-        if (nextPossiblePosition <= currentSectionLength) {
-            // can move freely inside current section
-            if (currentRoad != null) {
-                this.setDistanceTravelled(nextPossiblePosition);
-            } else {
-                this.setJunctionLocation(new JunctionLocationDTO(
-                        getJunctionLocation(),
-                        nextPossiblePosition,
-                        getCurrentNode().getWidth(),
-                        getCurrentNode().getHeight()
-                ));
-            }
-            return;
-        }
+        if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
 
         // advance to next road or junction
         float overLap = nextPossiblePosition - currentSectionLength;
@@ -151,6 +128,9 @@ public class Car implements IVehicle {
                         currentRoad = null;
                         currentNode = tlNode;
                         junctionBlocked = 0;
+                        checkVehicleSpeedsInJunction();
+                        if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
+                        overLap = nextPossiblePosition - currentSectionLength;
                         junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
 
                         VehicleManager.getVehicleMap().remove(this);
@@ -211,6 +191,37 @@ public class Car implements IVehicle {
             VehicleManager.getVehicleMap().remove(this);
             VehicleManager.getVehicleMap().add(nextRoad.getRoad(), this);
             return;
+        }
+    }
+
+    private boolean calculateNextPossiblePosition(float nextPossiblePosition, float currentSectionLength) {
+        if (nextPossiblePosition <= currentSectionLength) {
+            // can move freely inside current section
+            if (currentRoad != null) {
+                this.setDistanceTravelled(nextPossiblePosition);
+            } else {
+                this.setJunctionLocation(new JunctionLocationDTO(
+                        getJunctionLocation(),
+                        nextPossiblePosition,
+                        getCurrentNode().getWidth(),
+                        getCurrentNode().getHeight()
+                ));
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void checkVehicleSpeedsInJunction() {
+        if (currentRoad == null) {
+            List<IVehicle> vehicleListInsideJunction = VehicleManager.getVehicleMap().getFromJunction(currentNode);
+
+            if (vehicleListInsideJunction != null) {
+                if (vehicleListInsideJunction.size() > 0) {
+                    float speed = returnSlowestSpeedInJunction(vehicleListInsideJunction);
+                    currentSpeed = speed;
+                }
+            }
         }
     }
 
@@ -328,9 +339,7 @@ public class Car implements IVehicle {
 
                     for (IVehicle vehicle : carsFromTheOppositeRoad) {
                         if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40) {
-                            if (vehicle.getVehiclesNextDestinationNode().equals(this.getOriginNode())) {
-                                return false;
-                            }
+                            return false;
                         }
                     }
                 }
@@ -712,6 +721,11 @@ public class Car implements IVehicle {
             default:
                 return thewaypointers.trafficsimulator.common.VehicleType.CarNormal;
         }
+    }
+
+    @Override
+    public boolean isVehicleTurningLeft() {
+        return vehicleIsTurningLeft;
     }
 
     public RoadEdge getCurrentRoad() {
