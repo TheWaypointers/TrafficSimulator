@@ -30,13 +30,14 @@ public class StatisticsPanel extends JPanel {
 
     }
 
-    public void addRow(double cautionCarSpeed, double normalCarSpeed, double recklessCarSpeed, double ambulanceSpeed) {
+    public void addRow(double cautionCarSpeed, double normalCarSpeed, double recklessCarSpeed, double ambulanceSpeed, double totalSpeed) {
         Vector v = new Vector();
         v.add(0, "Average speed");
         v.add(1, cautionCarSpeed);
         v.add(2, normalCarSpeed);
         v.add(3, recklessCarSpeed);
         v.add(4, ambulanceSpeed);
+        v.add(5, totalSpeed);
         if(tableModel.getRowCount()!=0) {
             tableModel.removeRow(0);
         }
@@ -55,31 +56,16 @@ public class StatisticsPanel extends JPanel {
 
     private void initJTabel(JTable table) {
 
-        String[] columnNames = {"Vehicle Type", "Caution Car", "Normal Car", "Reckless Car", "Ambulance"};
-        Object[][] obj = {null, null, null, null, null};
-//                Object[][] obj = new Object[1][4];
-//        for (int i = 0; i < 4; i++) {
-//            switch (i) {
-//                case 0:
-//                    obj[0][i] = "Average Speed";
-//                    break;
-//                case 1:
-//                    obj[0][i] = "1";
-//                    break;
-//                case 2:
-//                    obj[0][i] = "1";
-//                    break;
-//                case 3:
-//                    obj[0][i] = "1";
-//                    break;
-//            }
-//        }
+        String[] columnNames = {"Vehicle Type", "Caution Car", "Normal Car", "Reckless Car", "Ambulance", "All vehicles"};
+        Object[][] obj = {null, null, null, null, null, null};
+
         table.setModel(new DefaultTableModel(obj, columnNames) {
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                    java.lang.String.class, java.lang.Double.class, java.lang.Double.class,
+                    java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean[]{
-                    false, false, false, false, false
+                    false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -101,7 +87,7 @@ public class StatisticsPanel extends JPanel {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(table);
-        scroll.setSize(650, 50);
+        scroll.setSize(750, 50);
         scroll.setLocation(5, 20);
         this.add(scroll);
 
