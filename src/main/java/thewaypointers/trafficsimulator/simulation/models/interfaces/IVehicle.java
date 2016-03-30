@@ -2,6 +2,7 @@ package thewaypointers.trafficsimulator.simulation.models.interfaces;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
+import thewaypointers.trafficsimulator.common.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 
@@ -18,6 +19,10 @@ public interface IVehicle {
     RoadEdge getCurrentRoadEdge();
     String getVehiclesOriginNode();
     String getVehiclesDestinationNode();
+    String getVehiclesNextDestinationNode();
+    float getVehiclesCurrentRoadLength();
     void setVehicleLabel(int label);
     int getVehicleLabel();
+    JunctionLocationDTO getVehiclesJunctionLocation();
+    VehicleType getVehiclesType();
 }

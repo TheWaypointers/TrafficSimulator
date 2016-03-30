@@ -69,6 +69,7 @@ public class TrafficLightSystemDTO {
             Direction direction,
             Lane lane
     ){
+
         getTrafficLight(junctionLabel, direction, lane).changeColor();
     }
 

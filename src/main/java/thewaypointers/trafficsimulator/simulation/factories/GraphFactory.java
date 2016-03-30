@@ -33,6 +33,7 @@ public class GraphFactory {
     public void prepareRoadGraph() {
 
         for (RoadDTO road : worldState.getRoadMap().getRoads()) {
+
             if (road != null) {
                 getRoadGraph().addVertex(road.getFrom().getLabel());
                 Node node1 = createNode(road.getFrom().getLabel());
@@ -52,6 +53,7 @@ public class GraphFactory {
                 } else {
                     node2 = getNodeFromNodeGraph(node2);
                 }
+
 
                 DefaultWeightedEdge edge1 = getRoadGraph().addEdge(road.getFrom().getLabel(), road.getTo().getLabel());
                 getRoadGraph().setEdgeWeight(edge1, road.getLength());
@@ -106,10 +108,10 @@ public class GraphFactory {
     private Node createNode(String label) {
         if (worldState.getTrafficLightSystem().getJunction(label) != null) {
             return new TrafficLightNode(label, NodeType.JunctionTrafficLights, ROAD_WIDTH, ROAD_WIDTH);
-        } else if (label.startsWith("E")) {
+        } else if (label.toLowerCase().startsWith("e")) {
             return new Node(label, NodeType.ExitNode);
         } else {
-            return new Node(label, NodeType.JunctionNormal);
+            return new Node(label, NodeType.JunctionNormal, ROAD_WIDTH, ROAD_WIDTH);
         }
     }
 

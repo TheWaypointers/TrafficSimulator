@@ -11,6 +11,7 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager;
+import thewaypointers.trafficsimulator.utils.VehicleSpawnRatio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +24,15 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
     WorldStateDTO worldState;
     List<RoadDTO> dtoRoads;
+    VehicleSpawnRatio vehicleSpawnRatio;
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 15;
+    final int MAX_VEHICLE_NUMBER = 70;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 15;
+    final int TRAFFIC_LIGHT_STEPS = 30;
     int trafficLightCounter = 0;
     int vehicleLabelCounter = 1;
 
@@ -51,11 +53,50 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     }
 
     public void initiateSimulation() {
+        vehicleSpawnRatio = new VehicleSpawnRatio();
         prepareRoadGraph();
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
-        // set new value for the parameter in the simulation
+        switch (parameterName){
+            case "junctionLabel" :
+                changeJunctionType(value);
+                break;
+            case "cautionCarPercentage":
+                int ratioCautionCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setCautionCarsRatio(ratioCautionCar);
+                break;
+            case "normalCarPercentage":
+                int ratioNormalCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ratioNormalCar);
+                break;
+            case "recklessCarPercentage":
+                int ratioReckCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ratioReckCar);
+                break;
+            case "busPercentage":
+                int busRatio = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(busRatio);
+                break;
+            case "ambulancePercentage":
+                int ambulanceRatio = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ambulanceRatio);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void changeJunctionType(String junction) {
+        for(Node node : nodeGraphMap.keySet()){
+            if(node.getNodeName().equals(junction)){
+                if(node.getNodeType() == NodeType.JunctionNormal){
+                    node.setNodeType(NodeType.JunctionTrafficLights);
+                }else{
+                    node.setNodeType(NodeType.JunctionNormal);
+                }
+            }
+        }
     }
 
     public WorldStateDTO getNextState(long timeStep) {
@@ -90,10 +131,10 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
         for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
             RoadDTO roadDTO = findEqualRoad(vehicle);
             RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
-            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, vehicle.getVehiclesType());
         }
         for (IVehicle vehicle:VehicleManager.getVehicleMap().getAllFromJunctions()){
-            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), vehicle.getVehiclesType());
         }
         worldState.setVehicleList(dtoVehicleList);
 
@@ -126,16 +167,30 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         if (trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
 
-            JunctionDTO junction = worldState.getRoadMap().getJunctions().get(0);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right);
-            worldState.getTrafficLightSystem()
-                    .changeTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right);
+            JunctionDTO junction;;
 
             for (Node node : nodeGraphMap.keySet()) {
                 if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                     TrafficLightNode tfNode = ((TrafficLightNode) node);
                     tfNode.changeLightColor();
+
+                    if(tfNode.getLeftRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Left, Lane.Right, tfNode.getLeft());
+                    }
+                    if(tfNode.getRightRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Right, Lane.Right, tfNode.getRight());
+                    }
+                    if(tfNode.getDownRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Down, Lane.Right, tfNode.getDown());
+                    }
+                    if(tfNode.getUpRoad() != null){
+                        junction = worldState.getRoadMap().getJunction(tfNode.getNodeName());
+                        worldState.getTrafficLightSystem().setTrafficLightColor(junction.getLabel(), Direction.Up, Lane.Right, tfNode.getUp());
+                    }
+
                 }
             }
 
@@ -178,7 +233,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     private void spawnVehicle() {
 
-        VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap);
+        VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap, vehicleSpawnRatio);
         IVehicle vehicle = vehicleFactory.buildVehicle(roadGraph, nodeGraphMap);
         vehicle.setVehicleLabel(vehicleLabelCounter);
         vehicleLabelCounter++;

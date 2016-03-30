@@ -24,6 +24,9 @@ public class VehicleMap {
     public List<IVehicle> getFromRoad(DefaultWeightedEdge road){
         return roadMap.get(road);
     }
+    public List<IVehicle> getFromJunction(Node node){
+        return junctionMap.get(node);
+    }
 
     private <TKey> List<IVehicle> getAll(HashMap<TKey, ArrayList<IVehicle>> map){
         return map.entrySet().stream()
