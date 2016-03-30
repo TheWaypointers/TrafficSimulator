@@ -11,6 +11,8 @@ public class Node {
 
     private String nodeName;
     private boolean carEnteringFlag;
+    private float width;
+    private float height;
 
     private Map<Direction, RoadEdge> roads;
 
@@ -23,6 +25,17 @@ public class Node {
         }
         this.setNodeName(nodeName);
         this.setNodeType(nodeType);
+    }
+
+    public Node(String nodeName, NodeType nodeType, float width, float height){
+        roads = new HashMap<>();
+        for(Direction d : Direction.values()){
+            roads.put(d, null);
+        }
+        this.setNodeName(nodeName);
+        this.setNodeType(nodeType);
+        this.width = width;
+        this.height = height;
     }
 
     public String getNodeName() {
@@ -88,5 +101,21 @@ public class Node {
 
     public void setCarEnteringFlag(boolean carEnteringFlag) {
         this.carEnteringFlag = carEnteringFlag;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 }

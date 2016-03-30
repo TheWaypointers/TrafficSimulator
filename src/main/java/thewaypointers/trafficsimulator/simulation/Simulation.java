@@ -11,6 +11,7 @@ import thewaypointers.trafficsimulator.simulation.models.graph.helper.RoadEdge;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.TrafficLightNode;
 import thewaypointers.trafficsimulator.simulation.models.interfaces.IVehicle;
 import thewaypointers.trafficsimulator.simulation.models.managers.VehicleManager;
+import thewaypointers.trafficsimulator.utils.VehicleSpawnRatio;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap;
     WorldStateDTO worldState;
     List<RoadDTO> dtoRoads;
+    VehicleSpawnRatio vehicleSpawnRatio;
 
     GraphFactory graphFactory;
 
@@ -51,11 +53,50 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     }
 
     public void initiateSimulation() {
+        vehicleSpawnRatio = new VehicleSpawnRatio();
         prepareRoadGraph();
     }
 
     public void SimulationParameterChanged(String parameterName, String value) {
-        // set new value for the parameter in the simulation
+        switch (parameterName){
+            case "junctionLabel" :
+                changeJunctionType(value);
+                break;
+            case "cautionCarPercentage":
+                int ratioCautionCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setCautionCarsRatio(ratioCautionCar);
+                break;
+            case "normalCarPercentage":
+                int ratioNormalCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ratioNormalCar);
+                break;
+            case "recklessCarPercentage":
+                int ratioReckCar = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ratioReckCar);
+                break;
+            case "busPercentage":
+                int busRatio = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(busRatio);
+                break;
+            case "ambulancePercentage":
+                int ambulanceRatio = Integer.parseInt(value);
+                vehicleSpawnRatio.setNormalCarsRatio(ambulanceRatio);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void changeJunctionType(String junction) {
+        for(Node node : nodeGraphMap.keySet()){
+            if(node.getNodeName().equals(junction)){
+                if(node.getNodeType() == NodeType.JunctionNormal){
+                    node.setNodeType(NodeType.JunctionTrafficLights);
+                }else{
+                    node.setNodeType(NodeType.JunctionNormal);
+                }
+            }
+        }
     }
 
     public WorldStateDTO getNextState(long timeStep) {
@@ -90,10 +131,10 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
         for (IVehicle vehicle: VehicleManager.getVehicleMap().getAllFromRoads()){
             RoadDTO roadDTO = findEqualRoad(vehicle);
             RoadLocationDTO loc = new RoadLocationDTO(roadDTO, roadDTO.getEnd(vehicle.getVehiclesOriginNode()), vehicle.getVehiclesDistanceTravelled(), Lane.Right);
-            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), loc, vehicle.getVehiclesType());
         }
         for (IVehicle vehicle:VehicleManager.getVehicleMap().getAllFromJunctions()){
-            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), VehicleType.CarNormal);
+            dtoVehicleList.addVehicle("" + vehicle.getVehicleLabel(), vehicle.getJunctionLocation(), vehicle.getVehiclesType());
         }
         worldState.setVehicleList(dtoVehicleList);
 
@@ -192,7 +233,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     private void spawnVehicle() {
 
-        VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap);
+        VehicleFactory vehicleFactory = new VehicleFactory(nodeGraphMap, vehicleSpawnRatio);
         IVehicle vehicle = vehicleFactory.buildVehicle(roadGraph, nodeGraphMap);
         vehicle.setVehicleLabel(vehicleLabelCounter);
         vehicleLabelCounter++;

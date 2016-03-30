@@ -25,9 +25,10 @@ public class MainFrameEventHandle implements ComponentListener {
     public void componentResized(ComponentEvent e) {
         MainFrame mainFrame = processComponent(e.getComponent());
         mainFrame.setLayout(null);
-        mainFrame.mapContainerPanel.setBounds(0,0, mainFrame.getWidth()-200, mainFrame.getHeight()-60);
+        mainFrame.mapContainerPanel.setBounds(0,0, mainFrame.getWidth()-200, mainFrame.getHeight()-100);
         mainFrame.controlPanel.setBounds(mainFrame.getWidth()-200,0,200, mainFrame.getHeight());
-        mainFrame.timeLabelPanel.setBounds(0, mainFrame.getHeight()-60, mainFrame.getWidth()-200,60);
+        //mainFrame.timeLabelPanel.setBounds(0, mainFrame.getHeight()-60, mainFrame.getWidth()-200,60);
+        mainFrame.statisticsPanel.setBounds(0, mainFrame.getHeight()-100, mainFrame.getWidth()-200, 100);
     }
 
     @Override
