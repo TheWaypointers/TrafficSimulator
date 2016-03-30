@@ -9,7 +9,7 @@ import thewaypointers.trafficsimulator.simulation.factories.MapWorldStateFactory
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class TestMapWorldStateFactory {
+public class MapWorldStateFactoryTest {
     @Test
     public void test2Roads(){
 
