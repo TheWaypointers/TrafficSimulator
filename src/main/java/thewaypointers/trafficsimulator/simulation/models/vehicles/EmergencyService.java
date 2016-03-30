@@ -33,6 +33,7 @@ public class EmergencyService implements IVehicle {
     private JunctionLocationDTO junctionLocation;
     private int label;
     private int junctionBlocked;
+    private boolean vehicleIsTurningLeft;
 
     private final long SPEED_DIFFERENCE = 10;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
@@ -173,10 +174,16 @@ public class EmergencyService implements IVehicle {
 
     private boolean canGoTroughJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node node) {
         List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(node);
+        Direction origin = currentRoad.getDirection().opposite();
 
         if(vehicleList == null){
             return true;
         }else if(vehicleList.size() > 0){
+            for(IVehicle vehicle : vehicleList){
+                if(vehicle.getJunctionLocation().getOrigin() == origin){
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -345,6 +352,11 @@ public class EmergencyService implements IVehicle {
     @Override
     public thewaypointers.trafficsimulator.common.VehicleType getVehiclesType() {
         return thewaypointers.trafficsimulator.common.VehicleType.EmergencyService;
+    }
+
+    @Override
+    public boolean isVehicleTurningLeft() {
+        return vehicleIsTurningLeft;
     }
 
     public RoadEdge getCurrentRoad() {

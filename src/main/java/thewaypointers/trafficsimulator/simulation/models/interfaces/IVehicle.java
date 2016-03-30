@@ -25,4 +25,5 @@ public interface IVehicle {
     int getVehicleLabel();
     JunctionLocationDTO getVehiclesJunctionLocation();
     VehicleType getVehiclesType();
+    boolean isVehicleTurningLeft();
 }

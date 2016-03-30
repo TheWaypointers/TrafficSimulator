@@ -33,10 +33,11 @@ public class Car implements IVehicle {
     private float roadLength;
     private JunctionLocationDTO junctionLocation;
     private int label;
+    private boolean vehicleIsTurningLeft;
     private int junctionBlocked;
 
     private final long SPEED_DIFFERENCE = 10;
-    private final long DISTANCE_BETWEEN_VEHICLES = 20;
+    private final long DISTANCE_BETWEEN_VEHICLES = 22;
     private final int BLOCKED_JUNCTION_COUNTER = 25;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
@@ -235,6 +236,9 @@ public class Car implements IVehicle {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
                         }
+                        else if(vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2){
+                            return false;
+                        }
                     } else {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
@@ -265,8 +269,10 @@ public class Car implements IVehicle {
 
         //check if vehicle is turning left
         if (!isVehicleIsTurningLeft(node, direction)) {
+            vehicleIsTurningLeft = false;
             return true;
         }
+        vehicleIsTurningLeft = true;
         RoadEdge oppositeRoad = getOppositeRoad(node, direction, nodeGraphMap);
 
         //check if the vehicle from the opposite road is going to collide with this vehicle
@@ -650,6 +656,11 @@ public class Car implements IVehicle {
             default:
                 return thewaypointers.trafficsimulator.common.VehicleType.CarNormal;
         }
+    }
+
+    @Override
+    public boolean isVehicleTurningLeft() {
+        return vehicleIsTurningLeft;
     }
 
     public RoadEdge getCurrentRoad() {
