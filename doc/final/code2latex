@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+echo "Chosen category: $1"
+if [ -z "$1" ]
+then
+	echo "Specify main or test"
+	exit
+fi
+src_category=$1
+
+tex_file=${src_category}_code.tex
+src_dir=../../src/$src_category/java/thewaypointers/trafficsimulator/
+cd $src_dir
+
+echo "" > $tex_file
+
+find . -name "*\.java"  | sed 's/^\..//' |  ## Change ./foo/bar.src to foo/bar.src
+
+while read  i; do                ## Loop through each file
+  echo "\newpage" >> $tex_file   ## start each section on a new page
+  echo "\subsection{$i}" >> $tex_file  ## Create a section for each file
+  ## This command will include the file in the PDF
+  file_path=$src_dir$i
+  echo "\lstinputlisting[style=customasm]{$file_path}" >>$tex_file
+done &&
+
+mv $tex_file ../../../../../doc/final/$tex_file

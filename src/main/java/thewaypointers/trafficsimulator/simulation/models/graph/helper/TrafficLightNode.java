@@ -10,8 +10,6 @@ public class TrafficLightNode extends Node {
     private TrafficLightColor up;
     private TrafficLightColor down;
     private TrafficLightColor color;
-    private float width;
-    private float height;
 
     public TrafficLightNode(String nodeName, NodeType nodeType, float width, float height) {
         super(nodeName, nodeType);
@@ -19,8 +17,8 @@ public class TrafficLightNode extends Node {
         setRight(TrafficLightColor.Green);
         setUp(TrafficLightColor.Red);
         setDown(TrafficLightColor.Red);
-        this.width = width;
-        this.height = height;
+        super.setWidth(width);
+        super.setHeight(height);
     }
 
     public void  changeLightColor(){
@@ -70,19 +68,4 @@ public class TrafficLightNode extends Node {
         this.down = down;
     }
 
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-    }
 }

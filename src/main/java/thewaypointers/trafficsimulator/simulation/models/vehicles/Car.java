@@ -1,10 +1,8 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
-import org.jgrapht.graph.DefaultWeightedEdge;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
-import thewaypointers.trafficsimulator.common.RoadLocationDTO;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
@@ -29,17 +27,20 @@ public class Car implements IVehicle {
     private String originNode;
     private Lane lane;
     private RoadEdge currentRoad;
-    private TrafficLightNode currentNode;
-    private long roadLength;
+    private Node currentNode;
+    private float roadLength;
     private JunctionLocationDTO junctionLocation;
     private int label;
+    private int junctionBlocked;
 
-    private final long SPEED_DIFFERENCE = 10;
+    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.5f;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
+    private final int BLOCKED_JUNCTION_COUNTER = 25;
 
-    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane) {
+    public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
         this.currentRoad = currentRoad;
+        this.roadLength = roadLength;
     }
 
     public Car(VehicleType type,
@@ -65,6 +66,7 @@ public class Car implements IVehicle {
         this.roadLength = roadLength;
         calculateVehicleSpeed(roadSpeedLimit);
         this.currentSpeed = this.topSpeed;
+        junctionBlocked = 0;
     }
 
     private IVehicle checkVehicleWithinDistance(float nextPossiblePosition) {
@@ -125,7 +127,7 @@ public class Car implements IVehicle {
             if (nextNode.getNodeType() == NodeType.JunctionTrafficLights) {
                 TrafficLightNode tlNode = ((TrafficLightNode) nextNode);
                 if (lightFromThisDirection(tlNode) == TrafficLightColor.Green) {
-                    if (canGoTroughJunction(nodeGraphMap, tlNode, timeStep)) {
+                    if (canGoTroughJunction(nodeGraphMap, tlNode)) {
                         RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
                         Direction origin = currentRoad.getDirection().opposite();   // opposite because we want the direction from the road's target node, and this direction is from road's origin node
                         Direction target = nextRoadEdge.getDirection();
@@ -133,6 +135,7 @@ public class Car implements IVehicle {
                         float height = tlNode.getHeight();
                         currentRoad = null;
                         currentNode = tlNode;
+                        junctionBlocked = 0;
                         junctionLocation = new JunctionLocationDTO(tlNode.getNodeName(), origin, target, overLap, width, height);
 
                         VehicleManager.getVehicleMap().remove(this);
@@ -152,6 +155,29 @@ public class Car implements IVehicle {
                     }
                     currentSpeed = 0;
                     return;
+                }
+            } else if (nextNode.getNodeType() == NodeType.JunctionNormal) {
+                if (canGoTroughJunction(nodeGraphMap, nextNode)) {
+                    RoadEdge nextRoadEdge = calculateNextRoad(nodeGraphMap);
+                    Direction origin = currentRoad.getDirection().opposite();   // opposite because we want the direction from the road's target node, and this direction is from road's origin node
+                    Direction target = nextRoadEdge.getDirection();
+                    float width = nextNode.getWidth();
+                    float height = nextNode.getHeight();
+                    currentRoad = null;
+                    currentNode = nextNode;
+                    junctionBlocked = 0;
+                    junctionLocation = new JunctionLocationDTO(nextNode.getNodeName(), origin, target, overLap, width, height);
+
+                    VehicleManager.getVehicleMap().remove(this);
+                    VehicleManager.getVehicleMap().add(nextNode, this);
+
+                    this.setDistanceTravelled(overLap);
+
+                    return;
+                } else {
+                    if (getDistanceTravelled() < currentRoad.getLength() - 20) {
+                        setDistanceTravelled(currentRoad.getLength() - 20);
+                    }
                 }
             } else if (nextNode.getNodeType() == NodeType.ExitNode) {
                 VehicleManager.getVehicleMap().remove(this);
@@ -174,32 +200,75 @@ public class Car implements IVehicle {
     }
 
 
-    private boolean canGoTroughJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, TrafficLightNode tlNode, long timeStep) {
-        Direction direciton = DirectionVehicleIsApproachingJunction(nodeGraphMap, tlNode);
-        List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(tlNode);
+    private boolean canGoTroughJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node node) {
+        Direction direction = DirectionVehicleIsApproachingJunction(nodeGraphMap, node);
+        List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(node);
+
+        //check for blocked junction
+        if (vehicleList == null) {
+            return true;
+        } else {
+            if (vehicleList.size() == 0) {
+                junctionBlocked++;
+            }
+        }
+
+        if (junctionBlocked >= BLOCKED_JUNCTION_COUNTER) {
+            return true;
+        }
+
+
+        //check for vehicles inside junction
         if (vehicleList != null) {
             if (vehicleList.size() > 0) {
                 for (IVehicle vehicle : vehicleList) {
-                    if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
-                        return false;
+                    if (node.getNodeType() == NodeType.JunctionTrafficLights) {
+                        if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
+                            return false;
+                        }
+                    } else {
+                        if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
+                            return false;
+                        } else if (vehicle.getJunctionLocation().getTarget() != currentRoad.getDirection().opposite().toLeft() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite()) {
+                            return false;
+                        }
                     }
                 }
             }
         }
 
-        if (!isVehicleIsTurningLeft(tlNode, direciton)) {
+        //special junction rules when there are no traffic lights (let the car on the right pass first)
+        if (node.getNodeType() == NodeType.JunctionNormal) {
+            RoadEdge rightRoad = roadRightFromThis(node, direction, nodeGraphMap);
+            List<IVehicle> vehiclesFromRightSide = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
+
+            if (vehiclesFromRightSide != null) {
+                if (vehiclesFromRightSide.size() > 0) {
+                    for (IVehicle vehicle : vehiclesFromRightSide) {
+                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 20) {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //check if vehicle is turning left
+        if (!isVehicleIsTurningLeft(node, direction)) {
             return true;
         }
-        RoadEdge oppositeRoad = getOppositeRoad(tlNode, direciton, nodeGraphMap);
+        RoadEdge oppositeRoad = getOppositeRoad(node, direction, nodeGraphMap);
 
+        //check if the vehicle from the opposite road is going to collide with this vehicle
         if (oppositeRoad != null) {
             List<IVehicle> carsFromTheOppositeRoad = VehicleManager.getVehicleMap().getFromRoad((oppositeRoad.getRoad()));
 
-            if(carsFromTheOppositeRoad != null){
+            if (carsFromTheOppositeRoad != null) {
                 if (carsFromTheOppositeRoad.size() > 0) {
 
                     for (IVehicle vehicle : carsFromTheOppositeRoad) {
-                        if (vehicle.getVehiclesDistanceTravelled() >= 260) {
+                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40) {
                             if (vehicle.getVehiclesNextDestinationNode().equals(this.getOriginNode())) {
                                 return false;
                             }
@@ -212,8 +281,8 @@ public class Car implements IVehicle {
         return true;
     }
 
-    private RoadEdge getOppositeRoad(TrafficLightNode tlNode, Direction direciton, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
-        switch (direciton) {
+    private RoadEdge getOppositeRoad(Node tlNode, Direction direction, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
+        switch (direction) {
             case Left:
                 return otherSideOfTheRoad(tlNode.getRightRoad(), nodeGraphMap);
             case Up:
@@ -242,11 +311,11 @@ public class Car implements IVehicle {
         return null;
     }
 
-    private boolean isVehicleIsTurningLeft(TrafficLightNode tlNode, Direction direciton) {
+    private boolean isVehicleIsTurningLeft(Node tlNode, Direction direction) {
         String nextNodeName = getVehiclesNextDestinationNode();
 
 
-        switch (direciton) {
+        switch (direction) {
             case Left:
                 if (tlNode.getUpRoad() != null) {
                     if (tlNode.getUpRoad().getDestination().equals(nextNodeName)) {
@@ -281,7 +350,36 @@ public class Car implements IVehicle {
         return false;
     }
 
-    private Direction DirectionVehicleIsApproachingJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, TrafficLightNode tlNode) {
+    private RoadEdge roadRightFromThis(Node node, Direction direction, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
+
+        switch (direction) {
+            case Left:
+                if (node.getDownRoad() != null) {
+                    return otherSideOfTheRoad(node.getDownRoad(), nodeGraphMap);
+                }
+                break;
+            case Up:
+                if (node.getLeftRoad() != null) {
+                    return otherSideOfTheRoad(node.getLeftRoad(), nodeGraphMap);
+                }
+                break;
+            case Right:
+                if (node.getUpRoad() != null) {
+                    return otherSideOfTheRoad(node.getUpRoad(), nodeGraphMap);
+                }
+                break;
+            case Down:
+                if (node.getRightRoad() != null) {
+                    return otherSideOfTheRoad(node.getRightRoad(), nodeGraphMap);
+                }
+                break;
+            default:
+                break;
+        }
+        return null;
+    }
+
+    private Direction DirectionVehicleIsApproachingJunction(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node tlNode) {
         for (RoadEdge re : nodeGraphMap.get(tlNode)) {
             if (re.getDestination().equals(this.getOriginNode())) {
                 return re.getDirection();
@@ -419,11 +517,11 @@ public class Car implements IVehicle {
                     break;
                 case CarReckless:
                     //reckless cars drive 10% faster than the speed limit
-                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 case CarCautious:
                     //cautious drivers drive 10% slower than the speed limit
-                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 default:
                     break;
@@ -486,6 +584,20 @@ public class Car implements IVehicle {
         return this.junctionLocation;
     }
 
+    @Override
+    public thewaypointers.trafficsimulator.common.VehicleType getVehiclesType() {
+        switch (this.vehicleType) {
+            case CarCautious:
+                return thewaypointers.trafficsimulator.common.VehicleType.CarCautious;
+            case CarReckless:
+                return thewaypointers.trafficsimulator.common.VehicleType.CarReckless;
+            case CarNormal:
+                return thewaypointers.trafficsimulator.common.VehicleType.CarNormal;
+            default:
+                return thewaypointers.trafficsimulator.common.VehicleType.CarNormal;
+        }
+    }
+
     public RoadEdge getCurrentRoad() {
         return currentRoad;
     }
@@ -494,7 +606,7 @@ public class Car implements IVehicle {
         this.currentRoad = currentRoad;
     }
 
-    public TrafficLightNode getCurrentNode() {
+    public Node getCurrentNode() {
         return currentNode;
     }
 

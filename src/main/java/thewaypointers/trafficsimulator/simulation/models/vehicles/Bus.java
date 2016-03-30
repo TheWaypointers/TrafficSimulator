@@ -159,6 +159,11 @@ public class Bus implements IVehicle {
     }
 
     @Override
+    public thewaypointers.trafficsimulator.common.VehicleType getVehiclesType() {
+        return thewaypointers.trafficsimulator.common.VehicleType.Bus;
+    }
+
+    @Override
     public String getVehiclesNextDestinationNode() {
         return null;
     }

@@ -111,7 +111,7 @@ public class GraphFactory {
         } else if (label.toLowerCase().startsWith("e")) {
             return new Node(label, NodeType.ExitNode);
         } else {
-            return new Node(label, NodeType.JunctionNormal);
+            return new Node(label, NodeType.JunctionNormal, ROAD_WIDTH, ROAD_WIDTH);
         }
     }
 
