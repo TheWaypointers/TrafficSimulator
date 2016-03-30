@@ -32,12 +32,11 @@ public class EmergencyService implements IVehicle {
     private float roadLength;
     private JunctionLocationDTO junctionLocation;
     private int label;
-    private int junctionBlocked;
     private boolean vehicleIsTurningLeft;
 
     private final long SPEED_DIFFERENCE = 10;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
-    private final int BLOCKED_JUNCTION_COUNTER = 25;
+    private final long VEHICLE_LENGTH = 8;
 
     public EmergencyService(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
@@ -63,12 +62,9 @@ public class EmergencyService implements IVehicle {
         this.decisionPath = decisionPath;
         this.originNode = originNode;
         this.lane = lane;
-        this.currentRoad = currentRoad;
         distanceTravelled = 0;
-        this.roadLength = roadLength;
         calculateVehicleSpeed(roadSpeedLimit);
         this.currentSpeed = this.topSpeed;
-        junctionBlocked = 0;
     }
 
     private IVehicle checkVehicleWithinDistance(float nextPossiblePosition) {
@@ -135,7 +131,6 @@ public class EmergencyService implements IVehicle {
                     float height = nextNode.getHeight();
                     currentRoad = null;
                     currentNode = nextNode;
-                    junctionBlocked = 0;
                     junctionLocation = new JunctionLocationDTO(nextNode.getNodeName(), origin, target, overLap, width, height);
 
                     VehicleManager.getVehicleMap().remove(this);
@@ -176,6 +171,17 @@ public class EmergencyService implements IVehicle {
         List<IVehicle> vehicleList = VehicleManager.getVehicleMap().getFromJunction(node);
         Direction origin = currentRoad.getDirection().opposite();
 
+        //check if the next road is full
+        RoadEdge nextRoad = getNextRoad(node, nodeGraphMap);
+        List<IVehicle> vehicleListForNextRoad = VehicleManager.getVehicleMap().getFromRoad(nextRoad.getRoad());
+        float maxNumberOfVehiclesOnRoad = nextRoad.getLength() / (VEHICLE_LENGTH + DISTANCE_BETWEEN_VEHICLES);
+
+        if(vehicleListForNextRoad != null){
+            if(vehicleListForNextRoad.size() >= maxNumberOfVehiclesOnRoad){
+                return false;
+            }
+        }
+
         if(vehicleList == null){
             return true;
         }else if(vehicleList.size() > 0){
@@ -188,6 +194,18 @@ public class EmergencyService implements IVehicle {
         }
 
         return true;
+    }
+
+    private RoadEdge getNextRoad(Node node, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
+
+        for (Node n : nodeGraphMap.keySet()) {
+            for (RoadEdge re : nodeGraphMap.get(n)) {
+                if (re.getDestination().equals(this.getVehiclesNextDestinationNode()) && re.getOrigin().equals(node.getNodeName())) {
+                    return re;
+                }
+            }
+        }
+        return null;
     }
 
     private RoadEdge calculateNextRoad(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {

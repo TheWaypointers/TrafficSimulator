@@ -38,12 +38,14 @@ public class Car implements IVehicle {
 
     private final long SPEED_DIFFERENCE = 10;
     private final long DISTANCE_BETWEEN_VEHICLES = 22;
-    private final int BLOCKED_JUNCTION_COUNTER = 25;
+    private final long VEHICLE_LENGTH = 8;
+    private long BLOCKED_JUNCTION_COUNTER;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
         this.currentRoad = currentRoad;
         this.roadLength = roadLength;
+        BLOCKED_JUNCTION_COUNTER = SPEED_DIFFERENCE * 4;
     }
 
     public Car(VehicleType type,
@@ -209,8 +211,19 @@ public class Car implements IVehicle {
 
         //check if an emergency vehicle is approaching
 
-        if (emergencyVehicleCheck(nodeGraphMap, node)){
+        if (emergencyVehicleCheck(nodeGraphMap, node)) {
             return false;
+        }
+
+        //check if the next road is full
+        RoadEdge nextRoad = getNextRoad(node, nodeGraphMap);
+        List<IVehicle> vehicleListForNextRoad = VehicleManager.getVehicleMap().getFromRoad(nextRoad.getRoad());
+        float maxNumberOfVehiclesOnRoad = nextRoad.getLength() / (VEHICLE_LENGTH + DISTANCE_BETWEEN_VEHICLES);
+
+        if(vehicleListForNextRoad != null){
+            if(vehicleListForNextRoad.size() >= maxNumberOfVehiclesOnRoad){
+                return false;
+            }
         }
 
 
@@ -230,13 +243,13 @@ public class Car implements IVehicle {
 
         //check for vehicles inside junction
         if (vehicleList != null) {
+
             if (vehicleList.size() > 0) {
                 for (IVehicle vehicle : vehicleList) {
                     if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
-                        }
-                        else if(vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2){
+                        } else if (vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
                             return false;
                         }
                     } else {
@@ -253,15 +266,22 @@ public class Car implements IVehicle {
         //special junction rules when there are no traffic lights (let the car on the right pass first)
         if (node.getNodeType() == NodeType.JunctionNormal) {
             RoadEdge rightRoad = roadRightFromThis(node, direction, nodeGraphMap);
-            List<IVehicle> vehiclesFromRightSide = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
-
-            if (vehiclesFromRightSide != null) {
-                if (vehiclesFromRightSide.size() > 0) {
-                    for (IVehicle vehicle : vehiclesFromRightSide) {
-                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 20) {
-                            return false;
+            if(rightRoad != null){
+                List<IVehicle> vehiclesFromRightSide = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
+                if (vehiclesFromRightSide != null) {
+                    if (vehiclesFromRightSide.size() > 0) {
+                        for (IVehicle vehicle : vehiclesFromRightSide) {
+                            if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 20) {
+                                return false;
+                            }
                         }
                     }
+                }
+            }else{
+                if(vehicleList == null){
+                    return true;
+                }else if(vehicleList.size() == 0){
+                    return true;
                 }
             }
 
@@ -296,6 +316,18 @@ public class Car implements IVehicle {
         return true;
     }
 
+    private RoadEdge getNextRoad(Node node, HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap) {
+
+        for (Node n : nodeGraphMap.keySet()) {
+            for (RoadEdge re : nodeGraphMap.get(n)) {
+                if (re.getDestination().equals(this.getVehiclesNextDestinationNode()) && re.getOrigin().equals(node.getNodeName())) {
+                    return re;
+                }
+            }
+        }
+        return null;
+    }
+
     private boolean emergencyVehicleCheck(HashMap<Node, ArrayList<RoadEdge>> nodeGraphMap, Node node) {
         RoadEdge leftRoad = getOppositeRoad(node, Direction.Left, nodeGraphMap);
         RoadEdge upRoad = getOppositeRoad(node, Direction.Up, nodeGraphMap);
@@ -306,34 +338,34 @@ public class Car implements IVehicle {
 
         List<IVehicle> vehiclesFromRoad;
 
-        if(leftRoad != null){
+        if (leftRoad != null) {
             vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(leftRoad.getRoad());
-            if(vehiclesFromRoad != null){
+            if (vehiclesFromRoad != null) {
                 vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
             }
         }
-        if(rightRoad != null){
+        if (rightRoad != null) {
             vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(rightRoad.getRoad());
-            if(vehiclesFromRoad != null){
+            if (vehiclesFromRoad != null) {
                 vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
             }
         }
-        if(upRoad != null){
+        if (upRoad != null) {
             vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(upRoad.getRoad());
-            if(vehiclesFromRoad != null){
+            if (vehiclesFromRoad != null) {
                 vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
             }
         }
-        if(downRoad != null){
+        if (downRoad != null) {
             vehiclesFromRoad = VehicleManager.getVehicleMap().getFromRoad(downRoad.getRoad());
-            if(vehiclesFromRoad != null){
+            if (vehiclesFromRoad != null) {
                 vehiclesFromAllRoadsApproaching.addAll(vehiclesFromRoad);
             }
         }
 
-        for(IVehicle vehicle : vehiclesFromAllRoadsApproaching){
-            if(vehicle.getVehiclesType() == thewaypointers.trafficsimulator.common.VehicleType.EmergencyService){
-                if(vehicle.getVehiclesDistanceTravelled() > vehicle.getVehiclesCurrentRoadLength() - 20){
+        for (IVehicle vehicle : vehiclesFromAllRoadsApproaching) {
+            if (vehicle.getVehiclesType() == thewaypointers.trafficsimulator.common.VehicleType.EmergencyService) {
+                if (vehicle.getVehiclesDistanceTravelled() > vehicle.getVehiclesCurrentRoadLength() - 20) {
                     return true;
                 }
             }
