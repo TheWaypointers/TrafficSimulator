@@ -3,6 +3,7 @@ package thewaypointers.trafficsimulator.tests.MapWorldStateFactory;
 import org.junit.Test;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.Lane;
+import thewaypointers.trafficsimulator.common.TrafficLightDTO;
 import thewaypointers.trafficsimulator.common.WorldStateDTO;
 import thewaypointers.trafficsimulator.simulation.factories.MapWorldStateFactory;
 
@@ -55,13 +56,12 @@ public class TestMapWorldStateFactory {
         assertThat(worldState.getRoadMap().getDirection("A","B")).isEqualTo("Down");
         assertThat(worldState.getRoadMap().getDirection("B","E2")).isEqualTo("Right");
 
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Down, Lane.Right)).isNotNull();
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Right,Lane.Right)).isNotNull();
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Up,Lane.Right)).isNotNull();
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Right,Lane.Right)).isNotNull();
 
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Left, Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Right,Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Left,Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Right,Lane.Right));
         //problem with the traffic light when there isn't any Up/Down junction.
-
     }
     @Test
     public void test4Roads(){
@@ -88,12 +88,12 @@ public class TestMapWorldStateFactory {
         assertThat(worldState.getRoadMap().getDirection("C","E1")).isEqualTo("Left");
         assertThat(worldState.getRoadMap().getDirection("E2","B")).isEqualTo("Up");
 
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Up,Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Left,Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Up,Lane.Right));
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Right,Lane.Right));
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("A",Direction.Down,Lane.Right));
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Left,Lane.Right));
         assertThat(worldState.getTrafficLightSystem().getTrafficLight("B",Direction.Down,Lane.Right));
         assertThat(worldState.getTrafficLightSystem().getTrafficLight("C",Direction.Up,Lane.Right));
-        assertThat(worldState.getTrafficLightSystem().getTrafficLight("C",Direction.Down,Lane.Right));
+        assertThat(worldState.getTrafficLightSystem().getTrafficLight("C",Direction.Left,Lane.Right));
         //problem of the traffic lights.
         // If a junction has only down road, it will have up traffic light only.
         //If a junction has only up road, it will have down traffic light only.
