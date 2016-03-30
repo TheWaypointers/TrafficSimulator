@@ -1,10 +1,8 @@
 package thewaypointers.trafficsimulator.simulation.models.vehicles;
 
-import org.jgrapht.graph.DefaultWeightedEdge;
 import thewaypointers.trafficsimulator.common.Direction;
 import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
-import thewaypointers.trafficsimulator.common.RoadLocationDTO;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
@@ -35,7 +33,7 @@ public class Car implements IVehicle {
     private int label;
     private int junctionBlocked;
 
-    private final long SPEED_DIFFERENCE = 10;
+    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.5f;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
     private final int BLOCKED_JUNCTION_COUNTER = 25;
 
@@ -519,11 +517,11 @@ public class Car implements IVehicle {
                     break;
                 case CarReckless:
                     //reckless cars drive 10% faster than the speed limit
-                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit + (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 case CarCautious:
                     //cautious drivers drive 10% slower than the speed limit
-                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * SPEED_DIFFERENCE / 100));
+                    setTopSpeed(roadSpeedLimit - (roadSpeedLimit * BEHAVIOUR_SPEED_DIFFERENCE));
                     break;
                 default:
                     break;
