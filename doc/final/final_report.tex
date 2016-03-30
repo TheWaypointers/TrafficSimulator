@@ -1,6 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \title{Final report}
 \author{The Waypointers}
@@ -81,10 +82,97 @@ Minghao Zhu\\[3cm]
 \section{Review of related work}
 
 \section{Requirements}
+\subsection{Team work in requirement phase} The requirement analysis is a basic part of the whole project, which will influence every iterative process in the future development. So at the requirement analysis phase, we have twice meetings to discuss and define the requirements. We focused on The Task in Introductory Lecture, and extracted the list of features of the Traffic Simulation System. These features are presented in our initial report clearly.
+\subsection{Functional requirements}  Based on these features, we got the functional requirements of the Traffic Simulation System. These requirements cover the vehicles, road network, traffic lights, the behaviors of drivers, simulation analysis and interaction between the user and the system. The following table will show the details of the functional requirements of the Traffic Simulation System.
+
+\begin{table}[!htbp]
+\centering
+\label{versiontable}
+\caption{Functional requirements}
+\begin{tabular}{|p{1.5cm}|p{11cm}|}
+\hline
+ID & Functional Requirement\\
+\hline
+FR-1& The Traffic Simulation System should simulate different kinds of vehicles;\\
+\hline
+FR-2& The Traffic Simulation System should contain a road network, which contains straight roads with junctions;\\
+\hline
+FR-3& The Traffic Simulation System should allow user to set traffic lights in the junctions;\\
+\hline
+FR-4& The Traffic Simulation System should let vehicle enter the road network at a random entry, and leave at a random exit as well;\\
+\hline
+FR-5& The Traffic Simulation System should allow the user to add different kinds of vehicles into the road network;\\
+\hline
+FR-6& The Traffic Simulation System should simulate different behaviors of drivers, which includes reckless behavior, cautious behavior and normal behavior;\\
+\hline
+FR-7& The Traffic Simulation System should present real-time situation of the traffic, this should be a statistic result;\\
+\hline
+FR-8& The Traffic Simulation System should allow the user to control the simulation, including the starting or pausing, the time step, the speed of simulation, the states per second, the debug model and the interval of switching traffic lights.\\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Quality requirement} To ensure the robustness of the system, we also determined the quality requirements of the system, which can improve the operation of the system. The details of the quality requirements of the Traffic Simulation System will be stated in the following table.
+
+\begin{table}[!htbp]
+\centering
+\label{versiontable}
+\caption{Functional Requirements}
+\begin{tabular}{|p{1.5cm}|p{3cm}|p{8cm}|}
+\hline
+ID & Property & Functional Requirement\\
+\hline
+QR-1& Functionality&  The Traffic Simulation System should meet all the requirements from the users, and implement all the functions of the system;\\
+\hline
+QR-2& Maintainability& The Traffic Simulation System should be easy to maintain, the developer can modify the system and remove the defects very efficiently;\\
+\hline
+QR-3& Efficiency& The Traffic Simulation System should promptly respond to user's operations;\\
+\hline
+QR-4& Reliability& The Traffic Simulation System should ensure the low frequency of system crashes;\\
+\hline
+QR-5& Usability& The Traffic Simulation System should have a clear GUI interface that use can use it immediately and easily.\\
+\hline\input{final_report.toc}
+
+\end{tabular}
+\end{table}
 
 \section{Design}
 
 \section{Implementation}
+\subsection{Interaction between the user and the system}
+\subsubsection{Description} The majority of interactions between the user and the system come from the Control Panel. The user can control the system through the components in the Control Panel, and the relevant corresponding will be showed in the specific area. The Control Panel can be separated into three parts, they are Simulation Controller, Vehicles Controller and the Traffic Lights Controller. Though Simulation Controller part, the user can control the starting or pausing of the simulation, the clear of the whole simulation, the time step of the simulation, the speed of the timer, the states per second of the simulation, and the display of the debug mode. As to the Vehicles Controller, the user can set the percentage of the different kinds of vehicles, and the behaviors of the drivers. In addition, the interval of switching the traffic lights can be set by the user through the Traffic Lights Controller.
+The other interactions happen on the Map Panel. First of all, the user can drag and move the map to see more details of the simulation. Because the size of the map is bigger than the size of the Map Panel, we use this solution to help the user to see the complete map information. Then the user can set or remove the traffic lights just by clicking on the specific junction showed on the map.
+
+\subsubsection{Design and implementation}
+\includegraphics[width=12.5cm]{class.eps}
+\paragraph{Class PanelMouseAction} implements MouseInputListener, which is added on the Map Panel. The main task for this class is processing the requests from the Mouse operation in the Map Panel. The first operation is dragging the map. It is easy to implement the function of dragging the panel, however, it will get more complex if we take the range into consider. The map in our system is a rectangle that has limited length and height. So the range of dragging should be the minimum length and width to maximum length and width. The second one is set or remove the traffic lights. In order to ensure the operability, the selectable range should be enlarged to the whole junction. After clicking the junction, the relevant parameters will be sent back to the "common" package.
+\paragraph{Class ControlPanel} extends JPanel, which is added on the Main Frame. It is responsible for most of the interaction works. It uses the static parameter simulationListener in MainFrame to transfer inputs from the user to the server end mostly. While for the setting of debug mode, it transfers the Boolean parameter to the MapPanel directly. In addition, it should do the necessary checking of inputs before passing the values to the server side. For the invalid inputs, it will generate a JDialog object to prompt the user to make the appropriate changes. As to the control of starting or pausing, clearing of the simulation. It will use stateProviderController to control the main thread of the system.
+\paragraph{Class ControlPanelDocumentListnener} implements DocumentListener, which is added to the text fields in Control Panel. It is used to check the validity of inputs. If the input is invalid, a JDialog that has related information will be generated.
+\paragraph{Class StateProviderController} extends Thread, which is the main thread of the simulation. The thread is generated by the Bootstrapper class, and it keeps sleep state until the user starts the simulation. The Boolean parameter isSleep controlled the starting and pausing of the simulation. When the user chooses to clear the simulation, a new StateProvider will be passed to the simulation.
+\paragraph{Class Bootstrapper} is generated by the main starter of the system. It is used to create the main thread StateProviderController and start it. It also generates the Main Frame and set relevant parameters of the simulation.
+
+
+\subsubsection{Detailed description of the main function}
+
+\paragraph{ChangeListener trafficLightTimeChange} This function is used to pass the value of the interval of switching traffic lights to the package "common". The input value that is set by the user will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame.
+\paragraph{ChangeListener debugChange} This function is used to pass a Boolean value to MapPanel to control whether display debug mode. 
+\paragraph{ChangeListener statesPerSecondsChange} This function is used to pass the value of the states per seconds of the simulation to the package "common". The input value that is set by the user will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame.
+\paragraph{ChangeListener simulationSpeedChange} This function is used to pass the value of the speed of timer to the package "common". The input value that is set by the user will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame.
+\paragraph{ChangeListener timeStepChange}This function is used to pass the value of the time step of simulation to the package "common". The input value that is set by the user will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame.
+\paragraph{startPausePerformed(ActionEvent evt)} This function is used to control the main thread of the simulation. When the user presses the start button, the simulation will get start and the button will change to pause. When the user presses the pause button, the simulation will pause and the button change to start.
+\paragraph{clearPerformed(ActionEvent evt)} This function is used to end the main thread of the simulation. When the user presses the clear button, the simulation will stop immediately.
+\paragraph{submitPerformed(ActionEvent evt)} This function is used to pass the percentages of different kinds of vehicles to the package ?common?. The input value that is set by the user will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame. At the same time, the validity of the input will be checked in this method.
+
+\paragraph{mouseClicked(ActionEvent evt)} This function allows the user to set traffic lights at junctions. When the user clicks on a junction showed on the map, it will set or remove the traffic lights on this junction. The chosen traffic light will be passed through the function SimulationParameterChanged() of simulationInputListener in MainFrame. 
+\paragraph{mouseDragged(ActionEvent evt)} This function allows the user to drag map inside of the MapPanel and see more details of the simulation. When the user drags the map, the system will check whether the map is in the visible field. If the new location out of the range, the map will be set at the border of the MapPanel.
+
+\paragraph{pauseSimulation()} This function is used to control the main thread of the simulation. It will be invoked when the user presses the start/pause button. If the operation is  "start" then the thread will run as normal, while if the operation is "pause" then the thread will sleep until the user starts the simulation again.
+\paragraph{clearSimulation()} This function is used to end the main thread of the simulation. It will be invoked when the user presses the clear button. The thread will stop immediately and generate a new thread of the simulation.
+\paragraph{run()}This reconstructed function is used to execute the main thread of the simulation. It will be invoked when the system starts up.
+
+\paragraph{insertUpdate(DocumentEvent e)} This reconstructed function is used to check the validity of the inputs. It will be invoked when the text field has new inputs.  If the input is invalid, a JDialog will pop up to display related information.
+
+\paragraph{bootstrap(String[] args)} This function is used to generate a new thread StateProviderController and start the thread. It also generates the new MainFrame with relevant parameters of simulation controlling. This function is invoked by the main starter of the system.
 
 \section{Teamwork}
 
