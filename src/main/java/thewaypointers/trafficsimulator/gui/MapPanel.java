@@ -56,10 +56,11 @@ public class MapPanel extends JPanel implements IStateChangeListener{
 
     WorldStateDTO worldState;
 
-    public  static Map<String,Point> junctionlocation;
+    public static Map<String,Point> junctionlocation;
     public static Map<String,Statistics> STATISTICS_Cautious_INFORMATION;
     public static Map<String,Statistics> STATISTICS_Normal_INFORMATION;
     public static Map<String,Statistics> STATISTICS_Reckless_INFORMATION;
+    public static Map<String,Statistics> STATISTICS_EmergencyService_INFORMATION;
     public static ArrayList<String > CAR;
     private boolean junctionLocationsProcessed = false;
 
@@ -69,6 +70,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         STATISTICS_Cautious_INFORMATION=new HashMap<>();
         STATISTICS_Normal_INFORMATION=new HashMap<>();
         STATISTICS_Reckless_INFORMATION=new HashMap<>();
+        STATISTICS_EmergencyService_INFORMATION=new HashMap<>();
         this.setVisible(true);
         this.setSize(MAP_PANEL_WIDTH,MAP_PANEL_HEIGHT);
         this.setBackground(BACKGROUND_COLOR);
@@ -665,7 +667,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         Statistics statistics = null;
         Statistics statistics_info = null;
         float temp=0;
-        if ((!STATISTICS_Cautious_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Normal_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))) {
+        if ((!STATISTICS_Cautious_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Normal_INFORMATION.containsKey(vehicle.getLabel()))
+                && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))&& (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))) {
             statistics = new Statistics();
             statistics.setLabel(vehicle.getLabel());
             statistics.setDistance(0);
@@ -700,6 +703,13 @@ public class MapPanel extends JPanel implements IStateChangeListener{
                     statistics_info = STATISTICS_Reckless_INFORMATION.get(vehicle.getLabel());
                 } else {
                     STATISTICS_Reckless_INFORMATION.put(vehicle.getLabel(), statistics);
+                }
+                break;
+            case EmergencyService:
+                if (STATISTICS_EmergencyService_INFORMATION.containsKey(vehicle.getLabel())) {
+                    statistics_info = STATISTICS_EmergencyService_INFORMATION.get(vehicle.getLabel());
+                } else {
+                    STATISTICS_EmergencyService_INFORMATION.put(vehicle.getLabel(), statistics);
                 }
                 break;
         }
@@ -761,7 +771,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             case CarCautious :
                 if (STATISTICS_Cautious_INFORMATION.size()>0){
                     for (Statistics statistic:STATISTICS_Cautious_INFORMATION.values()){
-                        if (CAR.contains(statistic.getLabel()))
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
                             statisticsList.add(statistic);
                     }
                 }
@@ -777,7 +787,15 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             case CarReckless:
                 if (STATISTICS_Reckless_INFORMATION.size()>0) {
                     for (Statistics statistic : STATISTICS_Reckless_INFORMATION.values()) {
-                        if (CAR.contains(statistic.getLabel()))
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
+                            statisticsList.add(statistic);
+                    }
+                }
+                break;
+            case EmergencyService:
+                if (STATISTICS_EmergencyService_INFORMATION.size()>0) {
+                    for (Statistics statistic : STATISTICS_EmergencyService_INFORMATION.values()) {
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
                             statisticsList.add(statistic);
                     }
                 }
