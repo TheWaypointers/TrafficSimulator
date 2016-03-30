@@ -668,7 +668,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         Statistics statistics_info = null;
         float temp=0;
         if ((!STATISTICS_Cautious_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Normal_INFORMATION.containsKey(vehicle.getLabel()))
-                && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))&& (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))) {
+                && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))&& (!STATISTICS_EmergencyService_INFORMATION.containsKey(vehicle.getLabel()))) {
             statistics = new Statistics();
             statistics.setLabel(vehicle.getLabel());
             statistics.setDistance(0);
