@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<simulation>
+	<!--roadtestAdd3-->
+
+	<roads>
+		<road>
+			<origin>A</origin>
+			<destination>E1</destination>
+			<length>500</length>
+			<direction>Right</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>B</destination>
+			<length>500</length>
+			<direction>Down</direction>
+		</road>
+		<road>
+			<origin>B</origin>
+			<destination>E2</destination>
+			<length>500</length>
+			<direction>Right</direction>
+		</road>
+	</roads>
+	<junctions>
+		<junction>
+			<name>A</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+		<junction>
+			<name>B</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+	</junctions>
+</simulation>
+		<!--Three roads can be added .However,the vehicles can not work if direction is not Up and Down. Problems should come from common-->
