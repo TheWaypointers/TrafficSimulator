@@ -766,7 +766,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             case CarCautious :
                 if (STATISTICS_Cautious_INFORMATION.size()>0){
                     for (Statistics statistic:STATISTICS_Cautious_INFORMATION.values()){
-                        if (CAR.contains(statistic.getLabel()))
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
                             statisticsList.add(statistic);
                     }
                 }
@@ -782,7 +782,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             case CarReckless:
                 if (STATISTICS_Reckless_INFORMATION.size()>0) {
                     for (Statistics statistic : STATISTICS_Reckless_INFORMATION.values()) {
-                        if (CAR.contains(statistic.getLabel()))
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
                             statisticsList.add(statistic);
                     }
                 }
@@ -790,7 +790,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             case EmergencyService:
                 if (STATISTICS_EmergencyService_INFORMATION.size()>0) {
                     for (Statistics statistic : STATISTICS_EmergencyService_INFORMATION.values()) {
-                        if (CAR.contains(statistic.getLabel()))
+                        if (statistic!=null && CAR.contains(statistic.getLabel()))
                             statisticsList.add(statistic);
                     }
                 }
