@@ -9,7 +9,7 @@
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% University Assignment Title Page 
+% University Assignment Title Page
 % LaTeX Template
 %
 % This template has been downloaded from:
@@ -26,7 +26,7 @@
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
 \center % Center everything on the page
- 
+
 %----------------------------------------------------------------------------------------
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
@@ -42,7 +42,7 @@
 \HRule \\[0.4cm]
 { \huge \bfseries Final project report}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
- 
+
 %----------------------------------------------------------------------------------------
 %	AUTHOR SECTION
 %----------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ Minghao Zhu\\[3cm]
 %----------------------------------------------------------------------------------------
 
 %\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
- 
+
 %----------------------------------------------------------------------------------------
 
 \vfill % Fill the rest of the page with whitespace
@@ -80,7 +80,7 @@ Minghao Zhu\\[3cm]
 \section{Introduction}
 The Traffic Simulation System aims to provide users to create a traffic map as they wish. In general, there are three parts in the system: MapPanel, ControlPanel and StatisticsPanel. MapPanel is to show how the traffic map is built while ControlPanel is for users to decide what their traffic map looks like and how do vehicles behave. StatisticsPanel reveals the average speed of different types of vehicles.
 
-Users can control the whole system by clicking start, pause and clear buttons, changing time step, vehicle speed and states, and even using “debug” to follow every car track and the location of junctions. Specifically, there are three types of vehicles in the system, namely caution cars, normal cars and reckless cars. Each type of them have different behaviors, such as speed. The system allows users to decide how many cars run on the road. Users can also choose whether there are traffic lights on junctions or not. They can also change traffic lights’time interval.
+Users can control the whole system by clicking start, pause and clear buttons, changing time step, vehicle speed and states, and even using 'debug' to follow every car track and the location of junctions. Specifically, there are four types of vehicle in the system, namely caution cars, normal cars, reckless cars and ambulance. Each type of them have different behaviors, such as speed. The system allows users to decide how many cars run on the road. Users can also choose whether there are traffic lights on junctions or not. They can also change traffic lights' time interval.
 
 \section{Review of related work}
 
@@ -90,16 +90,24 @@ Users can control the whole system by clicking start, pause and clear buttons, c
 
 \section{Implementation}
 
-\subsection*{GUI part}
-Basically, GUI is to display performance of the whole system, showing the results of how the system runs. In GUI, we draw traffic road on class MapPanel. The MapPanel mainly consist of five parts: to paint road, vehicles, traffic lights, labels and to get statistical data.
+\subsection{GUI part}
 
-When drawing road, we get the junctions and roads from background. One thing we have to deal with is to compute the coordinate of each junction and road, then draw them on the MapPanel. We assume that the first junction we get from our background is on the top left of the map. So we make the coordinate as (x,y)=(road_length, road_length). Afterwards, based on the location of the first junction, we compute the rest roads and junctions until finishing the whole map. On the contrary, if the first junction we get is not located on the top left, then we move the junction to its correct location. As long as we complete the road map, achieving coordinate of each junction, we can easily compute the relative coordinates of vehicles and traffic lights. Finally, we draw the whole traffic map.
+Basically, GUI is to display performance of the whole system, showing the results of how the system runs. In GUI, we draw traffic road on class MapPanel. The MapPanel mainly consist of five parts: to paint road, vehicle, traffic lights, labels and to get statistical data.
 
-Considering vehicles turning on junctions, we first divide turning situation into the following eight parts, where α represents its turning angle. Then using Java function, AffineTransform(), to rotate the vehicle towards its right way.
-\includegraphics[width = .8\textwidth]{GUI_p1.jpg}
+\subsubsection{compute$\_$xy( )}
+When drawing road, we get the junctions and roads from background. One thing we have to deal with is to compute the coordinate of each junction and road, then draw them on the MapPanel. We assume that the first junction we get from our background is on the top left of the map. So we make the coordinate as $(x,y)=(road_length, road_length)$. Afterwards, based on the location of the first junction, we compute the rest roads and junctions until finishing the whole map. On the contrary, if the first junction we get is not located on the top left, then we move the junction to its correct location. As long as we complete the road map, achieving coordinate of each junction, we can easily compute the relative coordinates of vehicle and traffic lights. Finally, we draw the whole traffic map.
 
+\subsubsection{drawVehicleInJunction( )}
+Considering vehicles turning on junctions, we first divide turning situation into the following eight parts, where $\alpha$ represents its turning angle. Then using Java function, AffineTransform(), to rotate the vehicle towards its right way.
+\begin{center}
+	\includegraphics[width=14cm]{GUI_p1.eps}
+\end{center}
+
+\subsubsection{RecordStatistics( )}
 Our system will collect the travel distance of every car and then compute their average speed for further analysis, showing on StatisticsPanel. We create a list for the whole system and list information for cars, running time and running distance. The pseudo-code shows as below:
-\includegraphics[width = .8\textwidth]{GUI_p2.jpg}
+\begin{center}
+	\includegraphics[width=6cm] {GUI_p2.eps}
+\end{center}
 
 \section{Teamwork}
 
