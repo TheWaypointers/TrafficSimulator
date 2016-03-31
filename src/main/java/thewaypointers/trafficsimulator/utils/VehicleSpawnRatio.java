@@ -1,5 +1,8 @@
 package thewaypointers.trafficsimulator.utils;
 
+import com.sun.org.apache.xml.internal.security.Init;
+import thewaypointers.trafficsimulator.common.InitialParameters;
+
 public class VehicleSpawnRatio {
     private int cautionCarsRatio;
     private int normalCarsRatio;
@@ -7,10 +10,10 @@ public class VehicleSpawnRatio {
     private int ambulanceRatio;
 
     public VehicleSpawnRatio(){
-        cautionCarsRatio = 25;
-        normalCarsRatio = 40;
-        reckCarsRatio = 25;
-        ambulanceRatio = 10;
+        cautionCarsRatio = InitialParameters.getCautionCarsRatio();
+        normalCarsRatio = InitialParameters.getNormalCarsRatio();
+        reckCarsRatio = InitialParameters.getReckCarsRatio();
+        ambulanceRatio = InitialParameters.getAmbulanceRatio();
 
     }
 
