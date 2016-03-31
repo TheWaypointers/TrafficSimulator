@@ -1,4 +1,4 @@
-package thewaypointers.trafficsimulator.common;
+package thewaypointers.trafficsimulator.common.helpers;
 
 public class InitialParameters {
 

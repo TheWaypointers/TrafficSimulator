@@ -1,7 +1,6 @@
 package thewaypointers.trafficsimulator.utils;
 
-import com.sun.org.apache.xml.internal.security.Init;
-import thewaypointers.trafficsimulator.common.InitialParameters;
+import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
 
 public class VehicleSpawnRatio {
     private int cautionCarsRatio;
