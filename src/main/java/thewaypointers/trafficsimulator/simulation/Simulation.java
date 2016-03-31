@@ -2,6 +2,7 @@ package thewaypointers.trafficsimulator.simulation;
 
 import thewaypointers.trafficsimulator.common.*;
 import org.jgrapht.graph.*;
+import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.factories.GraphFactory;
 import thewaypointers.trafficsimulator.simulation.factories.VehicleFactory;
@@ -28,11 +29,11 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 70;
+    int MAX_VEHICLE_NUMBER;
     int vehicleSpawnCounter = 10;
-    final int VEHICLE_SPAWN_STEPS = 10;
+    final int VEHICLE_SPAWN_STEPS = 15;
+    int TRAFFIC_LIGHT_STEPS;
 
-    final int TRAFFIC_LIGHT_STEPS = 30;
     int trafficLightCounter = 0;
     int vehicleLabelCounter = 1;
 
@@ -49,6 +50,8 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     public Simulation(WorldStateDTO worldState) {
         this.worldState = worldState;
         this.dtoRoads = worldState.getRoadMap().getRoads();
+        this.MAX_VEHICLE_NUMBER = InitialParameters.getMaxVehicleNumber();
+        this.TRAFFIC_LIGHT_STEPS = InitialParameters.getTrafficLightSteps();
         initiateSimulation();
     }
 
@@ -74,13 +77,17 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
                 int ratioReckCar = Integer.parseInt(value);
                 vehicleSpawnRatio.setReckCarsRatio(ratioReckCar);
                 break;
-            case "busPercentage":
-                int busRatio = Integer.parseInt(value);
-                vehicleSpawnRatio.setBusRatio(busRatio);
-                break;
             case "ambulancePercentage":
                 int ambulanceRatio = Integer.parseInt(value);
                 vehicleSpawnRatio.setAmbulanceRatio(ambulanceRatio);
+                break;
+            case "trafficLightSlider":
+                int trafficLightsteps = Integer.parseInt(value);
+                TRAFFIC_LIGHT_STEPS = trafficLightsteps;
+                break;
+            case "totalVehicles":
+                int maxVehicleNumber = Integer.parseInt(value);
+                MAX_VEHICLE_NUMBER = maxVehicleNumber;
                 break;
             default:
                 break;
@@ -165,7 +172,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         trafficLightCounter++;
 
-        if (trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
+        if (trafficLightCounter >= TRAFFIC_LIGHT_STEPS) {
 
             JunctionDTO junction;;
 
