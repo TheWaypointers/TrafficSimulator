@@ -403,6 +403,12 @@ public class ControlPanel extends JPanel {
 
     private void setDefaultValues() {
 
+        totalVehiclesSlider.setValue(InitialParameters.getMaxVehicleNumber());
+        MainFrame.simulationInputListener.SimulationParameterChanged("totalVehicles", Integer.toString(InitialParameters.getMaxVehicleNumber()));
+
+        trafficLightTimeSlider.setValue(InitialParameters.getTrafficLightSteps());
+        MainFrame.simulationInputListener.SimulationParameterChanged("trafficLightSlider", Integer.toString(InitialParameters.getTrafficLightSteps()));
+
         reckCarsNumberTextField.setText("" + InitialParameters.getReckCarsRatio());
         normalCarsNumberTextField.setText("" + InitialParameters.getNormalCarsRatio());
         cautionCarsNumberTextField.setText("" + InitialParameters.getCautionCarsRatio());
