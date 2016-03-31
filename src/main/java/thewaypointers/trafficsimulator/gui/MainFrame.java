@@ -38,15 +38,15 @@ public class MainFrame extends JFrame{
         }
 
         this.setLayout(null);
-        mapContainerPanel.setBounds(0,0,600,500);
-        controlPanel.setBounds(600,0,200,600);
+        mapContainerPanel.setBounds(0,0,800,650);
+        controlPanel.setBounds(800,0,200,750);
 //        timeLabelPanel.setBounds(0,540,600,60);
-        statisticsPanel.setBounds(0,500,600,100);
+        statisticsPanel.setBounds(0,650,800,100);
         this.add(mapContainerPanel);
         this.add(controlPanel);
 //        this.add(timeLabelPanel);
         this.add(statisticsPanel);
-        this.setSize(800,600);
+        this.setSize(1000,750);
 
         this.setTitle("traffic");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
