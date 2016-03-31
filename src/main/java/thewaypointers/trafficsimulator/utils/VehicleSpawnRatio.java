@@ -1,18 +1,18 @@
 package thewaypointers.trafficsimulator.utils;
 
-import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
-
 public class VehicleSpawnRatio {
     private int cautionCarsRatio;
     private int normalCarsRatio;
     private int reckCarsRatio;
     private int ambulanceRatio;
+    private int busRatio;
 
     public VehicleSpawnRatio(){
-        cautionCarsRatio = InitialParameters.getCautionCarsRatio();
-        normalCarsRatio = InitialParameters.getNormalCarsRatio();
-        reckCarsRatio = InitialParameters.getReckCarsRatio();
-        ambulanceRatio = InitialParameters.getAmbulanceRatio();
+        cautionCarsRatio = 20;
+        normalCarsRatio = 20;
+        reckCarsRatio = 20;
+        ambulanceRatio = 20;
+        busRatio = 20;
 
     }
 
@@ -46,5 +46,13 @@ public class VehicleSpawnRatio {
 
     public void setAmbulanceRatio(int ambulanceRatio) {
         this.ambulanceRatio = ambulanceRatio;
+    }
+
+    public int getBusRatio() {
+        return busRatio;
+    }
+
+    public void setBusRatio(int busRatio) {
+        this.busRatio = busRatio;
     }
 }

@@ -85,7 +85,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
-        MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()/1000+"s");
+        MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()+"s");
         this.repaint();
 
 
@@ -109,7 +109,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int recklessCarTotalNum = GetALLStatistics(VehicleType.CarReckless).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
             if(s.getTime()!=0) {
-                recklessCarTotalSpeed = recklessCarTotalSpeed + s.getDistance() / s.getTime();
+                recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
             }
         }
 
@@ -128,22 +128,22 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         double totalSpeed = 0;
         int carTypeNum = 0;
         if(cautionCarTotalNum!=0){
-            cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum*1000;
+            cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
             totalSpeed = totalSpeed + cautionCarSpeed;
             carTypeNum++;
         }
         if(normalCarTotalNum!=0){
-            normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum*1000;
+            normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum;
             totalSpeed = totalSpeed + normalCarSpeed;
             carTypeNum++;
         }
         if(recklessCarTotalNum!=0){
-            recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum*1000;
+            recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum;
             totalSpeed = totalSpeed + recklessCarSpeed;
             carTypeNum++;
         }
         if(ambulanceTotalNum!=0){
-            ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum*1000;
+            ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum;
             totalSpeed = totalSpeed + ambulanceSpeed;
             carTypeNum++;
         }
@@ -152,8 +152,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             totalSpeed = totalSpeed/carTypeNum;
         else
             totalSpeed = 0;
-
-        MainFrame.statisticsPanel.addRow(cautionCarSpeed*3.6,normalCarSpeed*3.6,recklessCarSpeed*3.6,ambulanceSpeed*3.6,totalSpeed*3.6);
+        MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed,ambulanceSpeed,totalSpeed);
     }
 
     //draw worldState
