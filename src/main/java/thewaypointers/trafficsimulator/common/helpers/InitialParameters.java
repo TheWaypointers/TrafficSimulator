@@ -6,6 +6,9 @@ public class InitialParameters {
     private static final int normalCarsRatio = 40;
     private static final int reckCarsRatio = 25;
     private static final int ambulanceRatio = 10;
+    private static final int trafficLightSteps = 70;
+    private static final int maxVehicleNumber = 40;
+
 
     public static int getCautionCarsRatio() {
         return cautionCarsRatio;
@@ -21,5 +24,13 @@ public class InitialParameters {
 
     public static int getAmbulanceRatio() {
         return ambulanceRatio;
+    }
+
+    public static int getTrafficLightSteps() {
+        return trafficLightSteps;
+    }
+
+    public static int getMaxVehicleNumber() {
+        return maxVehicleNumber;
     }
 }

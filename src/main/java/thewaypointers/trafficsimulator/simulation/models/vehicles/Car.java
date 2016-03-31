@@ -6,6 +6,7 @@ import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.common.RoadLocationDTO;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
+import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
@@ -39,12 +40,13 @@ public class Car implements IVehicle {
     private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.3f;
     private final long DISTANCE_BETWEEN_VEHICLES = 22;
     private final long VEHICLE_LENGTH = 5;
-    private final int BLOCKED_JUNCTION_COUNTER = 30;
+    private int BLOCKED_JUNCTION_COUNTER;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
         this.currentRoad = currentRoad;
         this.roadLength = roadLength;
+        BLOCKED_JUNCTION_COUNTER = InitialParameters.getTrafficLightSteps() + 10;
     }
 
     public Car(VehicleType type,
