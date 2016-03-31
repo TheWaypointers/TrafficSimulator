@@ -72,15 +72,15 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
                 break;
             case "recklessCarPercentage":
                 int ratioReckCar = Integer.parseInt(value);
-                vehicleSpawnRatio.setNormalCarsRatio(ratioReckCar);
+                vehicleSpawnRatio.setReckCarsRatio(ratioReckCar);
                 break;
             case "busPercentage":
                 int busRatio = Integer.parseInt(value);
-                vehicleSpawnRatio.setNormalCarsRatio(busRatio);
+                vehicleSpawnRatio.setBusRatio(busRatio);
                 break;
             case "ambulancePercentage":
                 int ambulanceRatio = Integer.parseInt(value);
-                vehicleSpawnRatio.setNormalCarsRatio(ambulanceRatio);
+                vehicleSpawnRatio.setAmbulanceRatio(ambulanceRatio);
                 break;
             default:
                 break;
