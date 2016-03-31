@@ -146,11 +146,25 @@ public class ControlPanel extends JPanel {
 
         initSlider(simulationSpeedSlider);
         simulationSpeedSlider.setLocation(80, 120);
-        simulationSpeedSlider.setValue(25);
+        simulationSpeedSlider.setValue(100);
+        simulationSpeedSlider.setMinimum(100);
         simulationSpeedSlider.setMaximum(1600);
-        simulationSpeedSlider.setMajorTickSpacing(800);
-        statesPerSecondsSlider.setMinorTickSpacing(100);
+        simulationSpeedSlider.setMajorTickSpacing(750);
+        simulationSpeedSlider.setMinorTickSpacing(150);
+        simulationSpeedSlider.setPaintLabels(false);
         simulationSpeedSlider.addChangeListener(simulationSpeedChange);
+
+        JLabel val1 = new JLabel("1");
+        val1.setBounds(90,150,10,12);
+        val1.setFont(new Font("Arial", 0, 11));
+
+        JLabel val2 = new JLabel("7.5");
+        val2.setBounds(132,150,20,12);
+        val2.setFont(new Font("Arial", 0, 11));
+
+        JLabel val3 = new JLabel("16");
+        val3.setBounds(180,150,15,12);
+        val3.setFont(new Font("Arial", 0, 11));
 
         initLabel(statesPerSecondsLabel);
         statesPerSecondsLabel.setText("States/s");
@@ -263,6 +277,9 @@ public class ControlPanel extends JPanel {
         this.add(clearButton);
         this.add(simulationSpeedLabel);
         this.add(simulationSpeedSlider);
+        this.add(val1);
+        this.add(val2);
+        this.add(val3);
         this.add(statesPerSecondsLabel);
         this.add(statesPerSecondsSlider);
         this.add(debugLabel);
