@@ -31,7 +31,6 @@ public class VehicleFactory {
         drng.addNumber(2, ((double) vehicleSpawnRatio.getNormalCarsRatio()) / 100);
         drng.addNumber(3, ((double) vehicleSpawnRatio.getReckCarsRatio()) / 100);
         drng.addNumber(4, ((double) vehicleSpawnRatio.getAmbulanceRatio()) / 100);
-        drng.addNumber(5, ((double) vehicleSpawnRatio.getBusRatio()) / 100);
 
         for(Node node : nodeGraphMap.keySet()){
             if(node.getNodeType() == NodeType.ExitNode){
@@ -58,8 +57,6 @@ public class VehicleFactory {
                 return new Car(VehicleType.CarReckless, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
             case 4 :
                 return new EmergencyService(VehicleType.EmergencyService, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
-            case 5 :
-                return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
             default :
                 return new Car(VehicleType.CarNormal, firstRoad.getSpeedLimit(), decisions, firstRoad, originNode, Lane.Left, firstRoad.getLength());
         }
