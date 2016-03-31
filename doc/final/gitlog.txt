@@ -394,3 +394,6 @@ a1da880 Thu Mar 31 15:57:26 2016              iroq Merge branch 'dev' into doc-h
 08126a8 Thu Mar 31 15:57:27 2016           vezer93 Merge remote-tracking branch 'origin/dev' into dev
 3c6a3ed Thu Mar 31 15:58:19 2016   Michał Szewczak Merge pull request #113 from TheWaypointers/feat..
 e18a17c Thu Mar 31 15:58:28 2016   Michał Szewczak Merge pull request #109 from TheWaypointers/doc-..
+4855f1c Thu Mar 31 16:01:43 2016           vezer93 default values on clear                           
+351215e Thu Mar 31 16:01:53 2016           vezer93 Merge remote-tracking branch 'origin/dev' into dev
+41395f4 Thu Mar 31 16:07:20 2016              iroq final fixes                                       
