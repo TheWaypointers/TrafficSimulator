@@ -43,8 +43,6 @@ public class ControlPanel extends JPanel {
     private JLabel ambulanceLabel = new JLabel();
     public JTextField ambulanceTextField = new JTextField();
     private JButton submitButton = new JButton();
-    private JLabel totalVehiclesLabel = new JLabel();
-    private JSlider totalVehiclesSlider = new JSlider();
 
 
     private JLabel trafficLightLabel = new JLabel();
@@ -57,6 +55,7 @@ public class ControlPanel extends JPanel {
 
     ChangeListener simulationSpeedChange = e -> {
         double tmp = simulationSpeedSlider.getValue();
+
         MainFrame.simulationInputListener.SimulationParameterChanged("simulationSpeed", Double.toString(tmp / 100));
     };
 
@@ -70,15 +69,9 @@ public class ControlPanel extends JPanel {
         MainFrame.mapContainerPanel.mapPanel.SetDebug(debug);
     };
 
-    ChangeListener totalVehiclesChange = e -> {
-        int tmp = totalVehiclesSlider.getValue();
-        MainFrame.simulationInputListener.SimulationParameterChanged("totalVehicles", Integer.toString(tmp));
-    };
-
-
     ChangeListener trafficLightTimeChange = e -> {
         int tmp = trafficLightTimeSlider.getValue();
-        MainFrame.simulationInputListener.SimulationParameterChanged("trafficLightSlider", Integer.toString(tmp));
+        MainFrame.simulationInputListener.SimulationParameterChanged("timeStepSlider", Integer.toString(tmp));
     };
 
     private StateProviderController stateProviderController;
@@ -95,8 +88,8 @@ public class ControlPanel extends JPanel {
         super.paintComponent(g);
         g2 = (Graphics2D) g;
         Line2D.Float line1 = new Line2D.Float(0, 35, 200, 35);
-        Line2D.Float line2 = new Line2D.Float(0, 240, 200, 240);
-        Line2D.Float line3 = new Line2D.Float(0, 275, 200, 275);
+        Line2D.Float line2 = new Line2D.Float(0, 280, 200, 280);
+        Line2D.Float line3 = new Line2D.Float(0, 315, 200, 315);
         Line2D.Float line4 = new Line2D.Float(0, 520, 200, 520);
         Line2D.Float line5 = new Line2D.Float(0, 555, 200, 555);
         Line2D.Float line6 = new Line2D.Float(0, 600, 200, 600);
@@ -108,19 +101,19 @@ public class ControlPanel extends JPanel {
         g2.draw(line3);
         g2.draw(line5);
 
-        Rectangle2D.Float cautionCar = new Rectangle2D.Float(100, 295, VEHICLE_HEIGHT, VEHICLE_WIDTH);
+        Rectangle2D.Float cautionCar = new Rectangle2D.Float(3, 335, VEHICLE_HEIGHT, VEHICLE_WIDTH);
         g2.setColor(VEHICLE_CarCautious_COLOR);
         g2.fill(cautionCar);
 
-        Rectangle2D.Float normalCar = new Rectangle2D.Float(100, 335, VEHICLE_HEIGHT, VEHICLE_WIDTH);
+        Rectangle2D.Float normalCar = new Rectangle2D.Float(3, 375, VEHICLE_HEIGHT, VEHICLE_WIDTH);
         g2.setColor(VEHICLE_CarNormal_COLOR);
         g2.fill(normalCar);
 
-        Rectangle2D.Float reckCar = new Rectangle2D.Float(100, 375, VEHICLE_HEIGHT, VEHICLE_WIDTH);
+        Rectangle2D.Float reckCar = new Rectangle2D.Float(3, 415, VEHICLE_HEIGHT, VEHICLE_WIDTH);
         g2.setColor(VEHICLE_CarReckless_COLOR);
         g2.fill(reckCar);
 
-        Rectangle2D.Float ambulance =new Rectangle2D.Float(100,415,VEHICLE_HEIGHT,VEHICLE_WIDTH);
+        Rectangle2D.Float ambulance =new Rectangle2D.Float(3,455,VEHICLE_HEIGHT,VEHICLE_WIDTH);
         g2.setColor(VEHICLE_EmergencyService_COLOR);
         g2.fill(ambulance);
     }
@@ -142,36 +135,22 @@ public class ControlPanel extends JPanel {
 
         initLabel(simulationSpeedLabel);
         simulationSpeedLabel.setText("Speed");
-        simulationSpeedLabel.setLocation(22, 120);
+        simulationSpeedLabel.setLocation(22, 160);
 
         initSlider(simulationSpeedSlider);
-        simulationSpeedSlider.setLocation(80, 120);
-        simulationSpeedSlider.setValue(100);
-        simulationSpeedSlider.setMinimum(100);
+        simulationSpeedSlider.setLocation(80, 160);
+        simulationSpeedSlider.setValue(25);
         simulationSpeedSlider.setMaximum(1600);
-        simulationSpeedSlider.setMajorTickSpacing(750);
-        simulationSpeedSlider.setMinorTickSpacing(150);
-        simulationSpeedSlider.setPaintLabels(false);
+        simulationSpeedSlider.setMajorTickSpacing(400);
+        statesPerSecondsSlider.setMinorTickSpacing(100);
         simulationSpeedSlider.addChangeListener(simulationSpeedChange);
-
-        JLabel val1 = new JLabel("1");
-        val1.setBounds(90,150,10,12);
-        val1.setFont(new Font("Arial", 0, 11));
-
-        JLabel val2 = new JLabel("7.5");
-        val2.setBounds(132,150,20,12);
-        val2.setFont(new Font("Arial", 0, 11));
-
-        JLabel val3 = new JLabel("16");
-        val3.setBounds(180,150,15,12);
-        val3.setFont(new Font("Arial", 0, 11));
 
         initLabel(statesPerSecondsLabel);
         statesPerSecondsLabel.setText("States/s");
-        statesPerSecondsLabel.setLocation(22, 160);
+        statesPerSecondsLabel.setLocation(22, 200);
 
         initSlider(statesPerSecondsSlider);
-        statesPerSecondsSlider.setLocation(80, 160);
+        statesPerSecondsSlider.setLocation(80, 200);
         statesPerSecondsSlider.setMaximum(20);
         statesPerSecondsSlider.setMinimum(0);
         statesPerSecondsSlider.setValue(0);
@@ -182,73 +161,59 @@ public class ControlPanel extends JPanel {
 
         initLabel(debugLabel);
         debugLabel.setText("Debug");
-        debugLabel.setLocation(22, 200);
+        debugLabel.setLocation(22, 240);
 
         debugCheckBox.setVisible(true);
         debugCheckBox.setSize(40, 40);
-        debugCheckBox.setLocation(80, 200);
+        debugCheckBox.setLocation(80, 240);
         debugCheckBox.addChangeListener(debugChange);
 
 
         initTitle(vehiclesLabel);
         vehiclesLabel.setText("Vehicles percentage");
-        vehiclesLabel.setLocation(10, 240);
+        vehiclesLabel.setLocation(10, 280);
 
         initLabel(cautionCarLabel);
         cautionCarLabel.setText("Caution car");
-        cautionCarLabel.setLocation(22, 280);
+        cautionCarLabel.setLocation(22, 320);
 
         initTextField(cautionCarsNumberTextField);
-        cautionCarsNumberTextField.setLocation(120, 280);
+        cautionCarsNumberTextField.setLocation(120, 320);
         Document cautionCars = cautionCarsNumberTextField.getDocument();
         cautionCars.addDocumentListener(new ControlPanelDocumentListener(cautionCarsNumberTextField, this));
 
 
         initLabel(normalCarLabel);
         normalCarLabel.setText("Normal car");
-        normalCarLabel.setLocation(22, 320);
+        normalCarLabel.setLocation(22, 360);
 
         initTextField(normalCarsNumberTextField);
-        normalCarsNumberTextField.setLocation(120, 320);
+        normalCarsNumberTextField.setLocation(120, 360);
         Document normalCars = normalCarsNumberTextField.getDocument();
         normalCars.addDocumentListener(new ControlPanelDocumentListener(normalCarsNumberTextField, this));
 
         initLabel(recklessCarLabel);
         recklessCarLabel.setText("Reckless car");
-        recklessCarLabel.setLocation(22, 360);
+        recklessCarLabel.setLocation(22, 400);
 
         initTextField(reckCarsNumberTextField);
-        reckCarsNumberTextField.setLocation(120, 360);
+        reckCarsNumberTextField.setLocation(120, 400);
         Document reckCars = reckCarsNumberTextField.getDocument();
         reckCars.addDocumentListener(new ControlPanelDocumentListener(reckCarsNumberTextField, this));
 
         initLabel(ambulanceLabel);
         ambulanceLabel.setText("Ambulance");
-        ambulanceLabel.setLocation(22, 400);
+        ambulanceLabel.setLocation(22, 440);
 
         initTextField(ambulanceTextField);
-        ambulanceTextField.setLocation(120, 400);
+        ambulanceTextField.setLocation(120, 440);
         Document ambulances = ambulanceTextField.getDocument();
         ambulances.addDocumentListener(new ControlPanelDocumentListener(ambulanceTextField, this));
 
         initButton(submitButton);
         submitButton.setText("Set percentage");
-        submitButton.setLocation(0, 440);
+        submitButton.setLocation(0, 480);
         submitButton.addActionListener(this::submitPerformed);
-
-        initLabel(totalVehiclesLabel);
-        totalVehiclesLabel.setText("Total Num");
-        totalVehiclesLabel.setLocation(22, 480);
-
-        initSlider(totalVehiclesSlider);
-        totalVehiclesSlider.setLocation(80, 480);
-        totalVehiclesSlider.setMaximum(100);
-        totalVehiclesSlider.setMinimum(0);
-        totalVehiclesSlider.setValue(0);
-        totalVehiclesSlider.setMajorTickSpacing(20);
-        totalVehiclesSlider.setMinorTickSpacing(10);
-        totalVehiclesSlider.addChangeListener(totalVehiclesChange);
-        totalVehiclesSlider.setSnapToTicks(true);
 
         initTitle(trafficLightLabel);
         trafficLightLabel.setText("Traffic light");
@@ -260,10 +225,9 @@ public class ControlPanel extends JPanel {
 
         initSlider(trafficLightTimeSlider);
         trafficLightTimeSlider.setLocation(80, 560);
-        trafficLightTimeSlider.setMinimum(15);
-        trafficLightTimeSlider.setMaximum(50);
-        trafficLightTimeSlider.setValue(15);
-        trafficLightTimeSlider.setMajorTickSpacing(10);
+        trafficLightTimeSlider.setMinimum(0);
+        trafficLightTimeSlider.setMaximum(20);
+        trafficLightTimeSlider.setMajorTickSpacing(5);
         trafficLightTimeSlider.setMinorTickSpacing(2);
         trafficLightTimeSlider.addChangeListener(trafficLightTimeChange);
         trafficLightTimeSlider.setSnapToTicks(true);
@@ -277,9 +241,6 @@ public class ControlPanel extends JPanel {
         this.add(clearButton);
         this.add(simulationSpeedLabel);
         this.add(simulationSpeedSlider);
-        this.add(val1);
-        this.add(val2);
-        this.add(val3);
         this.add(statesPerSecondsLabel);
         this.add(statesPerSecondsSlider);
         this.add(debugLabel);
@@ -294,8 +255,6 @@ public class ControlPanel extends JPanel {
         this.add(ambulanceLabel);
         this.add(ambulanceTextField);
         this.add(submitButton);
-        this.add(totalVehiclesLabel);
-        this.add(totalVehiclesSlider);
         this.add(trafficLightLabel);
         this.add(trafficLightTimeLabel);
         this.add(trafficLightTimeSlider);
