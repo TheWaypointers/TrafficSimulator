@@ -254,9 +254,26 @@ Considering vehicles turning on junctions, we first divide turning situation int
 
 \subsubsection{RecordStatistics()}
 Our system will collect the travel distance of every car and then compute their average speed for further analysis and show them on the statistics panel. We create a list for the whole system and keep information for about running time and running distance. The pseudo-code is show below:
-\begin{center}
-	\includegraphics[width=6cm] {GUI_p2.eps}
-\end{center}
+\begin{lstlisting}
+List<Statistics>
+If (a new car) {
+    add to the list,
+start_time = current_time;
+distance = 0;
+}
+for (cars in the list) {
+time = current_time – start_time;
+if (the car on the road) {
+    distance = get_distance + tmp;
+    if (the car exist the road)
+        tmp = tmp + distance;
+}
+else (cars on the junction) {
+    distance = get_distance + tmp;
+    if (the car exist the road)
+        tmp = tmp + distance;
+}
+\end{lstlisting}
 
 \section{Teamwork}
 
