@@ -1,6 +1,7 @@
 package thewaypointers.trafficsimulator.gui;
 
 import thewaypointers.trafficsimulator.StateProviderController;
+import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -198,7 +199,7 @@ public class ControlPanel extends JPanel {
         cautionCarLabel.setText("Caution car");
         cautionCarLabel.setLocation(22, 280);
 
-        initTextField(cautionCarsNumberTextField);
+        initTextField(cautionCarsNumberTextField, "" + InitialParameters.getCautionCarsRatio());
         cautionCarsNumberTextField.setLocation(120, 280);
         Document cautionCars = cautionCarsNumberTextField.getDocument();
         cautionCars.addDocumentListener(new ControlPanelDocumentListener(cautionCarsNumberTextField, this));
@@ -208,7 +209,7 @@ public class ControlPanel extends JPanel {
         normalCarLabel.setText("Normal car");
         normalCarLabel.setLocation(22, 320);
 
-        initTextField(normalCarsNumberTextField);
+        initTextField(normalCarsNumberTextField,"" + InitialParameters.getNormalCarsRatio());
         normalCarsNumberTextField.setLocation(120, 320);
         Document normalCars = normalCarsNumberTextField.getDocument();
         normalCars.addDocumentListener(new ControlPanelDocumentListener(normalCarsNumberTextField, this));
@@ -217,7 +218,7 @@ public class ControlPanel extends JPanel {
         recklessCarLabel.setText("Reckless car");
         recklessCarLabel.setLocation(22, 360);
 
-        initTextField(reckCarsNumberTextField);
+        initTextField(reckCarsNumberTextField, "" + InitialParameters.getReckCarsRatio());
         reckCarsNumberTextField.setLocation(120, 360);
         Document reckCars = reckCarsNumberTextField.getDocument();
         reckCars.addDocumentListener(new ControlPanelDocumentListener(reckCarsNumberTextField, this));
@@ -226,7 +227,7 @@ public class ControlPanel extends JPanel {
         ambulanceLabel.setText("Ambulance");
         ambulanceLabel.setLocation(22, 400);
 
-        initTextField(ambulanceTextField);
+        initTextField(ambulanceTextField, "" + InitialParameters.getAmbulanceRatio());
         ambulanceTextField.setLocation(120, 400);
         Document ambulances = ambulanceTextField.getDocument();
         ambulances.addDocumentListener(new ControlPanelDocumentListener(ambulanceTextField, this));
@@ -244,7 +245,7 @@ public class ControlPanel extends JPanel {
         totalVehiclesSlider.setLocation(80, 480);
         totalVehiclesSlider.setMaximum(100);
         totalVehiclesSlider.setMinimum(0);
-        totalVehiclesSlider.setValue(0);
+        totalVehiclesSlider.setValue(InitialParameters.getMaxVehicleNumber());
         totalVehiclesSlider.setMajorTickSpacing(20);
         totalVehiclesSlider.setMinorTickSpacing(10);
         totalVehiclesSlider.addChangeListener(totalVehiclesChange);
@@ -259,10 +260,11 @@ public class ControlPanel extends JPanel {
         trafficLightTimeLabel.setLocation(22, 560);
 
         initSlider(trafficLightTimeSlider);
+        trafficLightTimeSlider.setValue(100);
         trafficLightTimeSlider.setLocation(80, 560);
-        trafficLightTimeSlider.setMinimum(15);
-        trafficLightTimeSlider.setMaximum(50);
-        trafficLightTimeSlider.setValue(15);
+        trafficLightTimeSlider.setMinimum(50);
+        trafficLightTimeSlider.setMaximum(100);
+        trafficLightTimeSlider.setValue(InitialParameters.getTrafficLightSteps());
         trafficLightTimeSlider.setMajorTickSpacing(10);
         trafficLightTimeSlider.setMinorTickSpacing(2);
         trafficLightTimeSlider.addChangeListener(trafficLightTimeChange);
@@ -361,8 +363,8 @@ public class ControlPanel extends JPanel {
         slider.setPaintLabels(true);
     }
 
-    private void initTextField(JTextField textField) {
-        textField.setText("0");
+    private void initTextField(JTextField textField, String value) {
+        textField.setText(value);
         textField.setSize(60, 30);
         textField.setVisible(true);
         textField.setFont(new Font("Arial", 0, 12));
@@ -382,6 +384,7 @@ public class ControlPanel extends JPanel {
             System.out.println("Warning: no StateProviderController hooked up");
             return;
         }
+        setDefaultValues();
         startPauseButton.setText("Start");
         stateProviderController.clearSimulation();
         if (MapPanel.STATISTICS_Normal_INFORMATION.size() > 0) {
@@ -396,6 +399,19 @@ public class ControlPanel extends JPanel {
         if (MapPanel.STATISTICS_EmergencyService_INFORMATION.size() > 0) {
             MapPanel.STATISTICS_EmergencyService_INFORMATION.clear();
         }
+    }
+
+    private void setDefaultValues() {
+
+        reckCarsNumberTextField.setText("" + InitialParameters.getReckCarsRatio());
+        normalCarsNumberTextField.setText("" + InitialParameters.getNormalCarsRatio());
+        cautionCarsNumberTextField.setText("" + InitialParameters.getCautionCarsRatio());
+        ambulanceTextField.setText("" + InitialParameters.getAmbulanceRatio());
+
+        MainFrame.simulationInputListener.SimulationParameterChanged("cautionCarPercentage", "" + InitialParameters.getCautionCarsRatio());
+        MainFrame.simulationInputListener.SimulationParameterChanged("normalCarPercentage", "" + InitialParameters.getNormalCarsRatio());
+        MainFrame.simulationInputListener.SimulationParameterChanged("recklessCarPercentage", "" + InitialParameters.getReckCarsRatio());
+        MainFrame.simulationInputListener.SimulationParameterChanged("ambulancePercentage", "" + InitialParameters.getAmbulanceRatio());
     }
 
     private void submitPerformed(ActionEvent evt) {

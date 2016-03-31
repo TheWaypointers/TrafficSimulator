@@ -8,6 +8,8 @@ public class InitialParameters {
     private static final int ambulanceRatio = 10;
     private static final int trafficLightSteps = 70;
     private static final int maxVehicleNumber = 40;
+    private static final int simulationTimeStep = 100;
+
 
 
     public static int getCautionCarsRatio() {
