@@ -36,9 +36,9 @@ public class Car implements IVehicle {
     private boolean vehicleIsTurningLeft;
     private int junctionBlocked;
 
-    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.5f;
+    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.3f;
     private final long DISTANCE_BETWEEN_VEHICLES = 20;
-    private final long VEHICLE_LENGTH = 8;
+    private final long VEHICLE_LENGTH = 5;
     private final int BLOCKED_JUNCTION_COUNTER = 25;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
@@ -77,7 +77,7 @@ public class Car implements IVehicle {
         for (IVehicle vehicle : VehicleManager.getVehicleMap().getFromRoad(this.getCurrentRoad().getRoad())) {
             if (vehicle != this) {
                 float vehiclePosition = vehicle.getVehiclesDistanceTravelled();
-                if (vehiclePosition >= this.getDistanceTravelled() && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
+                if (vehiclePosition >= this.getDistanceTravelled() - 2 && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
                         && vehicle.getVehiclesOriginNode().equals(this.getOriginNode())) {
                     return vehicle;
                 }
@@ -161,6 +161,9 @@ public class Car implements IVehicle {
                     currentRoad = null;
                     currentNode = nextNode;
                     junctionBlocked = 0;
+                    checkVehicleSpeedsInJunction();
+                    if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
+                    overLap = nextPossiblePosition - currentSectionLength;
                     junctionLocation = new JunctionLocationDTO(nextNode.getNodeName(), origin, target, overLap, width, height);
 
                     VehicleManager.getVehicleMap().remove(this);

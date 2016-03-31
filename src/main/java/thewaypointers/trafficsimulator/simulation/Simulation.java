@@ -32,7 +32,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    final int TRAFFIC_LIGHT_STEPS = 30;
+    int TRAFFIC_LIGHT_STEPS = 30;
     int trafficLightCounter = 0;
     int vehicleLabelCounter = 1;
 
@@ -74,14 +74,13 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
                 int ratioReckCar = Integer.parseInt(value);
                 vehicleSpawnRatio.setReckCarsRatio(ratioReckCar);
                 break;
-            case "busPercentage":
-                int busRatio = Integer.parseInt(value);
-                vehicleSpawnRatio.setBusRatio(busRatio);
-                break;
             case "ambulancePercentage":
                 int ambulanceRatio = Integer.parseInt(value);
                 vehicleSpawnRatio.setAmbulanceRatio(ambulanceRatio);
                 break;
+            case "trafficLightSlider":
+                int trafficLightsteps = Integer.parseInt(value);
+                TRAFFIC_LIGHT_STEPS = trafficLightsteps;
             default:
                 break;
         }
@@ -165,7 +164,7 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
         trafficLightCounter++;
 
-        if (trafficLightCounter == TRAFFIC_LIGHT_STEPS) {
+        if (trafficLightCounter >= TRAFFIC_LIGHT_STEPS) {
 
             JunctionDTO junction;;
 

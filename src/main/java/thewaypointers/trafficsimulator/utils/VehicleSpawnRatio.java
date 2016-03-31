@@ -5,14 +5,12 @@ public class VehicleSpawnRatio {
     private int normalCarsRatio;
     private int reckCarsRatio;
     private int ambulanceRatio;
-    private int busRatio;
 
     public VehicleSpawnRatio(){
-        cautionCarsRatio = 20;
-        normalCarsRatio = 20;
-        reckCarsRatio = 20;
-        ambulanceRatio = 20;
-        busRatio = 20;
+        cautionCarsRatio = 25;
+        normalCarsRatio = 40;
+        reckCarsRatio = 25;
+        ambulanceRatio = 10;
 
     }
 
@@ -46,13 +44,5 @@ public class VehicleSpawnRatio {
 
     public void setAmbulanceRatio(int ambulanceRatio) {
         this.ambulanceRatio = ambulanceRatio;
-    }
-
-    public int getBusRatio() {
-        return busRatio;
-    }
-
-    public void setBusRatio(int busRatio) {
-        this.busRatio = busRatio;
     }
 }
