@@ -352,6 +352,9 @@ public class ControlPanel extends JPanel {
         if (MapPanel.STATISTICS_Cautious_INFORMATION.size() > 0) {
             MapPanel.STATISTICS_Cautious_INFORMATION.clear();
         }
+        if (MapPanel.STATISTICS_EmergencyService_INFORMATION.size() > 0) {
+            MapPanel.STATISTICS_EmergencyService_INFORMATION.clear();
+        }
     }
 
     private void submitPerformed(ActionEvent evt) {
