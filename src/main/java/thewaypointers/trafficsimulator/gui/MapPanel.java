@@ -121,29 +121,37 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             }
         }
 
-
         double cautionCarSpeed = 0;
         double normalCarSpeed = 0;
         double recklessCarSpeed = 0;
         double ambulanceSpeed =0;
         double totalSpeed = 0;
+        int carTypeNum = 0;
         if(cautionCarTotalNum!=0){
             cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
             totalSpeed = totalSpeed + cautionCarSpeed;
+            carTypeNum++;
         }
         if(normalCarTotalNum!=0){
             normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum;
             totalSpeed = totalSpeed + normalCarSpeed;
+            carTypeNum++;
         }
         if(recklessCarTotalNum!=0){
             recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum;
             totalSpeed = totalSpeed + recklessCarSpeed;
+            carTypeNum++;
         }
         if(ambulanceTotalNum!=0){
             ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum;
             totalSpeed = totalSpeed + ambulanceSpeed;
+            carTypeNum++;
         }
 
+        if (carTypeNum > 0)
+            totalSpeed = totalSpeed/carTypeNum;
+        else
+            totalSpeed = 0;
         MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed,ambulanceSpeed,totalSpeed);
     }
 
