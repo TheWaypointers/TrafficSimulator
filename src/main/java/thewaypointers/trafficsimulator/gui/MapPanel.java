@@ -85,7 +85,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             junctionLocationsProcessed = true;
         }
         this.worldState = worldStateDTO;
-        MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()+"s");
+        MainFrame.controlPanel.timer.setText("Simulation Time: "+worldState.getClock()/1000+"s");
         this.repaint();
 
 
@@ -93,7 +93,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int normalCarTotalNum = GetALLStatistics(VehicleType.CarNormal).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarNormal)){
             if(s.getTime()!=0) {
-                normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime();
+                normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime()*1000;
             }
         }
 
@@ -101,7 +101,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int cautionCarTotalNum = GetALLStatistics(VehicleType.CarCautious).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarCautious)){
             if(s.getTime()!=0) {
-                cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
+                cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime()*1000;
             }
         }
 
@@ -109,7 +109,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int recklessCarTotalNum = GetALLStatistics(VehicleType.CarReckless).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
             if(s.getTime()!=0) {
-                recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
+                recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime()*1000;
             }
         }
 
@@ -117,7 +117,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int ambulanceTotalNum = GetALLStatistics(VehicleType.EmergencyService).size();
         for (Statistics s : GetALLStatistics(VehicleType.EmergencyService)){
             if(s.getTime()!=0) {
-                ambulanceTotalSpeed = ambulanceTotalSpeed + s.getDistance() / s.getTime();
+                ambulanceTotalSpeed = ambulanceTotalSpeed + s.getDistance() / s.getTime()*1000;
             }
         }
 
@@ -152,7 +152,8 @@ public class MapPanel extends JPanel implements IStateChangeListener{
             totalSpeed = totalSpeed/carTypeNum;
         else
             totalSpeed = 0;
-        MainFrame.statisticsPanel.addRow(cautionCarSpeed,normalCarSpeed,recklessCarSpeed,ambulanceSpeed,totalSpeed);
+
+        MainFrame.statisticsPanel.addRow(cautionCarSpeed*3.6,normalCarSpeed*3.6,recklessCarSpeed*3.6,ambulanceSpeed*3.6,totalSpeed*3.6);
     }
 
     //draw worldState

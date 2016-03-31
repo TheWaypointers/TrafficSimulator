@@ -32,7 +32,7 @@ public class StatisticsPanel extends JPanel {
 
     public void addRow(double cautionCarSpeed, double normalCarSpeed, double recklessCarSpeed, double ambulanceSpeed, double totalSpeed) {
         Vector v = new Vector();
-        v.add(0, "Average speed");
+        v.add(0, "Average speed(km/h)");
         v.add(1, cautionCarSpeed);
         v.add(2, normalCarSpeed);
         v.add(3, recklessCarSpeed);
@@ -82,12 +82,17 @@ public class StatisticsPanel extends JPanel {
         int colunms = table.getColumnCount();
         for (int i = 0; i < colunms; i++) {
             column = table.getColumnModel().getColumn(i);
-            column.setPreferredWidth(120);
+            if(i==0){
+                column.setPreferredWidth(150);
+            }
+            else{
+                column.setPreferredWidth(120);
+            }
         }
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         JScrollPane scroll = new JScrollPane();
         scroll.setViewportView(table);
-        scroll.setSize(750, 50);
+        scroll.setSize(780, 50);
         scroll.setLocation(5, 20);
         this.add(scroll);
 
