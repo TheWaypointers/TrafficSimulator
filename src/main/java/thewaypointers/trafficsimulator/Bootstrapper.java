@@ -26,6 +26,7 @@ public class Bootstrapper {
     public void bootstrap(String[] args){
         StateProviderController stateProviderController = new StateProviderController(timeStep, simulationTimeStep);
         stateProviderController.start();
+        stateProviderController.setStatesPerSecond(20);
         MainFrame mainFrame=new MainFrame(initialWorldState);
         mainFrame.setSimulationController(stateProviderController);
         mainFrame.setSimulationInputListener(stateProviderController);

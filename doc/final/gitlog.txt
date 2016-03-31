@@ -332,6 +332,7 @@ f7199d7 Wed Mar 30 17:36:46 2016        Haipei Liu Merge pull request #99 from T
 adf5151 Wed Mar 30 21:38:27 2016   Michał Szewczak Merge pull request #67 from TheWaypointers/feat-..
 120da46 Wed Mar 30 22:04:24 2016           vezer93 Merge branch 'dev' into emergency-service         
 0153b78 Wed Mar 30 22:04:59 2016           vezer93 merging with dev                                  
+fb85a4f Wed Mar 30 22:42:45 2016           vezer93 report design and simulation                      
 ec629d8 Wed Mar 30 23:22:55 2016              iroq make output jar executable                        
 e43aaf5 Wed Mar 30 23:23:44 2016              iroq Merge branch 'dev' of https://github.com/TheWayp..
 e060c65 Thu Mar 31 00:29:19 2016   Michal Szewczak add jar with dependencies                         
@@ -348,4 +349,48 @@ b51b1e4 Thu Mar 31 04:24:19 2016              iroq remove unnecessary slider
 ad62985 Thu Mar 31 04:28:49 2016              iroq quadruple available speed                         
 b6df3b2 Thu Mar 31 08:54:05 2016       mengzhuwang fix ambulance clear problem                       
 403757e Thu Mar 31 09:53:09 2016       mengzhuwang fix average total speed                           
+edfe015 Thu Mar 31 10:51:46 2016        Haipei Liu Modify the average speed:  - change ms to s  - c..
+6052df2 Thu Mar 31 11:20:10 2016           vezer93 merged with final report                          
+e770d49 Thu Mar 31 12:06:18 2016           vezer93 bug fixes                                         
+0a41011 Thu Mar 31 12:07:06 2016          yzzmh123 Finish the report and upload V2                   
+3f19e71 Thu Mar 31 12:22:51 2016        Haipei Liu modify interval of traffic lights                 
 7d8e5fc Thu Mar 31 12:27:12 2016   Michał Szewczak Merge pull request #105 from TheWaypointers/feat..
+e7be42a Thu Mar 31 12:33:01 2016        Haipei Liu fix one bug                                       
+1aeff59 Thu Mar 31 12:37:04 2016              iroq Merge branch 'dev' into doc-karlo                 
+3595a2e Thu Mar 31 12:50:41 2016           vezer93 Initial parameters                                
+247d068 Thu Mar 31 12:51:57 2016           vezer93 Initial parameters                                
+9161fce Thu Mar 31 12:54:31 2016              iroq update appendices                                 
+8a0db55 Thu Mar 31 13:14:10 2016        Haipei Liu Modify the display of the Speed Slider (1-16)     
+6eb42fe Thu Mar 31 13:32:44 2016              iroq add some correntions to Mengzhu's part            
+901c0a5 Thu Mar 31 13:33:59 2016              iroq Revert "add some correntions to Mengzhu's part"   
+1928512 Thu Mar 31 13:32:44 2016              iroq add some correntions to Mengzhu's part            
+dea1d9b Thu Mar 31 13:39:20 2016       mengzhuwang change *1000 place                                
+3243b4d Thu Mar 31 13:41:07 2016       mengzhuwang Merge remote-tracking branch 'origin/feat-Averag..
+f830322 Thu Mar 31 14:00:49 2016           vezer93 trying to get the junction travel perfect         
+470aeed Thu Mar 31 14:11:33 2016           vezer93 added the XML explanation                         
+a1dfdfb Thu Mar 31 14:11:39 2016           vezer93 Merge remote-tracking branch 'origin/doc-karlo' ..
+6fe0202 Thu Mar 31 14:14:37 2016           vezer93 added the XML explanation                         
+d5fa8cd Thu Mar 31 14:18:40 2016              iroq some corrections suggestions for Haipei's final ..
+d205ec6 Thu Mar 31 14:19:52 2016       mengzhuwang delete picture 2 and add tex                      
+abe8a91 Thu Mar 31 14:22:09 2016           vezer93 added the XML explanation                         
+d516faa Thu Mar 31 14:29:58 2016           vezer93 fixed some bugs                                   
+32f5e42 Thu Mar 31 14:31:35 2016           vezer93 Merge remote-tracking branch 'remotes/origin/fea..
+cd61ed8 Thu Mar 31 14:35:46 2016   Michał Szewczak Merge pull request #101 from TheWaypointers/doc-..
+ca42ae4 Thu Mar 31 14:42:11 2016           vezer93 added more initial parameters, connected max veh..
+fcc3c91 Thu Mar 31 14:46:08 2016          yzzmh123 Finish the report and upload V3                   
+9e57f06 Thu Mar 31 15:05:49 2016              iroq some correction suggestions for Karlo's part      
+1acdbd0 Thu Mar 31 15:09:27 2016       mengzhuwang Merge pull request #108 from TheWaypointers/doc-..
+94574f4 Thu Mar 31 15:13:02 2016         liuhaipei Merge branch 'doc-haipei-revision' of https://gi..
+73d4133 Thu Mar 31 15:15:11 2016         vezer1993 Merge pull request #110 from TheWaypointers/emer..
+88df47f Thu Mar 31 15:16:26 2016         vezer1993 Merge pull request #111 from TheWaypointers/doc-..
+d0c14d0 Thu Mar 31 15:23:02 2016              iroq Merge branch 'dev' into doc-Minghaozhu-new        
+a4292d4 Thu Mar 31 15:38:28 2016        Haipei Liu -Modify the report -Change the parameter name th..
+4e88276 Thu Mar 31 15:47:04 2016        Haipei Liu rename                                            
+cd5c785 Thu Mar 31 15:51:46 2016              iroq corrections                                       
+155a5a1 Thu Mar 31 15:52:15 2016   Michał Szewczak Merge pull request #107 from TheWaypointers/doc-..
+baca7c6 Thu Mar 31 15:54:49 2016       mengzhuwang fix average speed                                 
+592f76f Thu Mar 31 15:57:14 2016           vezer93 percentages of vehicles now read correct number ..
+a1da880 Thu Mar 31 15:57:26 2016              iroq Merge branch 'dev' into doc-haipei-revision       
+08126a8 Thu Mar 31 15:57:27 2016           vezer93 Merge remote-tracking branch 'origin/dev' into dev
+3c6a3ed Thu Mar 31 15:58:19 2016   Michał Szewczak Merge pull request #113 from TheWaypointers/feat..
+e18a17c Thu Mar 31 15:58:28 2016   Michał Szewczak Merge pull request #109 from TheWaypointers/doc-..

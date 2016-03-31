@@ -175,7 +175,7 @@ public class ControlPanel extends JPanel {
         statesPerSecondsSlider.setLocation(80, 160);
         statesPerSecondsSlider.setMaximum(20);
         statesPerSecondsSlider.setMinimum(0);
-        statesPerSecondsSlider.setValue(0);
+        statesPerSecondsSlider.setValue(20);
         statesPerSecondsSlider.setMajorTickSpacing(5);
         statesPerSecondsSlider.setMinorTickSpacing(1);
         statesPerSecondsSlider.addChangeListener(statesPerSecondsChange);
