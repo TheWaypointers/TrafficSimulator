@@ -6,6 +6,7 @@ import thewaypointers.trafficsimulator.common.JunctionLocationDTO;
 import thewaypointers.trafficsimulator.common.Lane;
 import thewaypointers.trafficsimulator.common.RoadLocationDTO;
 import thewaypointers.trafficsimulator.common.TrafficLightColor;
+import thewaypointers.trafficsimulator.common.helpers.InitialParameters;
 import thewaypointers.trafficsimulator.simulation.enums.NodeType;
 import thewaypointers.trafficsimulator.simulation.enums.VehicleType;
 import thewaypointers.trafficsimulator.simulation.models.graph.helper.Node;
@@ -36,15 +37,16 @@ public class Car implements IVehicle {
     private boolean vehicleIsTurningLeft;
     private int junctionBlocked;
 
-    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.5f;
-    private final long DISTANCE_BETWEEN_VEHICLES = 20;
-    private final long VEHICLE_LENGTH = 8;
-    private final int BLOCKED_JUNCTION_COUNTER = 25;
+    private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.3f;
+    private final long DISTANCE_BETWEEN_VEHICLES = 22;
+    private final long VEHICLE_LENGTH = 5;
+    private int BLOCKED_JUNCTION_COUNTER;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
         this.currentRoad = currentRoad;
         this.roadLength = roadLength;
+        BLOCKED_JUNCTION_COUNTER = InitialParameters.getTrafficLightSteps() + 10;
     }
 
     public Car(VehicleType type,
@@ -77,7 +79,7 @@ public class Car implements IVehicle {
         for (IVehicle vehicle : VehicleManager.getVehicleMap().getFromRoad(this.getCurrentRoad().getRoad())) {
             if (vehicle != this) {
                 float vehiclePosition = vehicle.getVehiclesDistanceTravelled();
-                if (vehiclePosition >= this.getDistanceTravelled() && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
+                if (vehiclePosition >= this.getDistanceTravelled() - 2 && vehiclePosition - DISTANCE_BETWEEN_VEHICLES <= nextPossiblePosition
                         && vehicle.getVehiclesOriginNode().equals(this.getOriginNode())) {
                     return vehicle;
                 }
@@ -161,6 +163,9 @@ public class Car implements IVehicle {
                     currentRoad = null;
                     currentNode = nextNode;
                     junctionBlocked = 0;
+                    checkVehicleSpeedsInJunction();
+                    if (calculateNextPossiblePosition(nextPossiblePosition, currentSectionLength)) return;
+                    overLap = nextPossiblePosition - currentSectionLength;
                     junctionLocation = new JunctionLocationDTO(nextNode.getNodeName(), origin, target, overLap, width, height);
 
                     VehicleManager.getVehicleMap().remove(this);
@@ -284,7 +289,7 @@ public class Car implements IVehicle {
                     if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
-                        } else if (vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
+                        } else if (vehicle.getJunctionLocation().getOrigin() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
                             return false;
                         }
                     } else {
@@ -338,7 +343,7 @@ public class Car implements IVehicle {
                 if (carsFromTheOppositeRoad.size() > 0) {
 
                     for (IVehicle vehicle : carsFromTheOppositeRoad) {
-                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40) {
+                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40 && !vehicle.isVehicleTurningLeft()) {
                             return false;
                         }
                     }
