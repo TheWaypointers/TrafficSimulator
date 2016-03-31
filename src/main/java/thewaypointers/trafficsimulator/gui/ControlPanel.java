@@ -246,9 +246,10 @@ public class ControlPanel extends JPanel {
 
         initSlider(trafficLightTimeSlider);
         trafficLightTimeSlider.setLocation(80, 560);
-        trafficLightTimeSlider.setMinimum(0);
-        trafficLightTimeSlider.setMaximum(20);
-        trafficLightTimeSlider.setMajorTickSpacing(5);
+        trafficLightTimeSlider.setMinimum(15);
+        trafficLightTimeSlider.setMaximum(50);
+        trafficLightTimeSlider.setValue(15);
+        trafficLightTimeSlider.setMajorTickSpacing(10);
         trafficLightTimeSlider.setMinorTickSpacing(2);
         trafficLightTimeSlider.addChangeListener(trafficLightTimeChange);
         trafficLightTimeSlider.setSnapToTicks(true);
