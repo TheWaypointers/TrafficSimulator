@@ -160,18 +160,18 @@ Users can control the whole system by clicking start/pause and clear buttons and
 Users can change whether there are traffic lights on junctions or not by clicking on them while the simulation is running. They can also change traffic light change time.
 
 \section{Review of related work}
-To make a higher achievement, some research of background and review of existed traffic simulators have been done before the start of the design and programming.\\
+To prepare better, we have done some research of background and review of existing traffic simulators before the start of the design and programming.\\
 \subsection{Background}
 Traffic simulation system is a model of transportation systems by employing the application of computer software to analyse the whole traffic of a city and help plan, design and operate transportation systems.\\
 Over forty years ago, the systems of transportation simulation started. By nowadays, it has been a vital area of discipline in traffic engineering and transportation planning. Various nations are using simulation to aid in their management of transportation networks and different academic institutions are working on the development of the traffic simulation system.\\
 This kind of Simulation can study models too complicated for analytical or numerical treatment, can be used for experimental studies, can study detailed relations that might be lost in analytical or numerical treatment and can produce attractive visual demonstrations of present and future scenarios.\\
-For the application of traffic simulation, the models are useful from different perspectives. Simulation can be applied to both transportation planning and to traffic system design and operations. In the planning, the simulation models evaluate the impacts of regional urban development patterns on the performance of the transportation infrastructure. Some organizations who works on regional planning use these models to evaluate what-if scenarios in the region. On another side, modeling of transportation system can focus on the operations and design of a smaller scale such as lane types, traffic lights timing and some other related questions. They are investigated to improve local system effectiveness and efficiency.[8]\\
+For the application of traffic simulation, the models are useful from different perspectives. Simulation can be applied to both transportation planning and to traffic system design and operations. In the planning, the simulation models evaluate the impacts of regional urban development patterns on the performance of the transportation infrastructure. Some organizations who works on regional planning use these models to evaluate what-if scenarios in the region. On another side, modeling of transportation system can focus on the operations and design of a smaller scale such as lane types, traffic lights timing and some other related questions. They are investigated to improve local system effectiveness and efficiency.\\
 The traffic simulation system can be used for various types of transportation modes whether it is for operations or planning.\\
-Traffic simulation software is getting better in different ways. With new achievements in computing, mathematics and engineering, simulation software programs are becoming much more powerful, faster, more realistic and more detail oriented.[12]\\
+Traffic simulation software is getting better in different ways. With new achievements in computing, mathematics and engineering, simulation software programs are becoming much more powerful, faster, more realistic and more detail oriented.\\
 In general, transportation models can be classified into different models: macroscopic, mesoscopic, and microscopic. Macroscopic models analyse aggregated characteristics of transportation elements, for example, aggregated traffic flow dynamics and zonal-level travel demand analysis. Mesoscopic models deal with traffic elements in small groups, within homogeneously considered elements, such as vehicle platoon dynamics and household-level travel behaviour. Microscopic models focus on individual elements of transportation systems, such as individual vehicle dynamics.
-After learning of the background, some of the existed traffic simulators will be discussed in next section.\\
-\subsection{Existed traffic simulation software}
-By searching online, plenty of existed software with different functions can be found.\\
+
+\subsection{Existing traffic simulation software}
+Through searching online, plenty of existing software with different functions can be found.\\
 \subsubsection{Traffic-Simulation.de html5 Version: Ring Road}
 \includegraphics[width=12.5cm]{RingRoad.eps}\\
 As shown in the figure, this simulator is literally a web page programmed in HTML (Hypertext Markup Language) which mainly used to test the traffic jams and congestion of a Ring Road with various parameters.\\
@@ -182,7 +182,7 @@ The parameter ‘Density’ is the number of vehicles in one map and the paramet
 Also, this traffic simulation system provides different traffic models for users to analyse. By changing the parameters, the condition of the traffic jam and congestion can be recognized in real time easily.\\
 \subsubsection{RoadTrafficSimulator}
 \includegraphics[width=12.5cm]{RoadTrafficSimulator.eps}\\
-This road traffic simulator is more similar to a road map in the real world. This system is also made by HTML but the main usage of the simulator differs from the ring road traffic simulation. As a road traffic simulator, this system contains roads, junctions, traffic lights and different types of vehicles.
+This road traffic simulator is more similar to a road map in the real world. This system is also made in HTML but the main usage of the simulator differs from the ring road traffic simulation. As a road traffic simulator, this system contains roads, junctions, traffic lights and different types of vehicles.
 As is demonstrated in the figure, each road has two directions and each direction has two lanes. In this case, the vehicles are able to change lane. Similarly, there are also some parameters in the simulator for users to change.\\
 There are 2 highlights in this simulator. Firstly, it enables users to generate the map randomly which is allowed to try different maps to test the traffic system and makes the simulator more reliable. Secondly, the gap of traffic light time changing can be altered. Users can find the best time changing of the traffic light and get the best demonstration of the road simulation.\\
 By studying and analysing the background and the existed traffic simulation system. The group members discussed the aim functions and the main requirements and design. In the next section, the details can be discussed. The programming language employed is Java.\\
@@ -435,23 +435,18 @@ We have implemented the blocked junction check because dead locks sometimes happ
 \newline
 Once each of the vehicles has calculated its new position the \verb|Simulation| updates the world state with the new information. It builds a new \verb|VehicleDTO| class from the common part for each of the vehicles inside Traffic Simulator, it passes them information about the vehicles like road, location, vehicle type, speed.
 
-\subsection{Test}
-After finishing the programming of the functions. ‘Test’ is a significant part of the whole project. However, it is too complex to test the units manually. Also, it is not able to find the exact location of the BUGs in the programme.\\
-In this case, it is crucial to create a test class to check if the units work well.\\
+\subsection{Testing}
+Testing is a significant part of the whole project. However, it is too complex to test all the code units manually. Testing everything at once also makes pinpointing the location of bugs harder\\
+Therefore, it is crucial to create test classes to check if the code units work well.\\
 \subsubsection{JUnit}
-JUnit is a unit testing framework for the Java programming language.It has been a significant part in the development of test-driven development and is one of a family of unit testing frameworks which is collectively known as xUnit that originated with SUnit.\\
-In 2013, there is a research survey hosted on GitHub across 10,000 Java projects performed found that JUnit was the most popular and commonly used  included external library. Each library was used by 30.7 percent of projects.\\
-JUnit provides overloaded assertion methods for all primitive types and Objects and arrays (of primitives or Objects). In this method, the parameter order is expected value followed by actual value. Optionally the first parameter can be a String message that is output on failure. There is a slightly different assertion, assertThat that has parameters of the optional failure message, the actual value, and a Matcher object. It needs to be notice that expected and actual are reversed compared to the other assert methods.\\
-In this project, 3 main motheds are utilized: ‘arrange’ ‘act’ and ‘assert’ and the most important method is assertThat.\\
-\subsubsection{What tested}
-Plenty of classes tested in this project. Shown as the picture below.\\
-\includegraphics[width=5cm]{testclass.eps}\\
-The first test is the FirstVersionProviderTest. This class is used to check if the FirstVesionProvider works well which provides some basic functions for the first version of the traffic simulation software. \\
-JunctionLocationDTOTest and MapDTOTest are mainly to test the JunctionLocationDTO and the MapDTO to see if this class can generate the map and the location of junctions properly.
-In the test of MapDTO, different number of roads are added in the ‘act’ mothed and in the ‘assert’ the number of junctions, number of nodes ,number of roads and the road direction are checked to test if the map are generated correctly.\\
-Beside, GuiControllerTest helps test the GuiController class and MapWorldStateFactory helps convert existed ‘xml’ format maps to the maps will be shown in GUI. By testing this class, it is able to know if both MapWorldStateFactory and RoadMap class works well because the MapWorldStateFactory go through to RoadMap. The functions tested are the junctions, number of junctions, number of nodes, number of roads and the direction of roads and the details of traffic lights.\\
-Some other useful tests are created as well such as FloatPointTest, FirstVersionStarterTest, JunctionLocationTestStarterTest, RoadNetworkStarterTest and TrafficSimulatorStarterTest. The aim to create these tests are testing the function of the starters to ensure they are working properly.\\
-After testing, BUGs are found and fixed by debuging.\\
+JUnit is a unit testing framework for the Java programming language. It has been a significant part in the development of test-driven development and is one of a family of unit testing frameworks which is collectively known as xUnit that originated with SUnit.\\
+In 2013, there was a research survey hosted on GitHub across 10,000 Java projects performed found that JUnit was the most popular and commonly used  included external library. Each library was used by 30.7 percent of projects.\\
+\subsubsection{What was tested}
+\paragraph*{FirstVersionProviderTest} This class is used to check if the \verb|FirstVesionProvider| works well which provides some basic functions for the first version of the traffic simulation software.
+\paragraph*{MapDTOTest} Test of management of the road map in the \verb|WorldStateDTO|. Different number of roads are added and the number of junctions, number of nodes, number of roads and the road directions are checked to test if the map is created correctly.
+\paragraph*{JunctionLocationDTOTest} The \verb|JunctionLocationDTO| class computes coordinates and angles of vehicles in junctions while they turn, so it was essential to test the algorithmic code. 
+\paragraph*{MapWorldStateFactoryTest} \verb|MapWorldStateFactory| converts XML format maps to the internal representation. The aspects of the output that are tested are the junctions, number of junctions, number of nodes, number of roads and the direction of roads and the details of traffic lights.\\
+\paragraph*{Starter class tests} We test all the starter classes to ensure that they all start the system with their respective state providers.
 
 
 \section{Teamwork}
