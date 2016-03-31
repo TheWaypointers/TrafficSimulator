@@ -78,9 +78,9 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
                 int ambulanceRatio = Integer.parseInt(value);
                 vehicleSpawnRatio.setAmbulanceRatio(ambulanceRatio);
                 break;
-            /*case "trafficLightSlider":
+            case "trafficLightSlider":
                 int trafficLightsteps = Integer.parseInt(value);
-                TRAFFIC_LIGHT_STEPS = trafficLightsteps;*/
+                TRAFFIC_LIGHT_STEPS = trafficLightsteps;
             default:
                 break;
         }
