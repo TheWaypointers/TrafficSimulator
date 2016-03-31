@@ -78,7 +78,7 @@ public class ControlPanel extends JPanel {
 
     ChangeListener trafficLightTimeChange = e -> {
         int tmp = trafficLightTimeSlider.getValue();
-        MainFrame.simulationInputListener.SimulationParameterChanged("trafficLightInterval", Integer.toString(tmp));
+        MainFrame.simulationInputListener.SimulationParameterChanged("timeStepSlider", Integer.toString(tmp));
     };
 
     private StateProviderController stateProviderController;
