@@ -301,6 +301,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     //paint vehicles on the road
     private  void drawVehicleOnRoad(Graphics g, VehicleDTO vehicle,MapDTO map){
         RoadLocationDTO location = (RoadLocationDTO) vehicle.getLocation();
+        //System.out.println(vehicle.getLabel()+" road "+location.getRoad().getLabel()+" start "+location.getOrigin().getLabel()+" distance"+location.getDistanceTravelled());
         Color color=Color.white;
         int wide,length;
         VehicleType type=vehicle.getType();
@@ -678,6 +679,11 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         Statistics statistics = null;
         Statistics statistics_info = null;
         float temp=0;
+
+        if (vehicle.getLocation().getClass() == RoadLocationDTO.class){
+            if (((RoadLocationDTO)vehicle.getLocation()).getDistanceTravelled() < 0)
+                return;
+        }
         if ((!STATISTICS_Cautious_INFORMATION.containsKey(vehicle.getLabel())) && (!STATISTICS_Normal_INFORMATION.containsKey(vehicle.getLabel()))
                 && (!STATISTICS_Reckless_INFORMATION.containsKey(vehicle.getLabel()))&& (!STATISTICS_EmergencyService_INFORMATION.containsKey(vehicle.getLabel()))) {
             statistics = new Statistics();
