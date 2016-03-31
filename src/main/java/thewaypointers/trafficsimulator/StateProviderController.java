@@ -57,9 +57,36 @@ public class StateProviderController extends Thread implements ISimulationInputL
         }
     }
 
+    public void setStatesPerSecond(long statesPerSecond)
+    {
+        if(statesPerSecond == 0){
+            System.out.println("Warning: tried to set states per second to 0");
+            return;
+        }
+        float speed = simulationTimeStep/(float)timeStep;
+        timeStep = (long)1000/statesPerSecond;
+        setSpeed(speed);
+    }
+
+    public void setSpeed(float speed){
+        if(speed == 0){
+            System.out.println("Warning: tried to set speed to 0");
+            return;
+        }
+        simulationTimeStep = (long)(timeStep*speed);
+    }
+
 
     @Override
     public void SimulationParameterChanged(String parameterName, String value) {
+        if(parameterName.equals("timeStepSlider")) {
+            setStatesPerSecond(Long.parseLong(value));
+            return;
+        }
+        if(parameterName.equals("simulationSpeed")){
+            setSpeed(Float.parseFloat(value));
+            return;
+        }
         if(!simulation.getClass().equals(Simulation.class)){
             System.out.println(String.format(
                     "Warning: %s is not %s, so it can't receive changing input parameters",

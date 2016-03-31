@@ -13,7 +13,7 @@
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
- 
+
  \lstset{frame=tb,
  	language=Java,
  	aboveskip=3mm,
@@ -77,7 +77,7 @@
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% University Assignment Title Page 
+% University Assignment Title Page
 % LaTeX Template
 %
 % This template has been downloaded from:
@@ -94,7 +94,7 @@
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
 \center % Center everything on the page
- 
+
 %----------------------------------------------------------------------------------------
 %	HEADING SECTIONS
 %----------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@
 \HRule \\[0.4cm]
 { \huge \bfseries Final project report}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
- 
+
 %----------------------------------------------------------------------------------------
 %	AUTHOR SECTION
 %----------------------------------------------------------------------------------------
@@ -134,7 +134,7 @@ Minghao Zhu\\[3cm]
 %----------------------------------------------------------------------------------------
 
 %\includegraphics{Logo}\\[1cm] % Include a department/university logo - this will require the graphicx package
- 
+
 %----------------------------------------------------------------------------------------
 
 \vfill % Fill the rest of the page with whitespace
@@ -150,6 +150,9 @@ Minghao Zhu\\[3cm]
 \newpage
 
 \section{Introduction}
+The Traffic Simulation System aims to provide users to create a traffic map as they wish. In general, there are three parts in the system: MapPanel, ControlPanel and StatisticsPanel. MapPanel is to show how the traffic map is built while ControlPanel is for users to decide what their traffic map looks like and how do vehicles behave. StatisticsPanel reveals the average speed of different types of vehicles.
+
+Users can control the whole system by clicking start, pause and clear buttons, changing time step, vehicle speed and states, and even using 'debug' to follow every car track and the location of junctions. Specifically, there are four types of vehicle in the system, namely caution cars, normal cars, reckless cars and ambulance. Each type of them have different behaviors, such as speed. The system allows users to decide how many cars run on the road. Users can also choose whether there are traffic lights on junctions or not. They can also change traffic lights' time interval.
 
 \section{Review of related work}
 
@@ -224,7 +227,7 @@ QR-5& Usability& The Traffic Simulation System should have a clear GUI interface
  		\item Simulation
  	\end{itemize}
  	\includegraphics[width=12.5cm]{designIMG.eps}
- 	
+
  	\subsection{about}
  	The Simulation part is the core of the traffic simulator, where the actual computing and decisions of vehicles happen. Common is shared by both Simulation and GUI, it contains classes that are used by both other parts of the Traffic simulator. GUI is where the graphics are drawn and shown to the user, it is the part of the Traffic simulator the user interacts with.
  	\newline
@@ -272,8 +275,27 @@ The other interactions happen on the Map Panel. First of all, the user can drag 
 
 \paragraph{bootstrap(String[] args)} This function is used to generate a new thread StateProviderController and start the thread. It also generates the new MainFrame with relevant parameters of simulation controlling. This function is invoked by the main starter of the system.
 
+\subsection{GUI part}
+
+Basically, GUI is to display performance of the whole system, showing the results of how the system runs. In GUI, we draw traffic road on class MapPanel. The MapPanel mainly consist of five parts: to paint road, vehicle, traffic lights, labels and to get statistical data.
+
+\subsubsection{compute$\_$xy( )}
+When drawing road, we get the junctions and roads from background. One thing we have to deal with is to compute the coordinate of each junction and road, then draw them on the MapPanel. We assume that the first junction we get from our background is on the top left of the map. So we make the coordinate as $(x,y)=(road_length, road_length)$. Afterwards, based on the location of the first junction, we compute the rest roads and junctions until finishing the whole map. On the contrary, if the first junction we get is not located on the top left, then we move the junction to its correct location. As long as we complete the road map, achieving coordinate of each junction, we can easily compute the relative coordinates of vehicle and traffic lights. Finally, we draw the whole traffic map.
+
+\subsubsection{drawVehicleInJunction( )}
+Considering vehicles turning on junctions, we first divide turning situation into the following eight parts, where $\alpha$ represents its turning angle. Then using Java function, AffineTransform(), to rotate the vehicle towards its right way.
+\begin{center}
+	\includegraphics[width=14cm]{GUI_p1.eps}
+\end{center}
+
+\subsubsection{RecordStatistics( )}
+Our system will collect the travel distance of every car and then compute their average speed for further analysis, showing on StatisticsPanel. We create a list for the whole system and list information for cars, running time and running distance. The pseudo-code shows as below:
+\begin{center}
+	\includegraphics[width=6cm] {GUI_p2.eps}
+\end{center}
+
 \subsection{about simulation}
-The Simulation is the back end of our Traffic Simulator. This runs on a thread and calculates the state of the Traffic Simulator for every n time. It builds the initial state of the simulation using the „WorldState“ object passed on the creation of this class. 
+The Simulation is the back end of our Traffic Simulator. This runs on a thread and calculates the state of the Traffic Simulator for every n time. It builds the initial state of the simulation using the „WorldState“ object passed on the creation of this class.
 \newline
 The „WorldState“ object represents the current state of the simulation. The first world state object with it's roads and junctions gets created on the start of the application. The „TrafficSimulatorStarter“ is the main class in which up on start it creates and passes the XML path to the „MapWorldStateFactory“.
 This class then finds the XML, parses trough it creating the „WorldState“ object and returns it to the „TrafficSimulatorStarter“.
