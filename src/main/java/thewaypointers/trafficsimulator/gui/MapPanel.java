@@ -179,10 +179,12 @@ public class MapPanel extends JPanel implements IStateChangeListener{
     //draw all vehicles
     private void draw_AllVehicles(Graphics g){
         CAR.clear();
-        for (VehicleDTO vehicleDTO:worldState.getVehicleList().getAll()){
-            draw_Vehicle(g,vehicleDTO,worldState.getRoadMap());
-            RecordStatistics(vehicleDTO);
-            CAR.add(vehicleDTO.getLabel());
+        if (worldState.getVehicleList().getAll().size() > 0) {
+            for (VehicleDTO vehicleDTO : worldState.getVehicleList().getAll()) {
+                draw_Vehicle(g, vehicleDTO, worldState.getRoadMap());
+                RecordStatistics(vehicleDTO);
+                CAR.add(vehicleDTO.getLabel());
+            }
         }
     }
 
