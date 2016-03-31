@@ -25,8 +25,6 @@ public class ControlPanel extends JPanel {
     private JLabel worldStateLabel = new JLabel();
     private JButton startPauseButton = new JButton();
     private JButton clearButton = new JButton();
-    private JLabel timeStepLabel = new JLabel();
-    private JSlider timeStepSlider = new JSlider(0, 100);
     private JLabel simulationSpeedLabel = new JLabel();
     private JSlider simulationSpeedSlider = new JSlider();
     private JLabel statesPerSecondsLabel = new JLabel();
@@ -54,11 +52,6 @@ public class ControlPanel extends JPanel {
     public JLabel timer = new JLabel();
 
     Graphics2D g2;
-
-    ChangeListener timeStepChange = e -> {
-        int tmp = timeStepSlider.getValue();
-        MainFrame.simulationInputListener.SimulationParameterChanged("timeStepSlider", Integer.toString(tmp));
-    };
 
     ChangeListener simulationSpeedChange = e -> {
         double tmp = simulationSpeedSlider.getValue();
@@ -139,20 +132,6 @@ public class ControlPanel extends JPanel {
         clearButton.setText("Clear");
         clearButton.setLocation(0, 80);
         clearButton.addActionListener(this::clearPerformed);
-
-        initLabel(timeStepLabel);
-        timeStepLabel.setText("Time step");
-        timeStepLabel.setLocation(22, 120);
-
-        initSlider(timeStepSlider);
-        timeStepSlider.setLocation(80, 120);
-        timeStepSlider.setMaximum(10);
-        timeStepSlider.setMinimum(0);
-        timeStepSlider.setValue(0);
-        timeStepSlider.setMajorTickSpacing(5);
-        timeStepSlider.setMinorTickSpacing(1);
-        timeStepSlider.addChangeListener(timeStepChange);
-        timeStepSlider.setSnapToTicks(true);
 
         initLabel(simulationSpeedLabel);
         simulationSpeedLabel.setText("Speed");
@@ -260,8 +239,6 @@ public class ControlPanel extends JPanel {
         this.add(worldStateLabel);
         this.add(startPauseButton);
         this.add(clearButton);
-        this.add(timeStepLabel);
-        this.add(timeStepSlider);
         this.add(simulationSpeedLabel);
         this.add(simulationSpeedSlider);
         this.add(statesPerSecondsLabel);
