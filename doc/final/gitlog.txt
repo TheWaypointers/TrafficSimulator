@@ -193,7 +193,9 @@ d127c15 Wed Mar 16 20:22:30 2016        Haipei Liu Simulation control: Start/pau
 295e9c8 Wed Mar 16 21:13:32 2016   Michal Szewczak fix JunctionLocationTestStarter to start with co..
 824f7f0 Thu Mar 17 08:58:07 2016           vezer93 changed the mistakes                              
 8303258 Thu Mar 17 13:13:36 2016        Haipei Liu Feat 47, start/pause update                       
+97ae2b9 Thu Mar 17 13:20:59 2016          yzzmh123 Create some new xmlss maps to test the MapWorldS..
 94712af Thu Mar 17 14:06:36 2016       mengzhuwang Merge remote-tracking branch 'origin/feat-worlds..
+104f057 Thu Mar 17 14:15:51 2016          yzzmh123 Create some new xmls maps to test the MapWorldSt..
 54cc4f2 Thu Mar 17 21:07:02 2016        Haipei Liu change to Junction test provider                  
 8932231 Thu Mar 17 21:07:42 2016        Haipei Liu change to Junction test provider                  
 c82d0f3 Thu Mar 17 21:12:01 2016        Haipei Liu Add new Starter                                   
@@ -262,6 +264,7 @@ eefcb42 Fri Mar 25 17:49:36 2016         vezer1993 Merge pull request #69 from T
 5cbc359 Fri Mar 25 17:58:52 2016           vezer93 fixed traffic lights traffic lights now show cor..
 e56175b Fri Mar 25 18:02:50 2016   Michal Szewczak Merge branch 'dev' into feat-junctiondug-75       
 7707bca Fri Mar 25 18:08:42 2016   Michał Szewczak Merge pull request #78 from TheWaypointers/feat-..
+daee739 Fri Mar 25 18:20:09 2016   Michal Szewczak Merge branch 'dev' into feat-TestMapWorldStateFa..
 1f749f8 Fri Mar 25 18:59:30 2016       mengzhuwang 1. delete traffic lights on left road 2. modify ..
 7af5afe Fri Mar 25 19:05:25 2016           vezer93 traffic light junction anyliser working cars tha..
 20dd324 Sun Mar 27 04:47:19 2016              iroq add tools to final report                         
@@ -270,6 +273,79 @@ d6904dc Sun Mar 27 12:19:08 2016   Michał Szewczak Merge pull request #81 from 
 68a8d29 Sun Mar 27 19:25:53 2016           vezer93 merge with dev analyser now works with the vehic..
 3af8a9d Sun Mar 27 19:32:43 2016           vezer93 merge with dev analyser now works with the vehic..
 0a4947e Sun Mar 27 19:37:35 2016           vezer93 fixed a small bug to chek if opposite road exists 
+26ddd35 Sun Mar 27 20:32:47 2016       mengzhuwang create a class Statistics, add a function to rec..
 30e8b54 Mon Mar 28 01:03:47 2016   Michał Szewczak Merge pull request #84 from TheWaypointers/junct..
+a0c969e Mon Mar 28 02:04:33 2016          yzzmh123 problem of the traffic lights. The test of traff..
+c8a4093 Mon Mar 28 02:31:11 2016              iroq add first version of process, evaluation and pee..
 820a977 Mon Mar 28 03:02:37 2016              iroq add start of appendix                             
+b56998d Mon Mar 28 19:15:01 2016        Haipei Liu Add StatisticsPanel to display the result. Updat..
 7ef0331 Mon Mar 28 20:18:54 2016              iroq add source code appendix and scripts for its gen..
+d13df9e Mon Mar 28 21:41:38 2016              iroq add gitlog                                        
+502316f Mon Mar 28 22:10:49 2016           vezer93 normal junctions now work                         
+03c95cb Mon Mar 28 23:01:52 2016           vezer93 vehicles now let the car from the right go first..
+1515150 Mon Mar 28 23:16:05 2016           vezer93 changed to complex                                
+3620538 Mon Mar 28 23:50:10 2016              iroq add future improvements section to final report   
+eb18ce8 Tue Mar 29 00:32:28 2016              iroq hook up Simulation to receive events from the Co..
+8cfb229 Tue Mar 29 00:38:18 2016         vezer1993 Merge pull request #89 from TheWaypointers/bugfi..
+505536d Tue Mar 29 00:47:21 2016       mengzhuwang fix average speed fluctuating problem             
+b281433 Tue Mar 29 15:29:06 2016           vezer93 commit                                            
+0b9f2cb Tue Mar 29 15:39:00 2016           vezer93 the changing of junction type from GUI works now  
+5c219fb Tue Mar 29 16:30:24 2016           vezer93 different car beh. with random generator ratio    
+798c50f Tue Mar 29 16:59:25 2016           vezer93 emergency services now work and spawn, cars let ..
+fcb0775 Tue Mar 29 20:32:56 2016       mengzhuwang fix clear problem fix average speed in all other..
+887634a Tue Mar 29 21:58:25 2016       mengzhuwang doc-mengzhu contains introduction and GUI implem..
+39385d7 Wed Mar 30 12:46:20 2016   Michał Szewczak Merge pull request #88 from TheWaypointers/norma..
+097fa19 Wed Mar 30 12:57:33 2016       mengzhuwang fix bug                                           
+d3d6164 Wed Mar 30 13:00:34 2016           vezer93 bug fixes on analysing junction                   
+fa82525 Wed Mar 30 13:09:09 2016           vezer93 fix on the ratio changes inside simulation        
+e034749 Wed Mar 30 13:18:23 2016        Haipei Liu Final report (Happy's part):  -Requirement analy..
+d646a46 Wed Mar 30 13:33:46 2016   Michał Szewczak Merge pull request #85 from TheWaypointers/feat-..
+b7dc779 Wed Mar 30 13:57:09 2016   Michal Szewczak fix assertions in tests                           
+fcdc845 Wed Mar 30 14:44:40 2016           vezer93 fixed so vehicles check if the next road is full..
+dcd3664 Wed Mar 30 14:51:08 2016       mengzhuwang report contains introduction and GUI implementat..
+5b23673 Wed Mar 30 15:09:40 2016        Haipei Liu Add ambulance in ControlPanel and StatisticsPanel 
+3c12680 Wed Mar 30 15:17:09 2016   Michal Szewczak refactor behaviour speed difference               
+1e29646 Wed Mar 30 15:29:45 2016       mengzhuwang add ambulance in record list                      
+769aa22 Wed Mar 30 15:46:09 2016           vezer93 vehicles check speed inside junct                 
+37a7090 Wed Mar 30 15:48:01 2016       mengzhuwang fix small potential bugs                          
+212b8ef Wed Mar 30 15:51:19 2016        Haipei Liu Modify the report:  -add the list of the feature..
+7ff9b1c Wed Mar 30 15:51:25 2016       mengzhuwang add .gitignore file                               
+e9ff9a6 Wed Mar 30 16:12:50 2016       mengzhuwang add pictures                                      
+7674594 Wed Mar 30 16:15:29 2016        Haipei Liu Add average speed of all vehicles on StatisticPa..
+54eb702 Wed Mar 30 16:15:46 2016         liuhaipei Merge remote-tracking branch 'origin/feat-addAmb..
+f294c7a Wed Mar 30 16:23:20 2016       mengzhuwang fix a mistake                                     
+0c2782b Wed Mar 30 16:26:11 2016   Michał Szewczak Merge pull request #90 from TheWaypointers/diffe..
+db79149 Wed Mar 30 16:51:40 2016   Michał Szewczak Update assessment with 2nd assessment and total ..
+dc1eb1c Wed Mar 30 16:53:30 2016   Michal Szewczak update peer assessment                            
+ee15791 Wed Mar 30 16:59:26 2016   Michał Szewczak Merge pull request #93 from TheWaypointers/doc-H..
+8136fdd Wed Mar 30 17:06:06 2016   Michal Szewczak Merge branch 'dev' into doc-appendices            
+485ffc0 Wed Mar 30 17:07:46 2016   Michal Szewczak Merge branch 'dev' into doc-appendices            
+27227bf Wed Mar 30 17:20:46 2016   Michal Szewczak remove unused package                             
+2e351e0 Wed Mar 30 17:22:15 2016        Haipei Liu Merge pull request #87 from TheWaypointers/doc-a..
+5663ceb Wed Mar 30 17:34:11 2016   Michal Szewczak Merge branch 'dev' into doc-michal                
+257d433 Wed Mar 30 17:35:51 2016   Michal Szewczak Merge branch 'dev' into doc-michal                
+f7199d7 Wed Mar 30 17:36:46 2016        Haipei Liu Merge pull request #99 from TheWaypointers/doc-m..
+8f74e89 Wed Mar 30 21:17:00 2016              iroq Merge branch 'dev' into doc-mengzhu               
+2b2743b Wed Mar 30 21:20:41 2016   Michał Szewczak Merge pull request #96 from TheWaypointers/doc-m..
+5328c79 Wed Mar 30 21:29:03 2016              iroq Merge branch 'dev' into feat-TestMapWorldStateFa..
+9563b13 Wed Mar 30 21:30:26 2016              iroq refactor name                                     
+adf5151 Wed Mar 30 21:38:27 2016   Michał Szewczak Merge pull request #67 from TheWaypointers/feat-..
+120da46 Wed Mar 30 22:04:24 2016           vezer93 Merge branch 'dev' into emergency-service         
+0153b78 Wed Mar 30 22:04:59 2016           vezer93 merging with dev                                  
+ec629d8 Wed Mar 30 23:22:55 2016              iroq make output jar executable                        
+e43aaf5 Wed Mar 30 23:23:44 2016              iroq Merge branch 'dev' of https://github.com/TheWayp..
+e060c65 Thu Mar 31 00:29:19 2016   Michal Szewczak add jar with dependencies                         
+cd8823f Thu Mar 31 01:17:35 2016   Michal Szewczak change roadmap location                           
+aadc41e Thu Mar 31 01:34:45 2016   Michal Szewczak turn off a test                                   
+d3656db Thu Mar 31 01:37:44 2016   Michal Szewczak add forgotten file and bring test back on         
+d34e1d5 Thu Mar 31 02:15:47 2016              iroq add helpful error dialog box                      
+c9f15c8 Thu Mar 31 02:17:53 2016              iroq change error window title                         
+b3f852c Thu Mar 31 02:40:54 2016   Michał Szewczak Update README.md with build and run instructions  
+498c9bd Thu Mar 31 03:08:34 2016   Michał Szewczak Merge pull request #91 from TheWaypointers/emerg..
+2f129c2 Thu Mar 31 03:11:04 2016   Michał Szewczak Merge pull request #97 from TheWaypointers/feat-..
+761da18 Thu Mar 31 04:22:25 2016              iroq add setting speed and states per second in the s..
+b51b1e4 Thu Mar 31 04:24:19 2016              iroq remove unnecessary slider                         
+ad62985 Thu Mar 31 04:28:49 2016              iroq quadruple available speed                         
+b6df3b2 Thu Mar 31 08:54:05 2016       mengzhuwang fix ambulance clear problem                       
+403757e Thu Mar 31 09:53:09 2016       mengzhuwang fix average total speed                           
+7d8e5fc Thu Mar 31 12:27:12 2016   Michał Szewczak Merge pull request #105 from TheWaypointers/feat..
