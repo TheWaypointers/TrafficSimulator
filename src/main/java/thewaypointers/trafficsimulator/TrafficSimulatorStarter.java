@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public class TrafficSimulatorStarter {
     final static long TIME_STEP = 100;
     final static long SIMULATION_TIME_STEP = 300;
-    final static String PATH_TO_MAP = "roadmaps/complex.xml";
+    final static String PATH_TO_MAP = "roadmap.xml";
 
     public final static WorldStateDTO worldState;
     public final static Supplier<IStateProvider> simulationSupplier;
