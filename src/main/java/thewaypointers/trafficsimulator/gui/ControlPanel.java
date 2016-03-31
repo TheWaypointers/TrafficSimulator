@@ -140,9 +140,9 @@ public class ControlPanel extends JPanel {
         initSlider(simulationSpeedSlider);
         simulationSpeedSlider.setLocation(80, 160);
         simulationSpeedSlider.setValue(25);
-        simulationSpeedSlider.setMaximum(400);
-        simulationSpeedSlider.setMajorTickSpacing(100);
-        statesPerSecondsSlider.setMinorTickSpacing(25);
+        simulationSpeedSlider.setMaximum(1600);
+        simulationSpeedSlider.setMajorTickSpacing(400);
+        statesPerSecondsSlider.setMinorTickSpacing(100);
         simulationSpeedSlider.addChangeListener(simulationSpeedChange);
 
         initLabel(statesPerSecondsLabel);
