@@ -7,7 +7,7 @@ import thewaypointers.trafficsimulator.simulation.Simulation;
 import static org.junit.Assert.*;
 
 public class TrafficSimulatorStarterTest {
-    //@Test
+    @Test
     public void providerTest(){
         assertTrue(TrafficSimulatorStarter.simulationSupplier.get().getClass().equals(Simulation.class));
     }
