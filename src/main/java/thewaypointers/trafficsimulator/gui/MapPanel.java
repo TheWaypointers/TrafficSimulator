@@ -109,7 +109,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int recklessCarTotalNum = GetALLStatistics(VehicleType.CarReckless).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
             if(s.getTime()!=0) {
-                recklessCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime()*1000;
+                recklessCarTotalSpeed = recklessCarTotalSpeed + s.getDistance() / s.getTime()*1000;
             }
         }
 
