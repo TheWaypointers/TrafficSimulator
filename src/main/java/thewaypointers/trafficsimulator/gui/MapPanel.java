@@ -93,7 +93,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int normalCarTotalNum = GetALLStatistics(VehicleType.CarNormal).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarNormal)){
             if(s.getTime()!=0) {
-                normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime()*1000;
+                normalCarTotalSpeed = normalCarTotalSpeed + s.getDistance() / s.getTime();
             }
         }
 
@@ -101,7 +101,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int cautionCarTotalNum = GetALLStatistics(VehicleType.CarCautious).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarCautious)){
             if(s.getTime()!=0) {
-                cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime()*1000;
+                cautionCarTotalSpeed = cautionCarTotalSpeed + s.getDistance() / s.getTime();
             }
         }
 
@@ -109,7 +109,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int recklessCarTotalNum = GetALLStatistics(VehicleType.CarReckless).size();
         for (Statistics s : GetALLStatistics(VehicleType.CarReckless)){
             if(s.getTime()!=0) {
-                recklessCarTotalSpeed = recklessCarTotalSpeed + s.getDistance() / s.getTime()*1000;
+                recklessCarTotalSpeed = recklessCarTotalSpeed + s.getDistance() / s.getTime();
             }
         }
 
@@ -117,7 +117,7 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         int ambulanceTotalNum = GetALLStatistics(VehicleType.EmergencyService).size();
         for (Statistics s : GetALLStatistics(VehicleType.EmergencyService)){
             if(s.getTime()!=0) {
-                ambulanceTotalSpeed = ambulanceTotalSpeed + s.getDistance() / s.getTime()*1000;
+                ambulanceTotalSpeed = ambulanceTotalSpeed + s.getDistance() / s.getTime();
             }
         }
 
@@ -128,22 +128,22 @@ public class MapPanel extends JPanel implements IStateChangeListener{
         double totalSpeed = 0;
         int carTypeNum = 0;
         if(cautionCarTotalNum!=0){
-            cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum;
+            cautionCarSpeed = cautionCarTotalSpeed/cautionCarTotalNum*1000;
             totalSpeed = totalSpeed + cautionCarSpeed;
             carTypeNum++;
         }
         if(normalCarTotalNum!=0){
-            normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum;
+            normalCarSpeed = normalCarTotalSpeed/normalCarTotalNum*1000;
             totalSpeed = totalSpeed + normalCarSpeed;
             carTypeNum++;
         }
         if(recklessCarTotalNum!=0){
-            recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum;
+            recklessCarSpeed = recklessCarTotalSpeed/recklessCarTotalNum*1000;
             totalSpeed = totalSpeed + recklessCarSpeed;
             carTypeNum++;
         }
         if(ambulanceTotalNum!=0){
-            ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum;
+            ambulanceSpeed = ambulanceTotalSpeed/ambulanceTotalNum*1000;
             totalSpeed = totalSpeed + ambulanceSpeed;
             carTypeNum++;
         }
