@@ -290,11 +290,15 @@ In 2013, there is a research survey hosted on GitHub across 10,000 Java projects
 JUnit provides overloaded assertion methods for all primitive types and Objects and arrays (of primitives or Objects). In this method, the parameter order is expected value followed by actual value. Optionally the first parameter can be a String message that is output on failure. There is a slightly different assertion, assertThat that has parameters of the optional failure message, the actual value, and a Matcher object. It needs to be notice that expected and actual are reversed compared to the other assert methods.\\
 In this project, 3 main motheds are utilized: ‘arrange’ ‘act’ and ‘assert’ and the most important method is assertThat.\\
 \subsubsection{What tested}
-There are two main class tested in this project. MapDTO and MapWorldStateFactory.\\
-The main aim to test the MapDTO is to check if this class can generate the map properly.In the test of MapDTO, different number of roads are added in the ‘act’ mothed and in the ‘assert’ the number of junctions, number of nodes ,number of roads and the road direction are checked to test if the map are generated correctly.\\
-Beside, MapWorldStateFactory helps convert existed ‘xml’ format maps to the maps will be shown in GUI. By testing this class, it is able to know if both MapWorldStateFactory and RoadMap class works well because the MapWorldStateFactory go through to RoadMap.\\
-The functions tested are the junctions, number of junctions, number of nodes, number of roads and the direction of roads and the details of traffic lights.\\
+Plenty of classes tested in this project. Shown as the picture below.\\
+\includegraphics[width=5cm]{testclass.eps}\\
+The first test is the FirstVersionProviderTest. This class is used to check if the FirstVesionProvider works well which provides some basic functions for the first version of the traffic simulation software. \\
+JunctionLocationDTOTest and MapDTOTest are mainly to test the JunctionLocationDTO and the MapDTO to see if this class can generate the map and the location of junctions properly.
+In the test of MapDTO, different number of roads are added in the ‘act’ mothed and in the ‘assert’ the number of junctions, number of nodes ,number of roads and the road direction are checked to test if the map are generated correctly.\\
+Beside, GuiControllerTest helps test the GuiController class and MapWorldStateFactory helps convert existed ‘xml’ format maps to the maps will be shown in GUI. By testing this class, it is able to know if both MapWorldStateFactory and RoadMap class works well because the MapWorldStateFactory go through to RoadMap. The functions tested are the junctions, number of junctions, number of nodes, number of roads and the direction of roads and the details of traffic lights.\\
+Some other useful tests are created as well such as FloatPointTest, FirstVersionStarterTest, JunctionLocationTestStarterTest, RoadNetworkStarterTest and TrafficSimulatorStarterTest. The aim to create these tests are testing the function of the starters to ensure they are working properly.\\
 After testing, BUGs are found and fixed by debuging.\\
+
 
 \section{Teamwork}
 
