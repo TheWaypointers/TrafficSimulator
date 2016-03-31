@@ -22,7 +22,7 @@ public class TrafficSimulatorStarter {
             factory = new MapWorldStateFactory(PATH_TO_MAP);
         }catch (Exception e){
             String message = "Please provide a valid roadmap.xml file in current directory.";
-            JOptionPane.showMessageDialog(new JFrame(), message, "Dialog",
+            JOptionPane.showMessageDialog(new JFrame(), message, "Roadmap missing",
                     JOptionPane.ERROR_MESSAGE);
             System.exit(-1);
         }
