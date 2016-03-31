@@ -150,9 +150,11 @@ Minghao Zhu\\[3cm]
 \newpage
 
 \section{Introduction}
-The Traffic Simulation System aims to provide users to create a traffic map as they wish. In general, there are three parts in the system: MapPanel, ControlPanel and StatisticsPanel. MapPanel is to show how the traffic map is built while ControlPanel is for users to decide what their traffic map looks like and how do vehicles behave. StatisticsPanel reveals the average speed of different types of vehicles.
+The Traffic Simulation System allows for comparing the efficiency different traffic light configurations on various road networks. Users can define their road map in an XML file, which will be loaded into the simulation. The system will then generate different vehicles according to parameters specified in the control panel and simulate their behavior. Users can then analyze the efficiency by observation and using the information in the statistics panel.
 
-Users can control the whole system by clicking start, pause and clear buttons, changing time step, vehicle speed and states, and even using 'debug' to follow every car track and the location of junctions. Specifically, there are four types of vehicle in the system, namely caution cars, normal cars, reckless cars and ambulance. Each type of them have different behaviors, such as speed. The system allows users to decide how many cars run on the road. Users can also choose whether there are traffic lights on junctions or not. They can also change traffic lights' time interval.
+Users can control the whole system by clicking start/pause and clear buttons and changing the speed and display freuency. The system allows users to decide how many cars run on the road and what are the relative amounts of different vehicle types. 
+
+Users can change whether there are traffic lights on junctions or not by clicking on them while the simulation is running. They can also change traffic light change time.
 
 \section{Review of related work}
 
@@ -273,24 +275,41 @@ The other interactions happen on the Map Panel. First of all, the user can drag 
 
 \paragraph{bootstrap(String[] args)} This function is used to generate a new thread StateProviderController and start the thread. It also generates the new MainFrame with relevant parameters of simulation controlling. This function is invoked by the main starter of the system.
 
-\subsection{GUI part}
+\subsection{The graphical interface}
 
-Basically, GUI is to display performance of the whole system, showing the results of how the system runs. In GUI, we draw traffic road on class MapPanel. The MapPanel mainly consist of five parts: to paint road, vehicle, traffic lights, labels and to get statistical data.
+GUI is to display performance of the whole system, showing the results of how the system runs. In GUI, we draw traffic road in the class \verb|MapPanel|. \verb|MapPanel| consists of five parts: the painting of roads, vehicles, traffic lights, labels and getting statistical data.
 
-\subsubsection{compute$\_$xy( )}
-When drawing road, we get the junctions and roads from background. One thing we have to deal with is to compute the coordinate of each junction and road, then draw them on the MapPanel. We assume that the first junction we get from our background is on the top left of the map. So we make the coordinate as $(x,y)=(road_length, road_length)$. Afterwards, based on the location of the first junction, we compute the rest roads and junctions until finishing the whole map. On the contrary, if the first junction we get is not located on the top left, then we move the junction to its correct location. As long as we complete the road map, achieving coordinate of each junction, we can easily compute the relative coordinates of vehicle and traffic lights. Finally, we draw the whole traffic map.
+\subsubsection{compute$\_$xy()}
+Because the representation of the network is in graph form, one thing we have to deal with is to compute the coordinates of each junction and road, then draw them on the map panel. We assume that the first junction we get from our backend is on the top left of the map. So we make the coordinate as $(x,y)=(road\_length, road\_length)$, so the roads connected to the junction can also fit on the map. Afterwards, based on the location of the first junction, we compute the rest roads and junctions until the whole map is finished. If the first junction we get is not located on the top left, then we move the junction to its correct location. As long as we complete the road map, calculating the coordinates of each junction, we can easily compute the relative coordinates of vehicle and traffic lights. Finally, we draw the whole traffic map.
 
-\subsubsection{drawVehicleInJunction( )}
-Considering vehicles turning on junctions, we first divide turning situation into the following eight parts, where $\alpha$ represents its turning angle. Then using Java function, AffineTransform(), to rotate the vehicle towards its right way.
+\subsubsection{drawVehicleInJunction()}
+Considering vehicles turning on junctions, we first divide turning situation into the following eight parts, where $\alpha$ represents its turning angle. Then we use the Java function, \verb|AffineTransform()|, to rotate the vehicle correctly.
 \begin{center}
 	\includegraphics[width=14cm]{GUI_p1.eps}
 \end{center}
 
-\subsubsection{RecordStatistics( )}
-Our system will collect the travel distance of every car and then compute their average speed for further analysis, showing on StatisticsPanel. We create a list for the whole system and list information for cars, running time and running distance. The pseudo-code shows as below:
-\begin{center}
-	\includegraphics[width=6cm] {GUI_p2.eps}
-\end{center}
+\subsubsection{RecordStatistics()}
+Our system will collect the travel distance of every car and then compute their average speed for further analysis and show them on the statistics panel. We create a list for the whole system and keep information for about running time and running distance. The pseudo-code is show below:
+\begin{lstlisting}
+List<Statistics>
+If (a new car) {
+    add to the list,
+start_time = current_time;
+distance = 0;
+}
+for (cars in the list) {
+time = current_time – start_time;
+if (the car on the road) {
+    distance = get_distance + tmp;
+    if (the car exist the road)
+        tmp = tmp + distance;
+}
+else (cars on the junction) {
+    distance = get_distance + tmp;
+    if (the car exist the road)
+        tmp = tmp + distance;
+}
+\end{lstlisting}
 
 \subsection{about simulation}
 The Simulation is the back end of our Traffic Simulator. This runs on a thread and calculates the state of the Traffic Simulator for every n time. It builds the initial state of the simulation using the „WorldState“ object passed on the creation of this class.
