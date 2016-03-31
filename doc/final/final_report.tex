@@ -285,43 +285,49 @@ The XML files are used to easier create road networks. But for the "Simulation" 
 	\item Junctions must be correctly connected to each other
 	\item Traffic light junctions must be added as an XML item, other junctions are normal junctions
 \end{itemize}
+The directions represent on what side of the junction the road starts, so the direction can be: up, left, right and down.
 This a simple example of an XML with 4 roads and 1 traffic light junction:
 \begin{lstlisting}
 <?xml version="1.0"?>
 <simulation>
-<roads>
-<road>
-<origin>A</origin>
-<destination>E1</destination>
-<length>300</length>
-<direction>Left</direction>
-</road>
-<road>
-<origin>A</origin>
-<destination>E2</destination>
-<length>300</length>
-<direction>Up</direction>
-</road>
-<road>
-<origin>A</origin>
-<destination>E3</destination>
-<length>300</length>
-<direction>Right</direction>
-</road>
-<road>
-<origin>A</origin>
-<destination>E4</destination>
-<length>300</length>
-<direction>Down</direction>
-</road>
-</roads>
-<junctions>
-<junction>
-<name>A</name>
-<type>JunctionTrafficLights</type>
-</junction>
-</junctions>
+	<roads>
+		<road>
+			<origin>A</origin>
+			<destination>E1</destination>
+			<length>300</length>
+			<direction>Left</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>E2</destination>
+			<length>300</length>
+			<direction>Up</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>E3</destination>
+			<length>300</length>
+			<direction>Right</direction>
+		</road>
+		<road>
+			<origin>A</origin>
+			<destination>E4</destination>
+			<length>300</length>
+			<direction>Down</direction>
+		</road>
+	</roads>
+	<junctions>
+		<junction>
+			<name>A</name>
+			<type>JunctionTrafficLights</type>
+		</junction>
+	</junctions>
 </simulation>
+\end{lstlisting}
+To create the same road network with a normal junction instead of the traffic light junction, it is only needed to remove the junction from the "junctions" part of the xml and leave it like:
+\begin{lstlisting}
+<junctions>
+</junctions>
 \end{lstlisting}
 \subsection{starting the simulation}
 Once the initial „WorldState“ object is created,  „TrafficSimulatorStarter“  creates a new „Simulation“ class and passes „WorldState“  to it. „Simulation“ then builds the road network for itself from that object. It contains a weighted graph which represents the road network. Each node equals a junction and each edge equals one side of the road. The vehicles are stored in a hash map where the edge of the graph is the key, and objects are array lists of vehicles. So that for each road we can store more than one vehicle.
