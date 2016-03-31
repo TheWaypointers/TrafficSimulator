@@ -28,11 +28,11 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
 
     GraphFactory graphFactory;
 
-    final int MAX_VEHICLE_NUMBER = 70;
+    final int MAX_VEHICLE_NUMBER = 40;
     int vehicleSpawnCounter = 10;
     final int VEHICLE_SPAWN_STEPS = 10;
 
-    int TRAFFIC_LIGHT_STEPS = 30;
+    int TRAFFIC_LIGHT_STEPS = 100;
     int trafficLightCounter = 0;
     int vehicleLabelCounter = 1;
 
@@ -78,9 +78,9 @@ public class Simulation implements ISimulationInputListener, IStateProvider {
                 int ambulanceRatio = Integer.parseInt(value);
                 vehicleSpawnRatio.setAmbulanceRatio(ambulanceRatio);
                 break;
-            case "trafficLightSlider":
+            /*case "trafficLightSlider":
                 int trafficLightsteps = Integer.parseInt(value);
-                TRAFFIC_LIGHT_STEPS = trafficLightsteps;
+                TRAFFIC_LIGHT_STEPS = trafficLightsteps;*/
             default:
                 break;
         }

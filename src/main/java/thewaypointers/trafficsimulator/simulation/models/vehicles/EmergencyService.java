@@ -35,7 +35,7 @@ public class EmergencyService implements IVehicle {
     private boolean vehicleIsTurningLeft;
 
     private final long SPEED_DIFFERENCE = 10;
-    private final long DISTANCE_BETWEEN_VEHICLES = 20;
+    private final long DISTANCE_BETWEEN_VEHICLES = 22;
     private final long VEHICLE_LENGTH = 8;
 
     public EmergencyService(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
@@ -223,8 +223,8 @@ public class EmergencyService implements IVehicle {
                 if(vehicle.getJunctionLocation().getOrigin() == origin){
                     return true;
                 }
-                else if (vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
-                    return false;
+                else if (vehicle.getJunctionLocation().getOrigin().opposite() == origin && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() < 0.2) {
+                    return true;
                 }
             }
             return false;

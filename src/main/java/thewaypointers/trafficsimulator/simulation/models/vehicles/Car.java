@@ -37,9 +37,9 @@ public class Car implements IVehicle {
     private int junctionBlocked;
 
     private final float BEHAVIOUR_SPEED_DIFFERENCE = 0.3f;
-    private final long DISTANCE_BETWEEN_VEHICLES = 20;
+    private final long DISTANCE_BETWEEN_VEHICLES = 22;
     private final long VEHICLE_LENGTH = 5;
-    private final int BLOCKED_JUNCTION_COUNTER = 25;
+    private final int BLOCKED_JUNCTION_COUNTER = 30;
 
     public Car(VehicleType type, float roadSpeedLimit, Stack<String> decisionPath, RoadEdge currentRoad, String originNode, Lane lane, float roadLength) {
         initialize(type, roadSpeedLimit, decisionPath, originNode, lane);
@@ -287,7 +287,7 @@ public class Car implements IVehicle {
                     if (node.getNodeType() == NodeType.JunctionTrafficLights) {
                         if (vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection().opposite() && vehicle.getJunctionLocation().getOrigin() != currentRoad.getDirection()) {
                             return false;
-                        } else if (vehicle.getJunctionLocation().getOrigin().opposite() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
+                        } else if (vehicle.getJunctionLocation().getOrigin() == currentRoad.getDirection().opposite() && vehicle.isVehicleTurningLeft() && vehicle.getJunctionLocation().getProgress() > 0.2) {
                             return false;
                         }
                     } else {
@@ -341,7 +341,7 @@ public class Car implements IVehicle {
                 if (carsFromTheOppositeRoad.size() > 0) {
 
                     for (IVehicle vehicle : carsFromTheOppositeRoad) {
-                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40) {
+                        if (vehicle.getVehiclesDistanceTravelled() >= vehicle.getVehiclesCurrentRoadLength() - 40 && !vehicle.isVehicleTurningLeft()) {
                             return false;
                         }
                     }
